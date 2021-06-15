@@ -13,6 +13,7 @@ import org.mockito.Mock;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada;
+import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 
 class InmuebleTestCase {
 	private Inmueble inmueble;
@@ -22,6 +23,7 @@ class InmuebleTestCase {
 	@Mock private Date horaDeCheckIn;
 	@Mock private Date horaDeCheckOut;
 	@Mock private Temporada precio;
+	@Mock private Usuario usuario;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -49,12 +51,14 @@ class InmuebleTestCase {
 		horaDeCheckOut= mock(Date.class);
 		formasDePago= mock(ArrayList.class);
 		precio= mock(Temporada.class);
-		inmueble= new Inmueble("apartamento", 200, "Argentina", "Quilmes", "Calle falsa 123", 
+		usuario = mock(Usuario.class);
+		inmueble= new Inmueble(usuario,"apartamento", 200, "Argentina", "Quilmes", "Calle falsa 123", 
 				               servicios, 3, fotos,horaDeCheckIn, horaDeCheckOut, formasDePago, precio);
 	}
 
+	
 	@Test
-	void testGetTipoDeInmueble() {
+	void testGetTipoDeInmueble1() {
 		String result= inmueble.getTipoDeInmueble();
 		
 		assertEquals("apartamento", result);

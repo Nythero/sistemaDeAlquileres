@@ -11,7 +11,7 @@ public class Ranking {
 	private ArrayList<Integer> puntajeGeneral;
 	
 	public Ranking() {
-		this.registroPorCategorias= new HashMap<>();
+		this.registroPorCategorias= new HashMap<>(); //cada categoria 
 		this.puntajeGeneral= new ArrayList<Integer>();
 	}
 	

@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
+
 public class Inmueble {
+	private Usuario dueño;
 	private String tipoDeInmueble;
 	private Ranking ranking;
 	private Integer superficie;
@@ -23,9 +26,10 @@ public class Inmueble {
 	private Map<String,ArrayList<String>> comentariosPorCategorias;
 	private Integer cantidadDeVecesAlquilado;
 
-	public Inmueble(String tipoDeInmueble,int superficie,String pais,String ciudad,String direccion,
+	public Inmueble(Usuario dueño,String tipoDeInmueble,int superficie,String pais,String ciudad,String direccion,
 			ArrayList<String> servicios,int capacidad,ArrayList<String> fotos, java.util.Date horaDeCheckIn,
 			 java.util.Date horaDeCheckOut,ArrayList<String> formasDePago,Temporada precio) {
+		
 		this.tipoDeInmueble= tipoDeInmueble;
 		this.ranking= new Ranking();
 		this.superficie= superficie;
@@ -42,8 +46,13 @@ public class Inmueble {
 		this.comentariosGenerales= new ArrayList<String>();
 		this.comentariosPorCategorias= new HashMap<String,ArrayList<String>>();
 		this.cantidadDeVecesAlquilado= 0;
+		this.dueño = dueño;
 	}
-
+	
+	public Usuario getDueño() {
+		return this.dueño;
+	}
+	
 	public String getTipoDeInmueble() {
 		return this.tipoDeInmueble;
 	}

@@ -25,7 +25,7 @@ class FinesDeSemanaLargoTestCase {
 		findeLargo= new FinesDeSemanaLargo(500f,250f);
 		dia= mock(Date.class);
 	}
-
+	
 	@Test
 	void testGetPrecioSiendoDiaDeSemana() {
 		when(dia.getDay()).thenReturn(3);

@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import ar.edu.unq.po2.sistemaDeAlquileres.FeriadosInamovibles;
 import junit.framework.AssertionFailedError;
 
+
 class FeriadosInamoviblesTestCase {
 	private FeriadosInamovibles feriadosInamovibles;
 	@Mock private Date dia;
