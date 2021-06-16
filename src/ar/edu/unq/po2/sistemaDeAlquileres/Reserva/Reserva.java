@@ -32,7 +32,7 @@ public class Reserva {
 		this.estado = estado;
 	}
 	
-	private Inmueble getInmueble() {
+	public Inmueble getInmueble() {
 		return this.inmueble;
 	}
 	

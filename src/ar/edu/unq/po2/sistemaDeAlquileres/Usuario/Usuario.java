@@ -2,6 +2,9 @@ package ar.edu.unq.po2.sistemaDeAlquileres.Usuario;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking;
@@ -21,7 +24,7 @@ public class Usuario {
 	private ArrayList<String> comentarios;
 	
 	public Usuario (String nombreCompleto, String direccionDeEmail,
-					String telefono, ArrayList<Reserva> reservasCondicionales,
+					String telefono,
 					Ranking rankingComoDuenho, Ranking rankingComoInquilino) {
 		
 		this.inmuebles = new ArrayList<Inmueble>();
@@ -147,22 +150,34 @@ public class Usuario {
 	}
 	
 	
-	
-//	//nos falta averiguar bien como armar la reserva
+//	//nos falta averiguar bien como armar la reserva o mejor dicho, los dias
 //	public ArrayList<Reserva> getTodasLasReservasFuturas(){
 //		
 //	}
 //	
-//	//mismo que arriba
-//	public ArrayList<Reserva> getReservasEnCiudadParticular(String ciudad) {
-//		
-//	}
-//	
-//	//mismo que arriba
-//	public ArrayList<String> getCiudadesEnLasQueTieneReservas(){
-//		
-//	}
-//	
+
+	public ArrayList<Reserva> getReservasEnCiudadParticular(String ciudad) {
+		ArrayList<Reserva> reservasEnCiudadDada = new ArrayList<Reserva>();
+		for (Reserva reserva : this.getReservasRealizadas()) {
+			if (ciudad == reserva.getInmueble().getCiudad()) {
+				reservasEnCiudadDada.add(reserva);
+			}
+		}
+		return reservasEnCiudadDada;
+	}
+
+
+	public Set<String> getCiudadesEnLasQueTieneReservas(){
+//		ArrayList<String> ciudadesConReserva = new ArrayList<String>();
+		Set<String> ciudadesConReserva = new HashSet<String>();	
+		for (Reserva reserva : this.getReservasRealizadas()) {
+			ciudadesConReserva.add(reserva.getInmueble().getCiudad());
+		}
+		
+		return ciudadesConReserva;
+	}
+
+	
 	//tenemos que averiguar sobre reservas
 //	public void realizarReserva (Inmueble inmueble, Sitio sitio, Date fechaInicio, 
 //								Date fechaFinal, String formaDePago) {
@@ -172,11 +187,15 @@ public class Usuario {
 //	public void cancelarReserva(Reserva reserva,Sitio sitio) {
 //		
 //	}
-	// esto es el array list de que cosa? 
-//	public Integer getCantidadDeVecesQueAlquilo() {
-//		
-//	}
+	
+	public Integer getCantidadDeVecesQueAlquilo() {
+		Integer cantidadDeVecesAlquilado = 0;
+		for (Inmueble inmueble : this.getInmuebles()) {
+			cantidadDeVecesAlquilado += inmueble.getCantidadDeVecesAlquilado();
+		}
+		return cantidadDeVecesAlquilado;
+	}
 	
 }
 	
-}
+
