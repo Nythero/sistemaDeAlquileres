@@ -73,4 +73,22 @@ class ReservaTestCase {
 		Assertions.assertEquals(dia, reserva.getDia(0));
 	}
 
+	@Test
+	void Reserva_GetCantidadDias_Get3() {
+		inmueble = mock(Inmueble.class);
+		dias = new ArrayList<Dia>();
+		Dia dia1 = mock(Dia.class);
+		Dia dia2 = mock(Dia.class);
+		Dia dia3 = mock(Dia.class);
+		estado = mock(EstadoReserva.class);
+		solicitante = mock(Usuario.class);
+		
+		dias.add(dia1);
+		dias.add(dia2);
+		dias.add(dia3);
+		
+		reserva = new Reserva(dias, inmueble, solicitante, estado);
+		
+		Assertions.assertEquals(3, reserva.getCantidadDias());
+	}
 }
