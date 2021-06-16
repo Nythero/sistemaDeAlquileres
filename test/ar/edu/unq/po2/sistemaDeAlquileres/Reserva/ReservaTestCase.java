@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.sistemaDeAlquileres.*;
 import ar.edu.unq.po2.sistemaDeAlquileres.Dia.Dia;
@@ -55,6 +56,21 @@ class ReservaTestCase {
 		reserva.finalizar();
 		
 		verify(estado).finalizar(reserva);
+	}
+	
+	@Test
+	void Reserva_GetDia_ReturnDia() {
+		inmueble = mock(Inmueble.class);
+		dias = new ArrayList<Dia>();
+		Dia dia = mock(Dia.class);
+		estado = mock(EstadoReserva.class);
+		solicitante = mock(Usuario.class);
+		
+		dias.add(dia);
+		
+		reserva = new Reserva(dias, inmueble, solicitante, estado);
+		
+		Assertions.assertEquals(dia, reserva.getDia(0));
 	}
 
 }
