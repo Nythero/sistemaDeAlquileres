@@ -55,6 +55,10 @@ public class Reserva {
 	public Dia getDia(int i) {
 		return this.getDias().get(i);
 	}
+	
+	public int getCantidadDias() {
+		return this.getDias().size();
+	}
 
 	public void cancelar() {
 		this.setEstado(this.getEstado().cancelar(this));
