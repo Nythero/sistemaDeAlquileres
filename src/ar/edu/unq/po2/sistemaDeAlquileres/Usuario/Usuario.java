@@ -22,6 +22,8 @@ public class Usuario {
 	private Ranking rankingComoInquilino;
 	private Date fechaDeCreacion;  
 	private ArrayList<String> comentarios;
+	private Integer saldo;
+	
 	
 	public Usuario (String nombreCompleto, String direccionDeEmail,
 					String telefono,
@@ -37,6 +39,7 @@ public class Usuario {
 		this.rankingComoInquilino = new Ranking();
 		this.fechaDeCreacion = new Date();
 		this.comentarios = new ArrayList<String>();
+		this.saldo = 0;
 	}
 	
 	public ArrayList<Inmueble> getInmuebles() {
@@ -98,6 +101,9 @@ public class Usuario {
 		return this.rankingComoInquilino;
 	}
 	
+	public void setSaldo (Integer cantidad) {
+		this.sa
+	}
 	
 	// checkear si esta en horario de cheking o no? lo haria la reserva
 	public void setComentario(Inmueble inmueble, String comentario) {
@@ -114,6 +120,10 @@ public class Usuario {
 	public void setPuntajeAInquilino (Reserva reserva, Integer puntaje) {
 		
 	}
+	
+	
+	
+	
 	
 	// faltaria lo del check in? o tambien preguntar si es valido ese servicio? 
 //	public void setPuntajeCategoriaAInmueble (Inmueble inmueble, String servicio, Integer puntaje) {
@@ -151,9 +161,15 @@ public class Usuario {
 	
 	
 //	//nos falta averiguar bien como armar la reserva o mejor dicho, los dias
-//	public ArrayList<Reserva> getTodasLasReservasFuturas(){
-//		
-//	}
+	public ArrayList<Reserva> getTodasLasReservasFuturas(){
+		ArrayList<Reserva> reservasFuturas = new ArrayList<Reserva>();
+		for (Reserva reserva : this.getReservasRealizadas()) {
+			if (reserva.getDia(reserva.getCantidadDias() - 1) ){
+				reservasFuturas.add(reserva);
+			}
+		}
+		return reservasFuturas;
+	}
 //	
 
 	public ArrayList<Reserva> getReservasEnCiudadParticular(String ciudad) {
@@ -195,7 +211,10 @@ public class Usuario {
 		}
 		return cantidadDeVecesAlquilado;
 	}
-	
 }
-	
+
+
+
+
+    
 

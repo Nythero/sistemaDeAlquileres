@@ -41,6 +41,8 @@ public class UsuarioTestCase {
 		Usuario usuario1 = new Usuario("Miguel", "mail@gmail.com","12345",rankingComoDuenho,
 										rankingComoInquilino);
 	}
+	
+	
 }
 
 
