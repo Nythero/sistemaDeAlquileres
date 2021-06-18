@@ -1,17 +1,13 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.temporada;
-
-import java.sql.Date;
-import java.time.DayOfWeek;
+package ar.edu.unq.po2.sistemaDeAlquileres.Temporada;
 import java.time.LocalDate;
 
 import junit.framework.AssertionFailedError;
 
-public class FinesDeSemanaLargo implements Temporada {
-	private float precioEnDiaDeSemana;
+public class FinesDeSemanaLargo extends Temporada {
 	private float precioEnFinDeSemanaLargo;
 	
-	public FinesDeSemanaLargo(float precioEnDiaDeSemana, float precioEnFinDeSemanaLargo) {
-		this.precioEnDiaDeSemana= precioEnDiaDeSemana;
+	public FinesDeSemanaLargo(float precioCotidiano, float precioEnFinDeSemanaLargo) {
+		super(precioCotidiano);
 		this.precioEnFinDeSemanaLargo= precioEnFinDeSemanaLargo;
 	}
 	
@@ -25,7 +21,7 @@ public class FinesDeSemanaLargo implements Temporada {
 			return this.precioEnFinDeSemanaLargo;
 		}
 		else {
-			return this.precioEnDiaDeSemana;
+			return this.getPrecioCotidiano();
 		}
 	}
 
@@ -45,34 +41,13 @@ public class FinesDeSemanaLargo implements Temporada {
 	 * Baja los precios.
 	 * De no ser posible, retorna error
 	 */
-	public void bajarPrecio(float precioADescontar) {
-		if (elPrecioADescontarSuperaAlPrecioDeLaSemana(precioADescontar) && 
-				elPrecioADescontarSuperaAlPrecioDeFindeLargo(precioADescontar)){
-			throw new AssertionFailedError("No se puede bajar de precio");
+	
+	public void bajarPrecioEspecial(float precioNuevo) {
+		if(precioNuevo > this.precioEnFinDeSemanaLargo || precioNuevo <0) {
+			throw new AssertionFailedError("El precio supera al actual o es negativo");
 		}
 		else {
-			this.precioEnFinDeSemanaLargo-=precioADescontar;
-			this.precioEnDiaDeSemana-=precioADescontar;
+		this.precioEnFinDeSemanaLargo= precioNuevo;
 		}
-
 	}
-
-	/**
-	 * Verifica si el precioADescontar es valido para bajar el precio
-	 * @param precioADescontar
-	 * @return
-	 */
-	private boolean elPrecioADescontarSuperaAlPrecioDeFindeLargo(float precioADescontar) {
-		return precioADescontar> this.precioEnFinDeSemanaLargo || precioADescontar <0;
-	}
-	
-	/**
-	 * Verifica si el precioADescontar es valido para bajar el precio
-	 * @param precioADescontar
-	 * @return
-	 */
-	private boolean elPrecioADescontarSuperaAlPrecioDeLaSemana(float precioADescontar) {
-		return precioADescontar> this.precioEnDiaDeSemana || precioADescontar <0;
-	}
-
 }

@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.sistemaDeAlquileres;
+package ar.edu.unq.po2.sistemaDeAlquileres.Temporada;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -6,15 +6,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-
-import ar.edu.unq.po2.sistemaDeAlquileres.temporada.TemporadaAlta;
 import junit.framework.AssertionFailedError;
 
 class TemporadaAltaTestCase {
@@ -23,7 +20,7 @@ class TemporadaAltaTestCase {
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		temporadaAlta= new TemporadaAlta(500f,200f);
+		temporadaAlta= new TemporadaAlta(200f,500f);
 		fecha= mock(LocalDate.class);
 	}
 	
@@ -36,7 +33,6 @@ class TemporadaAltaTestCase {
 		verify(fecha,times(2)).getMonthValue();
 		assertEquals(500f, result);
 	}
-	
 	@Test
 	void testGetPrecioNoSiendoTemporadaAlta() {
 		when(fecha.getMonthValue()).thenReturn(3);
@@ -49,38 +45,51 @@ class TemporadaAltaTestCase {
 
 	@Test
 	void testSePuedeBajarDePrecioDeTemporadaAlta() {
-		temporadaAlta.bajarPrecio(100f);
+		temporadaAlta.bajarPrecioEspecial(100f);
 		when(fecha.getMonthValue()).thenReturn(2);
 		float result= temporadaAlta.getPrecio(fecha);
 		
 		verify(fecha,times(3)).getMonthValue();
-		assertEquals(400f, result);
+		assertEquals(100f, result);
 	}
 	
 	
 	@Test
 	void testSePuedeBajarDePrecioALaNoTemporadaAlta() {
-		temporadaAlta.bajarPrecio(60);
+		temporadaAlta.bajarAlPrecioCotidiano(60f);
 		when(fecha.getMonthValue()).thenReturn(7);
 		float result= temporadaAlta.getPrecio(fecha);
 		
 		verify(fecha,times(3)).getMonthValue();
-		assertEquals(140f, result);
+		assertEquals(60f, result);
 	}
 	
 	
 	@Test
-	void testNoSePuedeBajarDePrecioYaQueSuperaAlPrecioOriginal() {
+	void testNoSePuedeBajarDePrecioDeTemporadaAltaYaQueSuperaAlPrecioOriginal() {
 		Assertions.assertThrows(AssertionFailedError.class, () -> {
-			temporadaAlta.bajarPrecio(600f);
+			temporadaAlta.bajarPrecioEspecial(600f);
 		  });
 	}
 	
 	@Test
-	void testNoSePuedeBajarDePrecioYaQueEsMenorA0() {
+	void testNoSePuedeBajarDePrecioDeTemporadaAltaYaQueEsMenorA0() {
 		Assertions.assertThrows(AssertionFailedError.class, () -> {
-			temporadaAlta.bajarPrecio(-1f);
+			temporadaAlta.bajarPrecioEspecial(-1f);
 		  });
 	}
 	
+	@Test
+	void testNoSePuedeBajarDePrecioCotidianoYaQueSuperaAlPrecioOriginal() {
+		Assertions.assertThrows(AssertionFailedError.class, () -> {
+			temporadaAlta.bajarAlPrecioCotidiano(600f);
+		  });
+	}
+	
+	@Test
+	void testNoSePuedeBajarDePrecioCotidianoYaQueEsMenorA0() {
+		Assertions.assertThrows(AssertionFailedError.class, () -> {
+			temporadaAlta.bajarAlPrecioCotidiano(-1f);
+		  });
+	}
 }

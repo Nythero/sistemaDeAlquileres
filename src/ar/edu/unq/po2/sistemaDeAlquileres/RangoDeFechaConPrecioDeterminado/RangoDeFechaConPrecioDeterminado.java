@@ -1,21 +1,18 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.temporada.Temporada;
+import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
 
 public class RangoDeFechaConPrecioDeterminado {
 	private LocalDate fechaInicial;
 	private LocalDate fechaFinal;
 	private Temporada precio;
-	private ArrayList<Integer> colaDeInquilinos;
 	
-	RangoDeFechaConPrecioDeterminado(LocalDate fechaInicial, LocalDate fechaFinal,Temporada precio){
+	public RangoDeFechaConPrecioDeterminado(LocalDate fechaInicial, LocalDate fechaFinal,Temporada precio){
 		this.fechaInicial= fechaInicial;
 		this.fechaFinal= fechaFinal;
 		this.precio= precio;
-		this.colaDeInquilinos= new ArrayList<>();
 	}
 
 	public LocalDate getFechaInicial() {
@@ -34,31 +31,31 @@ public class RangoDeFechaConPrecioDeterminado {
 		this.fechaFinal = fechaFinal;
 	}
 
-	public Temporada getPrecio() {
+	public Temporada getPrecioTemporada() {
 		return this.precio;
 	}
 
 	public void setPrecio(Temporada precio) {
 		this.precio = precio;
 	}
-
-	public ArrayList<Integer> getColaDeInquilinos() {
-		return this.colaDeInquilinos;
-	}
-
-	public void setColaDeInquilinos(ArrayList<Integer> colaDeInquilinos) {
-		this.colaDeInquilinos = colaDeInquilinos;
-	}
-
+	
 	public float getMontoTotal() {
-		fechaInicial= this.getFechaFinal();
+		LocalDate fechaInicialAVerificar = LocalDate.of(fechaInicial.getYear(),
+				fechaInicial.getMonthValue(),
+				fechaInicial.getDayOfMonth());
+		
+		LocalDate fechaFinalAVerificar = LocalDate.of(fechaFinal.getYear(),
+				fechaFinal.getMonthValue(),
+				fechaFinal.getDayOfMonth());
+		
 		float result= 0;
-		while (fechaInicial != this.getFechaFinal()) {
-			result+= this.getPrecio().getPrecio(fechaInicial);
-			fechaFinal= fechaFinal.plusDays(1);
+		while (fechaInicialAVerificar.getYear() != fechaFinalAVerificar.getYear() ||
+				fechaInicialAVerificar.getMonthValue() != fechaFinalAVerificar.getMonthValue() ||
+						fechaInicialAVerificar.getDayOfMonth() != fechaFinalAVerificar.getDayOfMonth()) {
+			result+= this.getPrecioTemporada().getPrecio(fechaInicialAVerificar);
+			fechaInicialAVerificar= fechaInicialAVerificar.plusDays(1);
 		}
-		return result + this.getPrecio().getPrecio(fechaInicial);
+		return result + this.getPrecioTemporada().getPrecio(fechaInicial);
 	}
-	
-	
+
 }

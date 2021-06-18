@@ -1,21 +1,19 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.temporada;
+package ar.edu.unq.po2.sistemaDeAlquileres.Temporada;
 
 import java.time.LocalDate;
 
 
 import junit.framework.AssertionFailedError;
 
-public class FeriadosInamovibles implements Temporada {
+public class FeriadosInamovibles extends Temporada {
 	private float precioEnFeriado;
-	private float precioEnDiaCotidiano;
 	private Feriado feriados;
 
-	public FeriadosInamovibles(Float precioEnFeriado, Float precioEnDiaCotidiano) {
+	public FeriadosInamovibles(float precioEnDiaCotidiano, float precioEnFeriado) {
+		super(precioEnDiaCotidiano);
 		this.precioEnFeriado= precioEnFeriado;
-		this.precioEnDiaCotidiano= precioEnDiaCotidiano;
 		this.feriados= new Feriado();
 	}
-	
 	
 	@Override
 	/**
@@ -27,7 +25,7 @@ public class FeriadosInamovibles implements Temporada {
 			return this.precioEnFeriado;
 		}
 		else {
-			return this.precioEnDiaCotidiano;
+			return this.getPrecioCotidiano();
 		}
 	}
 
@@ -45,38 +43,12 @@ public class FeriadosInamovibles implements Temporada {
 	 * Baja los precios.
 	 * En caso que no se puedan bajar devuelve error
 	 */
-	public void bajarPrecio(float precioADescontar) {
-		if (elPrecioADescontarSuperaAlPrecioDelFeriado(precioADescontar) && 
-				elPrecioADescontarSuperaAlPrecioDeDiaCotidiano(precioADescontar)){
-			throw new AssertionFailedError();
+	public void bajarPrecioEspecial(float precioNuevo) {
+		if (precioNuevo > this.precioEnFeriado || precioNuevo <0){
+			throw new AssertionFailedError("El precio supera al actual o es negativo");
 		}
 		else {
-			this.precioEnFeriado-=precioADescontar;
-			this.precioEnDiaCotidiano-=precioADescontar;
+			this.precioEnFeriado=precioNuevo;
 		}
-
 	}
-
-	/**
-	 * Retorna si el precio a descontar es valido para bajar el precio
-	 * @param precioADescontar
-	 * @return
-	 */
-	private boolean elPrecioADescontarSuperaAlPrecioDelFeriado(float precioADescontar) {
-		return precioADescontar> this.precioEnFeriado || precioADescontar <0;
-	}
-	
-	/**
-	 * Retorna si el precio a descontar es valido para bajar el precio
-	 * @param precioADescontar
-	 * @return
-	 */
-	private boolean elPrecioADescontarSuperaAlPrecioDeDiaCotidiano(float precioADescontar) {
-		return precioADescontar> this.precioEnDiaCotidiano || precioADescontar <0;
-	}
-
-	
-	
-	
-
 }

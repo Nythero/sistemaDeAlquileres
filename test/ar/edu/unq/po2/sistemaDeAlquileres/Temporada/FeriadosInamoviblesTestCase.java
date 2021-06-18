@@ -1,20 +1,15 @@
-package ar.edu.unq.po2.sistemaDeAlquileres;
+package ar.edu.unq.po2.sistemaDeAlquileres.Temporada;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.sql.Date;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-
-import ar.edu.unq.po2.sistemaDeAlquileres.temporada.FeriadosInamovibles;
 import junit.framework.AssertionFailedError;
 
 class FeriadosInamoviblesTestCase {
@@ -23,7 +18,7 @@ class FeriadosInamoviblesTestCase {
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		feriadosInamovibles= new FeriadosInamovibles(500f,200f);
+		feriadosInamovibles= new FeriadosInamovibles(200f,500f);
 		fecha= mock(LocalDate.class);
 	}
 	
@@ -52,41 +47,55 @@ class FeriadosInamoviblesTestCase {
 	
 	@Test
 	void testSePuedeBajarDePrecioDeFeriado() {
-		feriadosInamovibles.bajarPrecio(100f);
+		feriadosInamovibles.bajarPrecioEspecial(100f);
 		when(fecha.getMonthValue()).thenReturn(5);
 		when(fecha.getDayOfMonth()).thenReturn(25);
 		float result= feriadosInamovibles.getPrecio(fecha);
 		
 		verify(fecha).getMonthValue();
 		verify(fecha).getDayOfMonth();
-		assertEquals(400f, result);
+		assertEquals(100f, result);
 	}
 	
 	@Test
-	void testSePuedeBajarDePrecioDefechaCotifechano() {
-		feriadosInamovibles.bajarPrecio(100f);
+	void testSePuedeBajarDePrecioDefechaNoFeriado() {
+		feriadosInamovibles.bajarAlPrecioCotidiano(60f);
 		when(fecha.getMonthValue()).thenReturn(5);
 		when(fecha.getDayOfMonth()).thenReturn(28);
 		float result= feriadosInamovibles.getPrecio(fecha);
 		
 		verify(fecha).getMonthValue();
 		verify(fecha).getDayOfMonth();
-		assertEquals(100f, result);
+		assertEquals(60f, result);
 	}
 
 	
 	
 	@Test
-	void testNoSePuedeBajarDePrecioYaQueSuperaAlPrecioOriginal() {
+	void testNoSePuedeBajarDePrecioDeFeriadoYaQueSuperaAlPrecioOriginal() {
 		Assertions.assertThrows(AssertionFailedError.class, () -> {
-			feriadosInamovibles.bajarPrecio(600f);
+			feriadosInamovibles.bajarPrecioEspecial(600f);
 		  });
 	}
 	
 	@Test
-	void testNoSePuedeBajarDePrecioYaQueEsMenorA0() {
+	void testNoSePuedeBajarDePrecioDeFeriadoYaQueEsMenorA0() {
 		Assertions.assertThrows(AssertionFailedError.class, () -> {
-			feriadosInamovibles.bajarPrecio(-1f);
+			feriadosInamovibles.bajarPrecioEspecial(-1f);
+		  });
+	}
+	
+	@Test
+	void testNoSePuedeBajarDePrecioNoFeriadoYaQueSuperaAlPrecioOriginal() {
+		Assertions.assertThrows(AssertionFailedError.class, () -> {
+			feriadosInamovibles.bajarPrecioEspecial(600f);
+		  });
+	}
+	
+	@Test
+	void testNoSePuedeBajarDePrecioNoFeriadoYaQueEsMenorA0() {
+		Assertions.assertThrows(AssertionFailedError.class, () -> {
+			feriadosInamovibles.bajarPrecioEspecial(-1f);
 		  });
 	}
 }

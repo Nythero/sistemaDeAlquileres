@@ -1,16 +1,15 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.temporada;
+package ar.edu.unq.po2.sistemaDeAlquileres.Temporada;
 
 import java.time.LocalDate;
 
 import junit.framework.AssertionFailedError;
 
-public class TemporadaAlta implements Temporada {
+public class TemporadaAlta extends Temporada {
 	private float precioEnTemporada;
-	private float precioFueraDeTemporada;
 	
-	public TemporadaAlta(Float precioEnTemporada, float precioFueraDeTemporada ) {
+	public TemporadaAlta(float precioCotidiano, float precioEnTemporada ) {
+		super(precioCotidiano);
 		this.precioEnTemporada= precioEnTemporada;
-		this.precioFueraDeTemporada= precioFueraDeTemporada;
 	}
 	
 	@Override
@@ -23,7 +22,7 @@ public class TemporadaAlta implements Temporada {
 			return this.precioEnTemporada; 
 		}
 		else {
-			return this.precioFueraDeTemporada; 
+			return this.getPrecioCotidiano(); 
 		}
 	}
 
@@ -32,34 +31,12 @@ public class TemporadaAlta implements Temporada {
 	 * Baja los precios.
 	 * Si no es posible, retorna error
 	 */
-	public void bajarPrecio(float precioADescontar) {
-		if (elPrecioADescontarSuperaAlPrecioDeLaSemana(precioADescontar) && 
-				elPrecioADescontarSuperaAlPrecioDeFindeLargo(precioADescontar)){
-			throw new AssertionFailedError();
+	public void bajarPrecioEspecial(float precioNuevo) {
+		if (precioNuevo > this.precioEnTemporada || precioNuevo <0){
+			throw new AssertionFailedError("El precio supera al actual o es negativo");
 		}
 		else {
-			this.precioEnTemporada-=precioADescontar;
-			this.precioFueraDeTemporada-=precioADescontar;
+			this.precioEnTemporada=precioNuevo;
 		}
-
 	}
-
-	/**
-	 * Verifica si el precio a descontar es valido para bajar el precio
-	 * @param precioADescontar
-	 * @return
-	 */
-	private boolean elPrecioADescontarSuperaAlPrecioDeFindeLargo(float precioADescontar) {
-		return precioADescontar> this.precioEnTemporada || precioADescontar <0;
-	}
-	
-	/**
-	 * Verifica si el precio a descontar es valido para bajar el precio
-	 * @param precioADescontar
-	 * @return
-	 */
-	private boolean elPrecioADescontarSuperaAlPrecioDeLaSemana(float precioADescontar) {
-		return precioADescontar> this.precioFueraDeTemporada || precioADescontar <0;
-	}
-
 }

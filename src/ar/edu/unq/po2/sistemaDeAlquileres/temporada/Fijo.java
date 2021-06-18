@@ -1,14 +1,11 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.temporada;
+package ar.edu.unq.po2.sistemaDeAlquileres.Temporada;
 
 import java.time.LocalDate;
 
-import junit.framework.AssertionFailedError;
+public class Fijo extends Temporada {
 
-public class Fijo implements Temporada {
-	private float precio;
-	
 	public Fijo(float precio) {
-		this.precio= precio;
+		super(precio);
 	}
 	@Override
 	/**
@@ -16,22 +13,6 @@ public class Fijo implements Temporada {
 	 * el mismo valor
 	 */
 	public float getPrecio(LocalDate fecha) {
-		return this.precio;
+		return this.getPrecioCotidiano();
 	}
-	
-	@Override
-	/**
-	 * Baja el precio.
-	 * Si no es posible retorna error
-	 */
-	public void bajarPrecio(float precioADescontar) {
-		if (precioADescontar> this.precio || precioADescontar <0) {
-			throw new AssertionFailedError();
-		}
-		else {
-			this.precio-=precioADescontar;
-		}
-		
-	}
-
 }

@@ -1,11 +1,9 @@
-package ar.edu.unq.po2.sistemaDeAlquileres;
+package ar.edu.unq.po2.sistemaDeAlquileres.Temporada;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import ar.edu.unq.po2.sistemaDeAlquileres.temporada.Feriado;
 import junit.framework.AssertionFailedError;
 
 class FeriadoTestCase {
