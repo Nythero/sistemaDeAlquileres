@@ -7,49 +7,52 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.FinesDeSemanaLargo;
+import ar.edu.unq.po2.sistemaDeAlquileres.temporada.FinesDeSemanaLargo;
 import junit.framework.AssertionFailedError;
 
 class FinesDeSemanaLargoTestCase {
 	private FinesDeSemanaLargo findeLargo;
-	@Mock private Date dia;
+	@Mock private LocalDate fecha;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		findeLargo= new FinesDeSemanaLargo(500f,250f);
-		dia= mock(Date.class);
+		fecha= mock(LocalDate.class);
 	}
 	
 	@Test
 	void testGetPrecioSiendoDiaDeSemana() {
-		when(dia.getDay()).thenReturn(3);
-		float result= findeLargo.getPrecio(dia);
+		when(fecha.getDayOfWeek()).thenReturn(DayOfWeek.TUESDAY);
+		float result= findeLargo.getPrecio(fecha);
 		
-		verify(dia,times(3)).getDay();
+		verify(fecha,times(3)).getDayOfWeek();
 		assertEquals(500f, result);
 	}
 	
 	@Test
 	void testGetPrecioSiendoFinDeSemanaLargo() {
-		when(dia.getDay()).thenReturn(1);
-		float result= findeLargo.getPrecio(dia);
+		when(fecha.getDayOfWeek()).thenReturn(DayOfWeek.SATURDAY);
+		float result= findeLargo.getPrecio(fecha);
 		
-		verify(dia,times(1)).getDay();
+		verify(fecha,times(2)).getDayOfWeek();
 		assertEquals(250f, result);
 	}
 
 	@Test
 	void testSePuedeBajarDePrecioDiaDeSemana() {
 		findeLargo.bajarPrecio(200f);
-		when(dia.getDay()).thenReturn(5);
-		float result= findeLargo.getPrecio(dia);
+		when(fecha.getDayOfWeek()).thenReturn(DayOfWeek.WEDNESDAY);
+		float result= findeLargo.getPrecio(fecha);
 		
+		verify(fecha,times(3)).getDayOfWeek();
 		assertEquals(300f, result);
 	}
 	
@@ -57,9 +60,10 @@ class FinesDeSemanaLargoTestCase {
 	@Test
 	void testSePuedeBajarDePrecioFinDeSemanalaLargo() {
 		findeLargo.bajarPrecio(200f);
-		when(dia.getDay()).thenReturn(2);
-		float result= findeLargo.getPrecio(dia);
+		when(fecha.getDayOfWeek()).thenReturn(DayOfWeek.SUNDAY);
+		float result= findeLargo.getPrecio(fecha);
 		
+		verify(fecha,times(3)).getDayOfWeek();
 		assertEquals(50f, result);
 	}
 	

@@ -7,41 +7,42 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.TemporadaAlta;
+import ar.edu.unq.po2.sistemaDeAlquileres.temporada.TemporadaAlta;
 import junit.framework.AssertionFailedError;
 
 class TemporadaAltaTestCase {
 	private TemporadaAlta temporadaAlta;
-	@Mock private Date dia;
+	@Mock private LocalDate fecha;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		temporadaAlta= new TemporadaAlta(500f,200f);
-		dia= mock(Date.class);
+		fecha= mock(LocalDate.class);
 	}
 	
 	
 	@Test
 	void testGetPrecioSiendoMesDeTemporadaAlta() {
-		when(dia.getMonth()).thenReturn(1);
-		float result= temporadaAlta.getPrecio(dia);
+		when(fecha.getMonthValue()).thenReturn(1);
+		float result= temporadaAlta.getPrecio(fecha);
 		
-		verify(dia,times(2)).getMonth();
+		verify(fecha,times(2)).getMonthValue();
 		assertEquals(500f, result);
 	}
 	
 	@Test
 	void testGetPrecioNoSiendoTemporadaAlta() {
-		when(dia.getMonth()).thenReturn(3);
-		float result= temporadaAlta.getPrecio(dia);
+		when(fecha.getMonthValue()).thenReturn(3);
+		float result= temporadaAlta.getPrecio(fecha);
 		
-		verify(dia,times(3)).getMonth();
+		verify(fecha,times(3)).getMonthValue();
 		assertEquals(200, result);
 	}
 	
@@ -49,9 +50,10 @@ class TemporadaAltaTestCase {
 	@Test
 	void testSePuedeBajarDePrecioDeTemporadaAlta() {
 		temporadaAlta.bajarPrecio(100f);
-		when(dia.getMonth()).thenReturn(2);
-		float result= temporadaAlta.getPrecio(dia);
+		when(fecha.getMonthValue()).thenReturn(2);
+		float result= temporadaAlta.getPrecio(fecha);
 		
+		verify(fecha,times(3)).getMonthValue();
 		assertEquals(400f, result);
 	}
 	
@@ -59,9 +61,10 @@ class TemporadaAltaTestCase {
 	@Test
 	void testSePuedeBajarDePrecioALaNoTemporadaAlta() {
 		temporadaAlta.bajarPrecio(60);
-		when(dia.getMonth()).thenReturn(7);
-		float result= temporadaAlta.getPrecio(dia);
+		when(fecha.getMonthValue()).thenReturn(7);
+		float result= temporadaAlta.getPrecio(fecha);
 		
+		verify(fecha,times(3)).getMonthValue();
 		assertEquals(140f, result);
 	}
 	
