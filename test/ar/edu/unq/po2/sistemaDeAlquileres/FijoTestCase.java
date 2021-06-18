@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Calendar;
 
 import org.junit.jupiter.api.Assertions;
@@ -11,29 +12,29 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Fijo;
+import ar.edu.unq.po2.sistemaDeAlquileres.temporada.Fijo;
 import junit.framework.AssertionFailedError;
 
 class FijoTestCase {
 	private Fijo fijo;
-	@Mock private Date dia;
+	@Mock private LocalDate fecha;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		fijo= new Fijo(500f);
-		dia= mock(Date.class);
+		fecha= mock(LocalDate.class);
 	}
 
 	@Test
 	void testGetPrecioSiendoDiaDeSemana() {
-		float result= fijo.getPrecio(dia);
+		float result= fijo.getPrecio(fecha);
 		
 		assertEquals(500f, result);
 	}
 	
 	@Test
 	void testGetPrecioSiendoFinDeSemana() {
-		float result= fijo.getPrecio(dia);
+		float result= fijo.getPrecio(fecha);
 		
 		assertEquals(500f, result);
 	}
@@ -41,7 +42,7 @@ class FijoTestCase {
 	@Test
 	void testSePuedeBajarDePrecio() {
 		fijo.bajarPrecio(200f);
-		float result= fijo.getPrecio(dia);
+		float result= fijo.getPrecio(fecha);
 		
 		assertEquals(300f, result);
 	}

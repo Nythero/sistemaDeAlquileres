@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Feriado;
+import ar.edu.unq.po2.sistemaDeAlquileres.temporada.Feriado;
 import junit.framework.AssertionFailedError;
 
 class FeriadoTestCase {
