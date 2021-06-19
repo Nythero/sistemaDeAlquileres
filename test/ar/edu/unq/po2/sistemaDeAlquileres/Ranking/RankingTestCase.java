@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.sistemaDeAlquileres;
+package ar.edu.unq.po2.sistemaDeAlquileres.Ranking;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Ranking;
 import junit.framework.AssertionFailedError;
 
 class RankingTestCase {
@@ -16,17 +15,25 @@ class RankingTestCase {
 	void setUp() throws Exception {
 		ranking= new Ranking();
 	}
-
+	
 	@Test
-	void testAddPuntajeQueNoSeEncuentraYaCargado() {
-		ranking.addPuntajePorCategoria("Gas", 2);
+	void testAddCategoria() {
+		ranking.addCategoria("Gas");
 		int result= ranking.cantidadDePuntajesSegunCategoria("Gas");
 		
-		assertEquals(1, result);
+		assertEquals(0, result);
+	}
+	
+	@Test
+	void testAddPuntajeQueNoSeEncuentraYaCargado() {
+		Assertions.assertThrows(AssertionFailedError.class, () -> {
+			ranking.addPuntajePorCategoria("Gas", 2);
+		  });
 	}
 	
 	@Test
 	void testAddPuntajeQueSeEncuentraYaCargado() {
+		ranking.addCategoria("Gas");
 		ranking.addPuntajePorCategoria("Gas", 2);
 		ranking.addPuntajePorCategoria("Gas", 5);
 		int result= ranking.cantidadDePuntajesSegunCategoria("Gas");
@@ -36,6 +43,7 @@ class RankingTestCase {
 	
 	@Test
 	void testAddPuntajeNoValido() {
+		ranking.addCategoria("Gas");
 		Assertions.assertThrows(AssertionFailedError.class, () -> {
 			ranking.addPuntajePorCategoria("Gas", 8);
 		  });
@@ -48,63 +56,21 @@ class RankingTestCase {
 		  });
 	}
 	
-	@Test
-	void testAddPuntajeGeneral() {
-		ranking.addPuntajeGeneral(3);
-		ranking.addPuntajeGeneral(5);
-		int result= ranking.cantidadDePuntajesGeneral();
-		
-		assertEquals(2, result);
-	}
-	
-	@Test
-	void testAddPuntajeGeneralNoValido() {
-		ranking.addPuntajeGeneral(3);
-		Assertions.assertThrows(AssertionFailedError.class, () -> {
-			ranking.addPuntajeGeneral(8);
-		  });
-	}
-	
 	
 	@Test
 	void testPuntajePromedioPorCategoriaValido() {
+		ranking.addCategoria("Gas");
 		ranking.addPuntajePorCategoria("Gas", 2);
 		ranking.addPuntajePorCategoria("Gas", 5);
 		int result= ranking.puntajePromedioPorCategoria("Gas");
 		
 		assertEquals(3, result);
 	}
-	
-	@Test
-	void testPuntajePromedioPorCategoriaNoRegistradaPeroHayPuntajesRegistrados() {
-		ranking.addPuntajePorCategoria("Electricidad", 2);
-		int result= ranking.puntajePromedioPorCategoria("Gas");
-		
-		assertEquals(0, result);
-	}
-	
-	@Test
-	void testPuntajePromedioPorCategoriaNoRegistradaPeroYNoHayNingunPuntajeRegistrados() {
-		int result= ranking.puntajePromedioPorCategoria("Gas");
-		
-		assertEquals(0, result);
-	}
-	
-	
-	@Test
-	void testPuntajePromedioTotalCuandoHayPuntajesPorCategoriaYPuntajesGenerales() {
-		ranking.addPuntajePorCategoria("Electricidad", 2);
-		ranking.addPuntajePorCategoria("Gas", 4);
-		ranking.addPuntajePorCategoria("Gas", 5);
-		ranking.addPuntajeGeneral(5);
-		int result= ranking.puntajeTotalPromedio();
 
-		assertEquals(4, result);
-	}
-	
-	
 	@Test
 	void testPuntajePromedioTotalCuandoHaySoloPuntajesPorCategorias() {
+		ranking.addCategoria("Electricidad");
+		ranking.addCategoria("Gas");
 		ranking.addPuntajePorCategoria("Electricidad", 2);
 		ranking.addPuntajePorCategoria("Gas", 4);
 		ranking.addPuntajePorCategoria("Gas", 5);
@@ -112,16 +78,6 @@ class RankingTestCase {
 
 		assertEquals(3, result);
 	}
-	
-	@Test
-	void testPuntajePromedioTotalCuandoHaySoloPuntajesGenerales() {
-		ranking.addPuntajeGeneral(5);
-		ranking.addPuntajeGeneral(2);
-		int result= ranking.puntajeTotalPromedio();
-
-		assertEquals(3, result);
-	}
-	
 	
 	@Test
 	void testPuntajePromedioTotalCuandoNoRgistradosPuntos() {

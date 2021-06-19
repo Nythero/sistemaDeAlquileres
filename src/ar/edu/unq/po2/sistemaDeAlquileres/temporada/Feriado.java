@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.sistemaDeAlquileres;
+package ar.edu.unq.po2.sistemaDeAlquileres.Temporada;
 
 import java.util.ArrayList;
 import java.util.HashMap;

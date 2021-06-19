@@ -1,63 +1,57 @@
-package ar.edu.unq.po2.sistemaDeAlquileres;
+package ar.edu.unq.po2.sistemaDeAlquileres.Temporada;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-import java.sql.Date;
-import java.util.Calendar;
-
+import java.time.LocalDate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-
-import ar.edu.unq.po2.sistemaDeAlquileres.Fijo;
 import junit.framework.AssertionFailedError;
 
 class FijoTestCase {
 	private Fijo fijo;
-	@Mock private Date dia;
+	@Mock private LocalDate fecha;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		fijo= new Fijo(500f);
-		dia= mock(Date.class);
+		fecha= mock(LocalDate.class);
 	}
 
 	@Test
 	void testGetPrecioSiendoDiaDeSemana() {
-		float result= fijo.getPrecio(dia);
+		float result= fijo.getPrecio(fecha);
 		
 		assertEquals(500f, result);
 	}
 	
 	@Test
 	void testGetPrecioSiendoFinDeSemana() {
-		float result= fijo.getPrecio(dia);
+		float result= fijo.getPrecio(fecha);
 		
 		assertEquals(500f, result);
 	}
-	
 	@Test
 	void testSePuedeBajarDePrecio() {
-		fijo.bajarPrecio(200f);
-		float result= fijo.getPrecio(dia);
+		fijo.bajarAlPrecioCotidiano(200f);
+		float result= fijo.getPrecio(fecha);
 		
-		assertEquals(300f, result);
+		assertEquals(200f, result);
 	}
 	
 	@Test
 	void testNoSePuedeBajarDePrecioYaQueSuperaAlPrecioOriginal() {
 		Assertions.assertThrows(AssertionFailedError.class, () -> {
-			fijo.bajarPrecio(-1f);
+			fijo.bajarAlPrecioCotidiano(600f);
 		  });
 	}
 	
 	@Test
 	void testNoSePuedeBajarDePrecioYaQueEsMenorA0() {
 		Assertions.assertThrows(AssertionFailedError.class, () -> {
-			fijo.bajarPrecio(-1f);
+			fijo.bajarAlPrecioCotidiano(-1f);
 		  });
 	}
-	
 }
