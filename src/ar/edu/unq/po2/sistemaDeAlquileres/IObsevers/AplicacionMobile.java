@@ -10,7 +10,7 @@ public class AplicacionMobile implements IObserver{
 	}
 
 	@Override
-	public void update(Inmueble inmueble, Integer precio) {
+	public void update(Inmueble inmueble, Object arg) {
 		this.popUpWindow.popUp("El/la <" + inmueble.getTipoDeInmueble() +
 				                 "> que te interesa se ha liberado! Corre a reservarlo!"
 				                ,"Rojo"

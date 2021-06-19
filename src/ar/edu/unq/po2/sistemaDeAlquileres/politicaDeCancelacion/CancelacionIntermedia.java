@@ -1,7 +1,4 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion;
-
-import java.time.LocalDate;
-import java.util.Date;
+package ar.edu.unq.po2.sistemaDeAlquileres.PoliticaDeCancelacion;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 
@@ -11,28 +8,33 @@ public class CancelacionIntermedia extends PoliticaDeCancelacion {
 	}
 
 	@Override
-	void cancelarReserva(Reserva reserva) {
-		LocalDate diaActual = LocalDate.now();
-		if (tieneFechaEntre19Y10(reserva.getRangoDeFecha().getFechaInicial())){
-			reserva.getSolicitante().devolverMonto(reserva.getRangoDeFecha()
-				    .getMontoTotal()*50/100);
+	public void cancelarReserva(Reserva reserva) {
+		if (tieneFechaEntre19Y10(reserva)){
+			reserva.devolverMontoAInquilinoSegunCancelacion(montoEntreDias19Y10(reserva));
+			reserva.extraerMontoADueñoSegunCancelacion(montoEntreDias19Y10(reserva));
 		}
-		else if (tieneFechaMenorA10Dias(reserva.getRangoDeFecha().getFechaInicial())) {
-			reserva.getSolicitante().devolverMonto(reserva.getRangoDeFecha()
-				    .getMontoTotal());
+		else if (tieneFechaMenorA10Dias(reserva)) {
+			
+		}
+		else {
+			reserva.devolverMontoAInquilinoSegunCancelacion(reserva.getMontoTotal());
+			reserva.extraerMontoADueñoSegunCancelacion(reserva.getMontoTotal());
 		}
 	}
 	
-	private boolean tieneFechaEntre19Y10(LocalDate fechaInicial) {
-		LocalDate fechaActual= LocalDate.now();
-		return fechaActual.until(fechaInicial).getDays()<=19 &&
-				fechaActual.until(fechaInicial).getDays()>=10;
+	private boolean tieneFechaEntre19Y10(Reserva reserva) {
+		return darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(reserva)<=19 &&
+				darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(reserva)>=10;
 	}
 
 	
-	private boolean tieneFechaMenorA10Dias(LocalDate fechaInicial) {
-		LocalDate fechaActual= LocalDate.now();
-		return fechaActual.until(fechaInicial).getDays()<=9;
+	private boolean tieneFechaMenorA10Dias(Reserva reserva) {
+		return darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(reserva)<=9;
+	}
+	
+	
+	private float montoEntreDias19Y10(Reserva reserva) {
+		return reserva.getMontoTotal()*50/100;
 	}
 
 }

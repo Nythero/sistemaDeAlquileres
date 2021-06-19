@@ -1,11 +1,10 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion;
+package ar.edu.unq.po2.sistemaDeAlquileres.PoliticaDeCancelacion;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 
 public class SinCancelacion extends PoliticaDeCancelacion {
 
 	@Override
-	void cancelarReserva(Reserva reserva) {
+	public void cancelarReserva(Reserva reserva) {
 	}
-
 }

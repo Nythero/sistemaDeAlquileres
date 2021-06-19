@@ -14,31 +14,19 @@ public class RangoDeFechaConPrecioDeterminado {
 		this.fechaFinal= fechaFinal;
 		this.precio= precio;
 	}
-
+	
 	public LocalDate getFechaInicial() {
 		return this.fechaInicial;
 	}
-
-	public void setFechaInicial(LocalDate fechaInicial) {
-		this.fechaInicial = fechaInicial;
-	}
-
+	
 	public LocalDate getFechaFinal() {
 		return this.fechaFinal;
-	}
-
-	public void setFechaFinal(LocalDate fechaFinal) {
-		this.fechaFinal = fechaFinal;
 	}
 
 	public Temporada getPrecioTemporada() {
 		return this.precio;
 	}
 
-	public void setPrecio(Temporada precio) {
-		this.precio = precio;
-	}
-	
 	public float getMontoTotal() {
 		LocalDate fechaInicialAVerificar = LocalDate.of(fechaInicial.getYear(),
 				fechaInicial.getMonthValue(),
@@ -52,10 +40,13 @@ public class RangoDeFechaConPrecioDeterminado {
 		while (fechaInicialAVerificar.getYear() != fechaFinalAVerificar.getYear() ||
 				fechaInicialAVerificar.getMonthValue() != fechaFinalAVerificar.getMonthValue() ||
 						fechaInicialAVerificar.getDayOfMonth() != fechaFinalAVerificar.getDayOfMonth()) {
-			result+= this.getPrecioTemporada().getPrecio(fechaInicialAVerificar);
+			result+= this.darPrecioSegunLaTemporada(fechaInicialAVerificar);
 			fechaInicialAVerificar= fechaInicialAVerificar.plusDays(1);
 		}
 		return result + this.getPrecioTemporada().getPrecio(fechaInicial);
 	}
 
+	public float darPrecioSegunLaTemporada(LocalDate fecha) {
+		return this.getPrecioTemporada().getPrecio(fecha);
+	}
 }

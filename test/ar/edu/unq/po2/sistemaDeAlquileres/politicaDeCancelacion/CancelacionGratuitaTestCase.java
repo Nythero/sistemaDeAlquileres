@@ -1,93 +1,65 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion;
+package ar.edu.unq.po2.sistemaDeAlquileres.PoliticaDeCancelacion;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.PoliticaDeCancelacion.CancelacionGratuita;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
-import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.EstadoReserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
-import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 
 class CancelacionGratuitaTestCase {
 	private CancelacionGratuita cancelacion;
 	@Mock private Reserva reserva;
-	@Mock private RangoDeFechaConPrecioDeterminado dia;
-	@Mock private RangoDeFechaConPrecioDeterminado dia2;
-	@Mock private Usuario inquilino;
-	@Mock private Inmueble inmueble;
-	@Mock private EstadoReserva estado;
+	@Mock private RangoDeFechaConPrecioDeterminado rangoDeFechas;
 
 	@BeforeEach
 	void setUp() throws Exception {
-		cancelacion= new CancelacionGratuita();
-		reserva= mock(Reserva.class);
-		dia= mock(RangoDeFechaConPrecioDeterminado.class);
-		dia2= mock(RangoDeFechaConPrecioDeterminado.class);
-		inquilino= mock(Usuario.class);
-		inmueble = mock(Inmueble.class);
-		estado= mock(EstadoReserva.class);
+		this.cancelacion= new CancelacionGratuita();
+		this.reserva= mock(Reserva.class);
+		this.rangoDeFechas= mock(RangoDeFechaConPrecioDeterminado.class);		
+	}
+	
+	@Test
+	void testCuandoSeCancelaUnaReservaSiendoGratuita() {
+		when(reserva.getFechaInicial()).thenReturn(LocalDate.of(2021, 6, 30));
+		when(reserva.getMontoTotal()).thenReturn(500f);
+		cancelacion.cancelarReserva(reserva);
 		
+		verify(reserva,times(2)).getMontoTotal();
+		verify(reserva,times(3)).getFechaInicial();
+		verify(reserva).devolverMontoAInquilinoSegunCancelacion(500f);
+		verify(reserva).extraerMontoADueñoSegunCancelacion(500f);
 	}
-	//QUE PASA CUANDO SE RESERVA UN DIA Y QUE PASA CUANDO SE SUPERA LOS 10 DIAS
+	
 	@Test
-	void testCuandoSeCancelaCon1DiaDeReserva() {
-		when (reserva.getCantidadDias()).thenReturn(1);
-		when (reserva.getDia(0)).thenReturn(dia);
-		when (dia.getFecha()).thenReturn(new Date(2021, 6, 19));
-		when (dia.getPrecio()).thenReturn(200);
+	void testCuandoSeCancelaUnaReservaDeUnDiaSiendoNoGratuita() {
+		when(reserva.getFechaInicial()).thenReturn(LocalDate.of(2021, 6, 25));
+		when(reserva.cantidadDeDias()).thenReturn(1);
 		cancelacion.cancelarReserva(reserva);
+		
+		verify(reserva,times(3)).getFechaInicial();
+		verify(reserva).exigirMontoFaltanteAInquilino();
 	}
 	
 	@Test
-	void testCuandoSeCancelaCon2Dias() {
-		when (reserva.getCantidadDias()).thenReturn(2);
-		when (reserva.getDia(0)).thenReturn(dia);
-		when (reserva.getDia(1)).thenReturn(dia2);
-		when (dia.getFecha()).thenReturn(new Date(2021, 6, 19));
-		when (dia2.getFecha()).thenReturn(new Date(2021, 6, 20));
-		when (dia.getPrecio()).thenReturn(200);
-		when (dia2.getPrecio()).thenReturn(300);
+	void testCuandoSeCancelaUnaReservaDeMasDeUnDiaSiendoNoGratuita() {
+		when(reserva.getFechaInicial()).thenReturn(LocalDate.of(2021, 6, 25));
+		when(reserva.cantidadDeDias()).thenReturn(3);
+		when(reserva.getMontoTotal()).thenReturn(900f);
+		when(reserva.obtenerMontoDeDosDias()).thenReturn(600f);
 		cancelacion.cancelarReserva(reserva);
+		
+		verify(reserva).getMontoTotal();
+		verify(reserva,times(3)).getFechaInicial();
+	 	verify(reserva).devolverMontoAInquilinoSegunCancelacion(300f);
+		verify(reserva).extraerMontoADueñoSegunCancelacion(600f);
 	}
-	
-	@Test
-	void testCuandoSeCancelaConMasDeDosDias() {
-		when (reserva.getCantidadDias()).thenReturn(3);
-		when (reserva.getDia(0)).thenReturn(dia);
-		when (reserva.getDia(1)).thenReturn(dia2);
-		when (dia.getFecha()).thenReturn(new Date(2021, 6, 19));
-		when (dia2.getFecha()).thenReturn(new Date(2021, 6, 20));
-		when (dia.getPrecio()).thenReturn(200);
-		when (dia2.getPrecio()).thenReturn(300);
-		cancelacion.cancelarReserva(reserva);
-	}
-	
-	@Test
-	void testCuandoSeCancelaConMasDe10Dias() {
-		when (reserva.getCantidadDias()).thenReturn(3);
-		when (reserva.getDia(0)).thenReturn(dia);
-		when (reserva.getDia(1)).thenReturn(dia2);
-		when (dia.getFecha()).thenReturn(new Date(2021, 6, 28));
-		when (dia2.getFecha()).thenReturn(new Date(2021, 6, 29));
-		when (dia.getPrecio()).thenReturn(200);
-		when (dia2.getPrecio()).thenReturn(300);
-		cancelacion.cancelarReserva(reserva);
-	}
-	
-	@Test
-	void testCuandoSeCancelaConMasDe10Dsias() {
-		cancelacion.a(reserva);
-	}
-
-	
-	
-
 }
