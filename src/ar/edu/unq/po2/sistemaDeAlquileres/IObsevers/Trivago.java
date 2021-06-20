@@ -10,7 +10,8 @@ public class Trivago implements IObserver{
 	}
 
 	@Override
-	public void update(Inmueble inmueble, Integer precio) {
+	public void update(Inmueble inmueble, Object arg) {
+		float precio = (float)arg;
 		this.homePagePublisher.publish("Un inmueble <" + inmueble.getTipoDeInmueble() +
 				                        "> a tan sólo " + precio + " pesos");
 	}
