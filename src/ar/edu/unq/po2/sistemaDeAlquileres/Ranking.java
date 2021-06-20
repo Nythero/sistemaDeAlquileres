@@ -129,4 +129,9 @@ public class Ranking {
 	public int cantidadDePuntajesGeneral() {
 		return this.puntajeGeneral.size();
 	}
+
+	public Object addCategoria(String categoria) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

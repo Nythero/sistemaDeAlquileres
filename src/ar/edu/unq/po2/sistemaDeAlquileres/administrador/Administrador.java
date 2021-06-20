@@ -1,8 +1,8 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.Administrador;
+package ar.edu.unq.po2.sistemaDeAlquileres.administrador;
 
 import java.util.ArrayList;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Sitio.Sitio;
+import ar.edu.unq.po2.sistemaDeAlquileres.sitio.Sitio;
 
 public class Administrador {
 	private ArrayList<String> tiposDeInmueble;

@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.Reserva;
+package ar.edu.unq.po2.sistemaDeAlquileres.reserva;
 
 public interface EstadoReserva {
 

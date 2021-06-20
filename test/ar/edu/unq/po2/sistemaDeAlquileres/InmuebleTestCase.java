@@ -13,7 +13,7 @@ import org.mockito.Mock;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada;
-import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
+import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
 
 class InmuebleTestCase {
 	private Inmueble inmueble;

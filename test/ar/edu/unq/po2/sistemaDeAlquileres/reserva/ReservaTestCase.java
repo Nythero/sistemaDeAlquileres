@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.Reserva;
+package ar.edu.unq.po2.sistemaDeAlquileres.reserva;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.sistemaDeAlquileres.*;
 import ar.edu.unq.po2.sistemaDeAlquileres.Dia.Dia;
-import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
+import ar.edu.unq.po2.sistemaDeAlquileres.reserva.EstadoReserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
 
 class ReservaTestCase {
 

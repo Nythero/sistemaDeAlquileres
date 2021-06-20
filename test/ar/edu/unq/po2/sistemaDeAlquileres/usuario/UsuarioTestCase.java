@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.Usuario;
+package ar.edu.unq.po2.sistemaDeAlquileres.usuario;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.sistemaDeAlquileres.*;
-import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.EstadoReserva;
-import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
-import ar.edu.unq.po2.sistemaDeAlquileres.Sitio.Sitio;
-import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
+import ar.edu.unq.po2.sistemaDeAlquileres.reserva.EstadoReserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.sitio.Sitio;
+import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
 
 public class UsuarioTestCase {
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
+import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
 
 public class Inmueble {
 	private Usuario dueño;

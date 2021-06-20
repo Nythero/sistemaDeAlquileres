@@ -1,27 +1,20 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.Reserva;
+package ar.edu.unq.po2.sistemaDeAlquileres.reserva;
 
 import java.util.ArrayList;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
-import ar.edu.unq.po2.sistemaDeAlquileres.Dia.Dia;
-import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
+import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
 
 public class Reserva {
 	
-	private ArrayList<Dia> dias;
 	private Inmueble inmueble;
 	private EstadoReserva estado;
 	private Usuario solicitante;
 
-	public Reserva(ArrayList<Dia> dias, Inmueble inmueble, Usuario solicitante, EstadoReserva estado) {
-		this.setDias(dias);
+	public Reserva(Inmueble inmueble, Usuario solicitante, EstadoReserva estado) {
 		this.setSolicitante(solicitante);
 		this.setInmueble(inmueble);
 		this.setEstado(estado);
-	}
-	
-	private void setDias(ArrayList<Dia> dias) {
-		this.dias = dias;
 	}
 
 	private EstadoReserva getEstado() {
@@ -46,18 +39,6 @@ public class Reserva {
 	
 	private void setSolicitante(Usuario solicitante) {
 		this.solicitante = solicitante;
-	}
-	
-	private ArrayList<Dia> getDias(){
-		return this.dias;
-	}
-	
-	public Dia getDia(int i) {
-		return this.getDias().get(i);
-	}
-	
-	public int getCantidadDias() {
-		return this.getDias().size();
 	}
 
 	public void cancelar() {

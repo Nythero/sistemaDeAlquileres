@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.Usuario;
+package ar.edu.unq.po2.sistemaDeAlquileres.usuario;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking;
-import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
-import ar.edu.unq.po2.sistemaDeAlquileres.Sitio.Sitio;
+import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.sitio.Sitio;
 
 public class Usuario {
 	private ArrayList<Inmueble> inmuebles;
@@ -102,7 +102,6 @@ public class Usuario {
 	}
 	
 	public void setSaldo (Integer cantidad) {
-		this.sa
 	}
 	
 	// checkear si esta en horario de cheking o no? lo haria la reserva
@@ -142,7 +141,10 @@ public class Usuario {
 	
 	
 	public void registrarseEnSitio(Sitio sitio) {
-		sitio.registrarUsuario(this);
+		try {
+			sitio.registrarUsuario(this);
+		}
+		catch (Exception e) {}
 	}
 	
 	public void visualizarDatosDelInmueble(ArrayList<Inmueble> inmuebles, Integer posicionInmueble) throws Exception {
@@ -156,18 +158,16 @@ public class Usuario {
 	
 	
 	public void publicarInmueble(Inmueble inmueble,Sitio sitio) {
-		sitio.agregarInmueble(inmueble);
+		try {
+			sitio.agregarInmueble(inmueble);
+		}
+		catch (Exception e) {}
 	}
 	
 	
 //	//nos falta averiguar bien como armar la reserva o mejor dicho, los dias
 	public ArrayList<Reserva> getTodasLasReservasFuturas(){
 		ArrayList<Reserva> reservasFuturas = new ArrayList<Reserva>();
-		for (Reserva reserva : this.getReservasRealizadas()) {
-			if (reserva.getDia(reserva.getCantidadDias() - 1) ){
-				reservasFuturas.add(reserva);
-			}
-		}
 		return reservasFuturas;
 	}
 //	
