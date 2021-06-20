@@ -132,6 +132,11 @@ public class Inmueble {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void agregarComentario(String comentario) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

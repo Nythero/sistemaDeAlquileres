@@ -33,7 +33,7 @@ public class Reserva {
 		this.inmueble = inmueble;
 	}
 	
-	private Usuario getSolicitante() {
+	public Usuario getSolicitante() {
 		return this.solicitante;
 	}
 	
