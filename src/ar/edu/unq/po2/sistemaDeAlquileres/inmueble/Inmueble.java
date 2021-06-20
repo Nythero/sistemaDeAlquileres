@@ -1,11 +1,13 @@
-package ar.edu.unq.po2.sistemaDeAlquileres;
+package ar.edu.unq.po2.sistemaDeAlquileres.inmueble;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.temporada.Temporada;
 import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
 
 public class Inmueble {
@@ -118,17 +120,22 @@ public class Inmueble {
 		return this.cantidadDeVecesAlquilado;
 	}
 
-	public void aceptarReserva(Reserva reserva) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void cancelarReserva(Reserva reserva) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	public void aceptarReserva(Reserva reserva) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void finalizarReserva(Reserva reserva) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void agregarComentario(String comentario) {
 		// TODO Auto-generated method stub
 		
 	}
