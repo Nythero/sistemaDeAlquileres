@@ -8,11 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
 
 class AplicacionMobileTestCase {
 	private AplicacionMobile aplicacionMobile;
-	@Mock private Inmueble inmueble;
+	@Mock private ar.edu.unq.po2.sistemaDeAlquileres.Inmueble inmueble;
 	
 	@BeforeEach
 	void setUp() throws Exception {

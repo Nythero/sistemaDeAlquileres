@@ -53,16 +53,18 @@ public class Sitio {
 		} // preguntar si en vez de un for TIENE QUE SER UN RANKING.CLASS Y AHI HACER COSAS
 	}
 	
+	
 	public void addCategoriaADuenho(String categoria) {
 		for(Usuario usuario : this.getUsuarios()) {
 			usuario.agregarCategoriaComoDuenho(categoria);
 		}
-	}
+	}// pedirle el ranking, y que el ranking lo agregue 
+	
 	
 	public void addCategoriaAInmueble(String categoria) {
 		for(Inmueble inmueble : this.getInmuebles()) {
 			inmueble.agregarCategoria(categoria);
-		}
+		}//pedirle el ranking, y que el ranking lo agregue  
 	}
 	
 	public Integer cuantosInmueblesAlquilo(Usuario usuario) {

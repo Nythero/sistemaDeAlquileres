@@ -111,7 +111,10 @@ public class Usuario {
 		this.saldo = this.saldo + cantidad;
 	}
 	
-
+	public float getSaldo() {
+		this.saldo;
+	}
+	
 	public void setComentario(Reserva reserva, String comentario) {
 		reserva.setComentario(comentario);
 	}
