@@ -15,6 +15,7 @@ public class Observable {
 		suscripciones = new HashMap<String,ArrayList<IObserver>>();
     }
 	
+<<<<<<< HEAD
 	/**
 	 * Dada una sucripcion devuelve a los suscriptores.
 	 * En caso de no existir la suscripcion devuelve error
@@ -22,6 +23,10 @@ public class Observable {
 	 * @return
 	 */
 	public int getCantidadDeSuscritosAUnaSuscripcion(String suscripcion) {
+=======
+	
+	public Integer getCantidadDeSuscritosAUnaSuscripcion(String suscripcion) {
+>>>>>>> d2affc0c56f592ded2dca1cccf236a63029a771e
 		if(!this.existeLaSuscripcion(suscripcion)) {
 			throw new AssertionFailedError("No existe la suscripcion buscada");
 		}
@@ -30,6 +35,7 @@ public class Observable {
 		}
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * Retorna la cantidad de suscripciones
 	 * @return
@@ -44,6 +50,12 @@ public class Observable {
 	 * @param tipoDeSuscripcion
 	 * @param observer
 	 */
+=======
+	public Integer getCantidadDeSuscripciones() {
+		return this.suscripciones.size();
+	}
+	
+>>>>>>> d2affc0c56f592ded2dca1cccf236a63029a771e
 	public void add(String tipoDeSuscripcion, IObserver observer) {
 		if (!this.existeLaSuscripcion(tipoDeSuscripcion)){
 			ArrayList<IObserver> listaConSuscriptoNuevo = new ArrayList<IObserver>();
@@ -57,12 +69,15 @@ public class Observable {
 		}
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * Dada un tipo de suscripcion y un suscriptor lo remueve.
 	 * En caso de noestar suscrito o no existir la suscripcion devuelve error
 	 * @param tipoDeSuscripcion
 	 * @param observer
 	 */
+=======
+>>>>>>> d2affc0c56f592ded2dca1cccf236a63029a771e
 	public void remove(String tipoDeSuscripcion,IObserver observer) {
 		if(!this.existeLaSuscripcion(tipoDeSuscripcion) || !estaSuscrito(tipoDeSuscripcion,observer)) {
 			throw new AssertionFailedError("No existe la suscripcion buscada o no se encuentra suscrito el usuario dado");
@@ -72,6 +87,7 @@ public class Observable {
 		}
 	}
 		
+<<<<<<< HEAD
 	/**
 	 * Retorna si el tipo de suscripcion existe
 	 * @param tipoDeSuscripcion
@@ -87,16 +103,25 @@ public class Observable {
 	 * @param observer
 	 * @return
 	 */
+=======
+	private boolean existeLaSuscripcion(String tipoDeSuscripcion) {
+		return this.suscripciones.containsKey(tipoDeSuscripcion);
+	}
+
+>>>>>>> d2affc0c56f592ded2dca1cccf236a63029a771e
 	private boolean estaSuscrito(String tipoDeSuscripcion, IObserver observer) {
 		return this.suscripciones.get(tipoDeSuscripcion).contains(observer);
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * Envia las notificaciones a los que corresponda
 	 * @param tipoDeSuscripcion
 	 * @param inmueble
 	 * @param arg
 	 */
+=======
+>>>>>>> d2affc0c56f592ded2dca1cccf236a63029a771e
 	public void notify(String tipoDeSuscripcion,Inmueble inmueble, Object arg) {
 		if(this.existeLaSuscripcion(tipoDeSuscripcion)) {
 			for (IObserver observer : this.suscripciones.get(tipoDeSuscripcion)) {

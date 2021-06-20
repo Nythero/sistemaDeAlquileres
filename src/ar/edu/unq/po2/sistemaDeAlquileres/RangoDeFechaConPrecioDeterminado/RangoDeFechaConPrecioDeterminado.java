@@ -15,22 +15,29 @@ public class RangoDeFechaConPrecioDeterminado {
 		this.precio= precio;
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * Devuelve la fecha Inicial
 	 * @return
 	 */
+=======
+>>>>>>> d2affc0c56f592ded2dca1cccf236a63029a771e
 	public LocalDate getFechaInicial() {
 		return this.fechaInicial;
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * Devuelve la fecha Final
 	 * @return
 	 */
+=======
+>>>>>>> d2affc0c56f592ded2dca1cccf236a63029a771e
 	public LocalDate getFechaFinal() {
 		return this.fechaFinal;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Devuelve la Temporada a usar
 	 * @return
@@ -92,4 +99,32 @@ public class RangoDeFechaConPrecioDeterminado {
               }
     return precio;
     }
+=======
+	public Temporada getPrecioTemporada() {
+		return this.precio;
+	}
+
+	public float getMontoTotal() {
+		LocalDate fechaInicialAVerificar = LocalDate.of(fechaInicial.getYear(),
+				fechaInicial.getMonthValue(),
+				fechaInicial.getDayOfMonth());
+		
+		LocalDate fechaFinalAVerificar = LocalDate.of(fechaFinal.getYear(),
+				fechaFinal.getMonthValue(),
+				fechaFinal.getDayOfMonth());
+		
+		float result= 0;
+		while (fechaInicialAVerificar.getYear() != fechaFinalAVerificar.getYear() ||
+				fechaInicialAVerificar.getMonthValue() != fechaFinalAVerificar.getMonthValue() ||
+						fechaInicialAVerificar.getDayOfMonth() != fechaFinalAVerificar.getDayOfMonth()) {
+			result+= this.darPrecioSegunLaTemporada(fechaInicialAVerificar);
+			fechaInicialAVerificar= fechaInicialAVerificar.plusDays(1);
+		}
+		return result + this.getPrecioTemporada().getPrecio(fechaInicial);
+	}
+
+	public float darPrecioSegunLaTemporada(LocalDate fecha) {
+		return this.getPrecioTemporada().getPrecio(fecha);
+	}
+>>>>>>> d2affc0c56f592ded2dca1cccf236a63029a771e
 }

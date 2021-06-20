@@ -2,14 +2,16 @@ package ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
+<<<<<<< HEAD
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+=======
+>>>>>>> d2affc0c56f592ded2dca1cccf236a63029a771e
 
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Fijo;
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
@@ -19,7 +21,10 @@ class RangoDeFechaConPrecioDeterminadoTestCase {
 	private LocalDate fechaInicial;
 	private LocalDate fechaFinal;
 	private Temporada precio;
+<<<<<<< HEAD
 	@Mock private Temporada precio2;
+=======
+>>>>>>> d2affc0c56f592ded2dca1cccf236a63029a771e
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -30,6 +35,17 @@ class RangoDeFechaConPrecioDeterminadoTestCase {
 		rangoDeFechas= new RangoDeFechaConPrecioDeterminado(fechaInicial,fechaFinal,precio);
 	}
 	
+<<<<<<< HEAD
+=======
+	
+	@Test
+	void testCalcularMontoSegunElDia() {
+		float result = rangoDeFechas.darPrecioSegunLaTemporada(LocalDate.now());
+		assertEquals(500f, result);
+	}
+	
+	
+>>>>>>> d2affc0c56f592ded2dca1cccf236a63029a771e
 	@Test
 	void testCalcularMontoTotalSegunElRango() {
 		float result = rangoDeFechas.getMontoTotal();
