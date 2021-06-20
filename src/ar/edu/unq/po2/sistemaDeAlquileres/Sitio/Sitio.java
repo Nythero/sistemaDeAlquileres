@@ -9,11 +9,11 @@ public class Sitio {
 	private ArrayList<Usuario> usuarios; 
 	private ArrayList<Inmueble> inmuebles;
 	
-	public ArrayList<Usuario> getUsuarios() {
+	private ArrayList<Usuario> getUsuarios() {
 		return usuarios;
 	}
 	
-	public ArrayList<Inmueble> getInmuebles() {
+	private ArrayList<Inmueble> getInmuebles() {
 		return inmuebles;
 	}
 	
@@ -34,7 +34,7 @@ public class Sitio {
 	}
 	
 	public void addCategoriaAInquilino(String categoria) {
-		
+		this.usuarios.forEach(usuario -> usuario.ag);
 	}
 	
 	public void addCategoriaAInmueble(String categoria) {
