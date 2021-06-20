@@ -3,28 +3,25 @@ package ar.edu.unq.po2.sistemaDeAlquileres.reserva;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import java.util.ArrayList;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.sistemaDeAlquileres.*;
-import ar.edu.unq.po2.sistemaDeAlquileres.Dia.Dia;
-import ar.edu.unq.po2.sistemaDeAlquileres.reserva.EstadoReserva;
-import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFecha;
+import ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado.CambioDeEstadoError;
+import ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado.EstadoReserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
 
 class ReservaTestCase {
 
 	Reserva reserva;
 	Inmueble inmueble;
-	ArrayList<Dia> dias;
+	RangoDeFecha dias;
 	EstadoReserva estado;
 	Usuario solicitante;
 	
 	@Test
-	void Reserva_Aceptar_Success() {
+	void Reserva_Aceptar_Success() throws CambioDeEstadoError {
 		inmueble = mock(Inmueble.class);
-		dias = new ArrayList<Dia>();
+		dias = new RangoDeFecha();
 		estado = mock(EstadoReserva.class);
 		solicitante = mock(Usuario.class);
 		reserva = new Reserva(dias, inmueble, solicitante, estado);
@@ -35,9 +32,9 @@ class ReservaTestCase {
 	}
 	
 	@Test
-	void Reserva_Cancelar_Success() {
+	void Reserva_Cancelar_Success() throws CambioDeEstadoError {
 		inmueble = mock(Inmueble.class);
-		dias = new ArrayList<Dia>();
+		dias = new RangoDeFecha();
 		estado = mock(EstadoReserva.class);
 		solicitante = mock(Usuario.class);
 		reserva = new Reserva(dias, inmueble, solicitante, estado);
@@ -48,9 +45,9 @@ class ReservaTestCase {
 	}
 	
 	@Test
-	void Reserva_Finalizar_Success() {
+	void Reserva_Finalizar_Success() throws CambioDeEstadoError {
 		inmueble = mock(Inmueble.class);
-		dias = new ArrayList<Dia>();
+		dias = new RangoDeFecha();
 		estado = mock(EstadoReserva.class);
 		solicitante = mock(Usuario.class);
 		reserva = new Reserva(dias, inmueble, solicitante, estado);
@@ -58,39 +55,5 @@ class ReservaTestCase {
 		reserva.finalizar();
 		
 		verify(estado).finalizar(reserva);
-	}
-	
-	@Test
-	void Reserva_GetDia_ReturnDia() {
-		inmueble = mock(Inmueble.class);
-		dias = new ArrayList<Dia>();
-		Dia dia = mock(Dia.class);
-		estado = mock(EstadoReserva.class);
-		solicitante = mock(Usuario.class);
-		
-		dias.add(dia);
-		
-		reserva = new Reserva(dias, inmueble, solicitante, estado);
-		
-		Assertions.assertEquals(dia, reserva.getDia(0));
-	}
-
-	@Test
-	void Reserva_GetCantidadDias_Get3() {
-		inmueble = mock(Inmueble.class);
-		dias = new ArrayList<Dia>();
-		Dia dia1 = mock(Dia.class);
-		Dia dia2 = mock(Dia.class);
-		Dia dia3 = mock(Dia.class);
-		estado = mock(EstadoReserva.class);
-		solicitante = mock(Usuario.class);
-		
-		dias.add(dia1);
-		dias.add(dia2);
-		dias.add(dia3);
-		
-		reserva = new Reserva(dias, inmueble, solicitante, estado);
-		
-		Assertions.assertEquals(3, reserva.getCantidadDias());
 	}
 }
