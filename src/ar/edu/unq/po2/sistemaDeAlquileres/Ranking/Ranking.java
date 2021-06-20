@@ -15,6 +15,10 @@ public class Ranking {
 		this.puntajeGeneral= new ArrayList<Integer>();
 	}
 	
+	public Map<String,ArrayList<Integer>> getRegistroPorCategorias(){
+		return (this.registroPorCategorias);
+	}
+	
 	/**
 	 * Dada una categoria y un puntaje la agrega a los registros
 	 * Si el puntaje no se encuentra entre 1 y 5 inluidos ambos devuelve error
@@ -128,5 +132,11 @@ public class Ranking {
 	 */
 	public int cantidadDePuntajesGeneral() {
 		return this.puntajeGeneral.size();
+	}
+	
+	public void addCategoria(String categoria) {
+        if(!this.registroPorCategorias.containsKey(categoria)) {
+            this.registroPorCategorias.put(categoria, new ArrayList<Integer>());
+        }
 	}
 }

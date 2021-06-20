@@ -1,27 +1,29 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.Reserva;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
-import ar.edu.unq.po2.sistemaDeAlquileres.Dia.Dia;
+import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 
 public class Reserva {
 	
-	private ArrayList<Dia> dias;
+	private RangoDeFechaConPrecioDeterminado rango;
 	private Inmueble inmueble;
 	private EstadoReserva estado;
 	private Usuario solicitante;
 
-	public Reserva(ArrayList<Dia> dias, Inmueble inmueble, Usuario solicitante, EstadoReserva estado) {
-		this.setDias(dias);
+	public Reserva(RangoDeFechaConPrecioDeterminado rango, Inmueble inmueble, Usuario solicitante, EstadoReserva estado) {
+		this.rango(rango);
 		this.setSolicitante(solicitante);
 		this.setInmueble(inmueble);
 		this.setEstado(estado);
 	}
 	
-	private void setDias(ArrayList<Dia> dias) {
-		this.dias = dias;
+	private void rango(RangoDeFechaConPrecioDeterminado rango) {
+		this.rango = rango;
 	}
 
 	private EstadoReserva getEstado() {
@@ -40,7 +42,7 @@ public class Reserva {
 		this.inmueble = inmueble;
 	}
 	
-	private Usuario getSolicitante() {
+	public Usuario getSolicitante() {
 		return this.solicitante;
 	}
 	
@@ -48,17 +50,14 @@ public class Reserva {
 		this.solicitante = solicitante;
 	}
 	
-	private ArrayList<Dia> getDias(){
-		return this.dias;
+
+	public RangoDeFechaConPrecioDeterminado getRango() {
+		return this.rango;
 	}
 	
-	public Dia getDia(int i) {
-		return this.getDias().get(i);
-	}
-	
-	public int getCantidadDias() {
-		return this.getDias().size();
-	}
+//	public int getCantidadDias() {
+//		return this.getRango().get;
+//	}
 
 	public void cancelar() {
 		this.setEstado(this.getEstado().cancelar(this));
@@ -70,5 +69,45 @@ public class Reserva {
 	
 	public void finalizar() {
 		this.setEstado(this.getEstado().finalizar(this));
+	}
+
+	
+
+//	public void setPuntajeInquilino(String categoria, Integer puntaje) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	public boolean SeRellenoElFormulario() {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
+//	public boolean lasFechaEstanEnElRango(LocalDate fechaEntrada, LocalDate fechaSalida) {
+//		return (this.getRango().lasFechasEstanEnElRango(fechaEntrada,fechaSalida));
+//	}
+
+	
+//	public boolean elPrecioEstaEnElRangoDe(float precioMinimo, float precioMaximo) {
+//		return (this.getRango().elPrecioEstaEntreElRangoDe(precioMinimo,precioMaximo));
+//	}
+	
+	public void setComentario(String comentario) {
+		
+	}
+
+	public void setPuntajeCategoriaAInmueble(String servicio, Integer puntaje) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setPuntajeAInquilino(String categoria, Integer puntaje) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setPuntajeADuenho(String categoria, Integer puntaje) {
+		// TODO Auto-generated method stub
+		
 	}
 }
