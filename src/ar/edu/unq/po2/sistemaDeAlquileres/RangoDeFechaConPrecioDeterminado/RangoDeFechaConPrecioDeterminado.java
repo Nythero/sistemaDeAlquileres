@@ -23,10 +23,7 @@ public class RangoDeFechaConPrecioDeterminado {
 		return this.fechaInicial;
 	}
 	
-<<<<<<< HEAD
-=======
 
->>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	/**
 	 * Devuelve la fecha Final
 	 * @return
@@ -96,8 +93,4 @@ public class RangoDeFechaConPrecioDeterminado {
               }
     return precio;
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 }

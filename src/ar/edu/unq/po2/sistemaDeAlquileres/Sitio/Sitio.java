@@ -2,11 +2,9 @@ package ar.edu.unq.po2.sistemaDeAlquileres.Sitio;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Administrador.Administrador;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 import junit.framework.AssertionFailedError;
@@ -49,7 +47,6 @@ public class Sitio {
 	
 	public void addCategoriaAInquilino(String categoria) {
 		for(Usuario usuario : this.getUsuarios()) {
-<<<<<<< HEAD
 			usuario.getRankingComoInquilino().addCategoria(categoria);
 		}
 	}
@@ -65,24 +62,10 @@ public class Sitio {
 	public void addCategoriaAInmueble(String categoria) {
 		for(Inmueble inmueble : this.getInmuebles()) {
 			inmueble.getRanking().addCategoria(categoria);  
-=======
-			usuario.agregarCategoriaComoInquilino(categoria);
 		} // preguntar si en vez de un for TIENE QUE SER UN RANKING.CLASS Y AHI HACER COSAS
 	}
 	
-	public void addCategoriaADuenho(String categoria) {
-		for(Usuario usuario : this.getUsuarios()) {
-			usuario.agregarCategoriaComoDuenho(categoria);
-		}
-	}
-	
-	public void addCategoriaAInmueble(String categoria) {
-		for(Inmueble inmueble : this.getInmuebles()) {
-			inmueble.agregarCategoria(categoria);
->>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
-		}
-	}
-	
+
 	public Integer cuantosInmueblesAlquilo(Usuario usuario) {
 		return (usuario.cantidadDeVecesQueAlquilo());
 	}
@@ -122,12 +105,8 @@ public class Sitio {
 			usuariosTop.add(listaARecorrer.get(i));
 		}
 		return usuariosTop;
-<<<<<<< HEAD
 	}  
-=======
-	} 
->>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
-	
+
 	//ordena a los usuarios de mayor a menor, en base a la cantidad de reservas que hayan hecho
 	public ArrayList<Usuario> usuariosOrdenadosPorReservasRealizadas() {
 		ArrayList<Usuario> usuarios = this.getUsuarios();
@@ -141,11 +120,7 @@ public class Sitio {
 	public Integer getCantidadDeInmueblesLibres() {
 		Integer cantidadDeInmueblesLibres = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
-<<<<<<< HEAD
 			if (!inmueble.estaAlquiladoActualmente()) {
-=======
-			if (inmueble.estaLibre()) {
->>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 				cantidadDeInmueblesLibres =+ 1;
 			} 
 		}
@@ -155,11 +130,7 @@ public class Sitio {
 	public Integer getCantidadDeInmueblesAlquilados() {
 		Integer cantidadDeInmueblesAlquilados = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
-<<<<<<< HEAD
 			if (inmueble.estaAlquiladoActualmente()) {
-=======
-			if (inmueble.estaAlquilado()) {
->>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 				cantidadDeInmueblesAlquilados =+ 1;
 			} 
 		}
