@@ -23,7 +23,7 @@ class TrivagoTestCase {
 	@Test
 	void testSeActualizaLaPaginaPrincipal() {
 		when(inmueble.getTipoDeInmueble()).thenReturn("Apartamento");
-		trivago.update(inmueble, 300);
+		trivago.update(inmueble, 300f);
 		
 		verify(inmueble).getTipoDeInmueble();
 	}
