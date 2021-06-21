@@ -44,6 +44,10 @@ public class Observable {
 	 * @param tipoDeSuscripcion
 	 * @param observer
 	 */
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	public void add(String tipoDeSuscripcion, IObserver observer) {
 		if (!this.existeLaSuscripcion(tipoDeSuscripcion)){
 			ArrayList<IObserver> listaConSuscriptoNuevo = new ArrayList<IObserver>();
@@ -57,12 +61,20 @@ public class Observable {
 		}
 	}
 	
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	/**
 	 * Dada un tipo de suscripcion y un suscriptor lo remueve.
 	 * En caso de noestar suscrito o no existir la suscripcion devuelve error
 	 * @param tipoDeSuscripcion
 	 * @param observer
 	 */
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	public void remove(String tipoDeSuscripcion,IObserver observer) {
 		if(!this.existeLaSuscripcion(tipoDeSuscripcion) || !estaSuscrito(tipoDeSuscripcion,observer)) {
 			throw new AssertionFailedError("No existe la suscripcion buscada o no se encuentra suscrito el usuario dado");
@@ -72,6 +84,10 @@ public class Observable {
 		}
 	}
 		
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	/**
 	 * Retorna si el tipo de suscripcion existe
 	 * @param tipoDeSuscripcion
@@ -91,12 +107,20 @@ public class Observable {
 		return this.suscripciones.get(tipoDeSuscripcion).contains(observer);
 	}
 	
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	/**
 	 * Envia las notificaciones a los que corresponda
 	 * @param tipoDeSuscripcion
 	 * @param inmueble
 	 * @param arg
 	 */
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	public void notify(String tipoDeSuscripcion,Inmueble inmueble, Object arg) {
 		if(this.existeLaSuscripcion(tipoDeSuscripcion)) {
 			for (IObserver observer : this.suscripciones.get(tipoDeSuscripcion)) {

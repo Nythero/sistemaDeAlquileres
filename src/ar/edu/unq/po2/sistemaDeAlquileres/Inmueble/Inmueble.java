@@ -1,14 +1,23 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
 
+<<<<<<< HEAD
+=======
+import java.sql.Date;
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+<<<<<<< HEAD
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Foto.Foto;
+=======
+import java.util.Map;
+
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
@@ -26,7 +35,11 @@ public class Inmueble {
 	private String direccion;
 	private ArrayList<String> servicios;
 	private Integer capacidad;
+<<<<<<< HEAD
 	private ArrayList<Foto> fotos;
+=======
+	private ArrayList<String> fotos;
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	private LocalTime horaDeCheckIn;
 	private LocalTime horaDeCheckOut;
 	private ArrayList<String> formasDePago;
@@ -35,6 +48,7 @@ public class Inmueble {
 	private Map<String,ArrayList<String>> comentariosPorCategorias;
 	private Integer cantidadDeVecesAlquilado; 
 	private ArrayList<RangoDeFechaConPrecioDeterminado> rangosDeFechas;
+<<<<<<< HEAD
 	private static Set<String> tiposDeInmueblesValidos = new HashSet<String>();
 	private static Set<String> serviciosValidos = new HashSet<String>();
 	private ArrayList<Reserva> reservas;
@@ -42,6 +56,15 @@ public class Inmueble {
 	
 	public Inmueble(Usuario dueño,String tipoDeInmueble,int superficie,String pais,
 			String ciudad,String direccion,ArrayList<String> servicios,int capacidad, LocalTime horaDeCheckIn,
+=======
+	private static ArrayList<String> tiposDeInmueblesValidos = new ArrayList<String>();
+	private static ArrayList<String> serviciosValidos = new ArrayList<String>();
+	private ArrayList<Reserva> reservas;
+	 
+	
+	public Inmueble(Usuario dueño,String tipoDeInmueble,int superficie,String pais,String ciudad,String direccion,
+			ArrayList<String> servicios,int capacidad,ArrayList<String> fotos, LocalTime horaDeCheckIn,
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 			LocalTime horaDeCheckOut,ArrayList<String> formasDePago,Temporada precio) {
 		
 		if(!tiposDeInmueblesValidos.contains(tipoDeInmueble)) {
@@ -60,7 +83,11 @@ public class Inmueble {
 		this.direccion= direccion;
 		this.servicios= servicios;
 		this.capacidad= capacidad;
+<<<<<<< HEAD
 		this.fotos= new ArrayList<Foto>();
+=======
+		this.fotos= fotos;
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 		this.horaDeCheckIn= horaDeCheckIn;
 		this.horaDeCheckOut= horaDeCheckOut;
 		this.formasDePago= formasDePago;
@@ -69,6 +96,7 @@ public class Inmueble {
 		this.comentariosPorCategorias= new HashMap<String,ArrayList<String>>();
 		this.cantidadDeVecesAlquilado= 0;
 		this.dueño = dueño;
+<<<<<<< HEAD
 		this.reservas= new ArrayList<Reserva>();
 		
 	}
@@ -83,6 +111,11 @@ public class Inmueble {
 	}
 
 	
+=======
+		
+	}
+	
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	public Usuario getDueño() {
 		return this.dueño;
 	}
@@ -119,7 +152,11 @@ public class Inmueble {
 		return this.capacidad;
 	}
 
+<<<<<<< HEAD
 	public ArrayList<Foto> getFotos() {
+=======
+	public ArrayList<String> getFotos() {
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 		return fotos;
 	}
 
@@ -181,6 +218,7 @@ public class Inmueble {
 		return precioMaximoDelRango;
 	}
 	
+<<<<<<< HEAD
 //	 elInmuebleFueAlquilado()
 //	public boolean estaLibre() {
 //		return (this.getCantidadDeVecesAlquilado() == 0);
@@ -236,3 +274,20 @@ public class Inmueble {
 	
 }
 
+=======
+	
+	public boolean estaLibre() {
+		return (this.getCantidadDeVecesAlquilado() == 0);
+	}
+	
+	public boolean estaAlquilado() {
+		return (this.getCantidadDeVecesAlquilado() > 0);
+	}
+	
+	//esto no tiene que ser Ranking.class y ahi darle la categoria? para que la tengan todas las clases futuras? 
+	public void agregarCategoria(String categoria) {
+		this.getRanking().addCategoria(categoria);
+	}	
+
+}
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e

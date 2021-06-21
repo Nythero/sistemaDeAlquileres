@@ -1,5 +1,6 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.Usuario;
 
+<<<<<<< HEAD
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -10,18 +11,29 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+=======
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+import java.util.ArrayList;
+import java.util.Date;
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.sistemaDeAlquileres.*;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
+<<<<<<< HEAD
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
+=======
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.EstadoReserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Sitio.Sitio;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
+<<<<<<< HEAD
 import junit.framework.AssertionFailedError;
 
 public class UsuarioTestCase {
@@ -266,14 +278,46 @@ public class UsuarioTestCase {
 		when(inmueble2.getCantidadDeVecesAlquilado()).thenReturn(0);
 	    	
 		assertEquals(inmueblesQueHanSidoAlquilados,usuario1.getInmueblesQueHanSidoAlquilados());
+=======
+
+public class UsuarioTestCase {
+
+	private String nombre;
+	private String mail;
+	private String telefono;
+	private Ranking rankingComoDuenho;
+	private Ranking rankingComoInquilino;
+	private Date fechaDeCreacion;  
+	private Sitio sitio;
+	private Usuario usuario1;
+	
+	
+	//nos falta que el usuario pueda agregar inmuebles a su lista preguntandole al sitio 
+	
+	@BeforeEach
+	void setUp() throws Exception {
+		Inmueble inmueble1 = mock(Inmueble.class);
+		Inmueble inmueble2 = mock(Inmueble.class);
+		Reserva reserva1 = mock(Reserva.class);
+		Reserva reserva2 = mock(Reserva.class); 
+		Ranking rakingComoDuenho = mock(Ranking.class);
+		Date fechaDeCreacion = new Date(2000,06,07);
+		Sitio sitio = mock(Sitio.class);
+		Usuario usuario1 = new Usuario("Miguel", "mail@gmail.com","12345",rankingComoDuenho,
+										rankingComoInquilino);
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	}
 	
 	
 }
+<<<<<<< HEAD
 	
 
 // los de realizarReserva,las futuras y las de las ciudades, faltan resolver como armar la reserva
 // falta lo de reserva condicional
+=======
+
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 
 
 

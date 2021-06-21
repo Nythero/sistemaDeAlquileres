@@ -107,16 +107,24 @@ public class Usuario {
 		return (this.fechaDeCreacion);
 	}
 	
+<<<<<<< HEAD
 	public float getSaldo() {
 		return this.saldo;
 	}
 	
+=======
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	public void setSaldo (Integer cantidad) {
 		this.saldo = this.saldo + cantidad;
 	}
 	
+<<<<<<< HEAD
 	
 	public void setComentarioAReserva(Reserva reserva, String comentario) {
+=======
+
+	public void setComentario(Reserva reserva, String comentario) {
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 		reserva.setComentario(comentario);
 	}
 	
@@ -133,7 +141,11 @@ public class Usuario {
 		reserva.setPuntajeCategoriaAInmueble(servicio,puntaje);
 	}
 	
+<<<<<<< HEAD
 	 
+=======
+	
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	public ArrayList<Inmueble> buscarInmuebles(Sitio sitio,String ciudad,LocalDate fechaEntrada,
 												LocalDate fechaSalida,Integer huespedes,float precioMinimo,
 												float precioMaximo){
@@ -146,6 +158,7 @@ public class Usuario {
 		sitio.registrarUsuario(this);
 	}
 	
+<<<<<<< HEAD
 
 	
 	public Inmueble visualizarDatosDelInmueble(ArrayList<Inmueble> inmuebles, Integer posicionInmueble){
@@ -166,6 +179,21 @@ public class Usuario {
 	public void publicarInmueble(Inmueble inmueble,Sitio sitio) {
 		sitio.agregarInmueble(inmueble);
 		this.agregarInmueble(inmueble);
+=======
+	public void visualizarDatosDelInmueble(ArrayList<Inmueble> inmuebles, Integer posicionInmueble) throws Exception {
+		if ((posicionInmueble - 1) > inmuebles.size()) {
+			throw new Exception("No hay tantos inmuebles"); 
+		}
+		else {
+			inmuebles.get(posicionInmueble);
+		}
+	}
+	
+	
+	public void publicarInmueble(Inmueble inmueble,Sitio sitio) {
+		sitio.agregarInmueble(inmueble);
+		this.getInmuebles().add(inmueble);
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	}
 	
 	public void recibirPago(float monto){
@@ -173,6 +201,7 @@ public class Usuario {
 	}
 
 	public void extraerMonto(float monto){
+<<<<<<< HEAD
 		if (monto > this.getSaldo()) {
 			throw new AssertionFailedError(); //"No hay dinero suficiente para extraer"
 		}
@@ -198,40 +227,77 @@ public class Usuario {
 //	
 	
 	
+=======
+		this.saldo-= monto;
+	}
+	
+//	public void realizarReserva (Inmueble inmueble, Sitio sitio, Date fechaInicio, 
+//	Date fechaFinal, String formaDePago) {
+//
+//}
+
+//public void cancelarReserva(Reserva reserva,Sitio sitio) {
+//
+//}
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	
 	public ArrayList<Reserva> getTodasLasReservasFuturas(){
 		ArrayList<Reserva> reservasFuturas = new ArrayList<Reserva>();
 		for (Reserva reserva : this.getReservasRealizadas()) {
+<<<<<<< HEAD
 			if (reserva.laFechaInicialDelRangoEstaDespuesDelDiaActual()){
+=======
+			if (reserva.getRango().getFechaInicial().isAfter(LocalDate.now())){
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 				reservasFuturas.add(reserva);
 			}
 		}
 		return reservasFuturas;
 	}
 	
+<<<<<<< HEAD
 	
 	public ArrayList<Reserva> getReservasEnCiudadParticular(String ciudad) {
 		ArrayList<Reserva> reservasEnCiudadDada = new ArrayList<Reserva>();
 		for (Reserva reserva : this.getReservasRealizadas()) {
 			if (ciudad == reserva.getCiudad()) {
+=======
+
+	public ArrayList<Reserva> getReservasEnCiudadParticular(String ciudad) {
+		ArrayList<Reserva> reservasEnCiudadDada = new ArrayList<Reserva>();
+		for (Reserva reserva : this.getReservasRealizadas()) {
+			if (ciudad == reserva.getInmueble().getCiudad()) {
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 				reservasEnCiudadDada.add(reserva);
 			}
 		}
 		return reservasEnCiudadDada;
 	}
 
+<<<<<<< HEAD
 	
 	public Set<String> getCiudadesEnLasQueTieneReservas(){
 		Set<String> ciudadesConReserva = new HashSet<String>();	
 		for (Reserva reserva : this.getReservasRealizadas()) {
 			ciudadesConReserva.add(reserva.getCiudad());
+=======
+
+	public Set<String> getCiudadesEnLasQueTieneReservas(){
+		Set<String> ciudadesConReserva = new HashSet<String>();	
+		for (Reserva reserva : this.getReservasRealizadas()) {
+			ciudadesConReserva.add(reserva.getInmueble().getCiudad());
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 		}
 		
 		return ciudadesConReserva;
 	}
 
 	
+<<<<<<< HEAD
 	public Integer cantidadDeVecesQueAlquilo() { //devuelve la cantidad de veces que fueron alquilados todos los inmuebles
+=======
+	public Integer cantidadDeVecesQueAlquilo() {
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 		Integer cantidadDeVecesAlquilado = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
 			cantidadDeVecesAlquilado += inmueble.getCantidadDeVecesAlquilado();
@@ -239,6 +305,7 @@ public class Usuario {
 		return cantidadDeVecesAlquilado;
 	}
 
+<<<<<<< HEAD
 	public Integer obtenerLaPosicionDelInmueble(Inmueble inmueble) {
 		return (this.getInmuebles().indexOf(inmueble));
 	}
@@ -255,6 +322,21 @@ public class Usuario {
 		
 	}
 	 
+=======
+	
+	public Integer cuantasVecesAlquiloElInmueble(Inmueble inmueble) {
+		
+		Integer posicionDelInmueble = 0;
+		if (this.getInmuebles().contains(inmueble)) {
+			posicionDelInmueble = this.getInmuebles().indexOf(inmueble);
+		}
+		else {
+			throw new AssertionFailedError();
+		}
+		return this.getInmuebles().get(posicionDelInmueble).getCantidadDeVecesAlquilado();
+	}
+	
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	
 	public ArrayList<Inmueble> getInmueblesQueHanSidoAlquilados(){
 		ArrayList<Inmueble> inmueblesAlquilados = new ArrayList<Inmueble>();
@@ -266,6 +348,18 @@ public class Usuario {
 		return inmueblesAlquilados;
 	}
 	
+<<<<<<< HEAD
+=======
+	//es valido hacerlo asi? o tendria que ser Ranking.class ? 
+	public void agregarCategoriaComoDuenho(String categoria) {
+		this.getRankingComoDuenho().addCategoria(categoria);
+	}
+	
+	//es valido hacerlo asi? o tendria que ser Ranking.class ? 
+	public void agregarCategoriaComoInquilino(String categoria) {
+		this.getRankingComoInquilino().addCategoria(categoria);
+	}
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 }
 
 

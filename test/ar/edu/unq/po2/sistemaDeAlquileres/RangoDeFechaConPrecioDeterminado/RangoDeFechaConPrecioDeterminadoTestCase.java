@@ -2,8 +2,15 @@ package ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
+<<<<<<< HEAD
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+=======
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 
 import java.time.LocalDate;
 
@@ -29,6 +36,15 @@ class RangoDeFechaConPrecioDeterminadoTestCase {
 		precio2= mock(Temporada.class);
 		rangoDeFechas= new RangoDeFechaConPrecioDeterminado(fechaInicial,fechaFinal,precio);
 	}
+<<<<<<< HEAD
+=======
+		
+	@Test
+	void testCalcularMontoSegunElDia() {
+		float result = rangoDeFechas.darPrecioSegunLaTemporada(LocalDate.now());
+		assertEquals(500f, result);
+	}
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	
 	@Test
 	void testCalcularMontoTotalSegunElRango() {
@@ -36,6 +52,7 @@ class RangoDeFechaConPrecioDeterminadoTestCase {
 		assertEquals(4000f, result);
 	}
 	
+<<<<<<< HEAD
 	
 	@Test
 	void testCalcularMontoSegunElDia() {
@@ -44,6 +61,8 @@ class RangoDeFechaConPrecioDeterminadoTestCase {
 	}
 	
 	
+=======
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 	@Test
 	void testLaFechaInicialEstaEnElRango() {
 		LocalDate fechaInicialAReservar = LocalDate.of(2021, 6, 18);

@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.sistemaDeAlquileres.*;
+<<<<<<< HEAD
+=======
+import ar.edu.unq.po2.sistemaDeAlquileres.Dia.Dia;
+>>>>>>> 8938c7b794f1514cf824f73231e2107f7799309e
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 
