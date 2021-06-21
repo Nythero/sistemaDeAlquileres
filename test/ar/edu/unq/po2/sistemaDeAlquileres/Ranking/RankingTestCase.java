@@ -10,10 +10,10 @@ import junit.framework.AssertionFailedError;
 
 class RankingTestCase {
 	private Ranking ranking;
-	
+	 
 	@BeforeEach
 	void setUp() throws Exception {
-		ranking= new Ranking();
+		ranking = new Ranking();
 	}
 	
 	@Test

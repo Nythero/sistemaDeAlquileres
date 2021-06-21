@@ -49,22 +49,22 @@ public class Sitio {
 	
 	public void addCategoriaAInquilino(String categoria) {
 		for(Usuario usuario : this.getUsuarios()) {
-			usuario.agregarCategoriaComoInquilino(categoria);
-		} // preguntar si en vez de un for TIENE QUE SER UN RANKING.CLASS Y AHI HACER COSAS
+			usuario.getRankingComoInquilino().addCategoria(categoria);
+		}
 	}
 	
 	
 	public void addCategoriaADuenho(String categoria) {
 		for(Usuario usuario : this.getUsuarios()) {
-			usuario.agregarCategoriaComoDuenho(categoria);
+			usuario.getRankingComoDuenho().addCategoria(categoria);;
 		}
-	}// pedirle el ranking, y que el ranking lo agregue 
+	}
 	
 	
 	public void addCategoriaAInmueble(String categoria) {
 		for(Inmueble inmueble : this.getInmuebles()) {
-			inmueble.agregarCategoria(categoria);
-		}//pedirle el ranking, y que el ranking lo agregue  
+			inmueble.getRanking().addCategoria(categoria);  
+		}
 	}
 	
 	public Integer cuantosInmueblesAlquilo(Usuario usuario) {

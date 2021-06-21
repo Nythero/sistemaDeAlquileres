@@ -18,14 +18,12 @@ public class Administrador {
 	
 	public void addCategoriaADuenho (Sitio sitio, String categoria) {
 		sitio.addCategoriaADuenho(categoria);
-	}
+	} 
 	
 	
 	public void addCategoriaAInmueble (Sitio sitio, String categoria) {
 		sitio.addCategoriaAInmueble(categoria);
-	}// preguntar si hacer lo mismo pero directamente con ranking 
-	//Ranking.class. addCategoriaAInmueble porque asi, solo le agrega la categoria a los inmuebles que estan
-	//lo mismo en los metodos de abajo
+	}
 	
 	public void addTipoDeInmueble(String tipoDeInmueble) {
 		Inmueble.darDeAltaAlTipoDeInmueble(tipoDeInmueble);

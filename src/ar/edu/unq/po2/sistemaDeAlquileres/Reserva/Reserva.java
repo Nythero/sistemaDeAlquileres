@@ -110,4 +110,12 @@ public class Reserva {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public boolean laFechaInicialDelRangoEstaDespuesDelDiaActual() {
+		return (this.getRango().getFechaInicial().isAfter(LocalDate.now()));
+	}
+	
+	public String getCiudad(){
+		return (this.getInmueble().getCiudad());
+	}
 }

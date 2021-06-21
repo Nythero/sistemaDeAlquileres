@@ -54,43 +54,41 @@ public class RangoDeFechaConPrecioDeterminado {
 	}
 	
 	
-	public Temporada getTemporada() {
+	public Temporada getPrecioTemporada() {
 		return (this.precio);
 	}	
 
 	public float getMontoTotal() {
-		fechaInicial= this.getFechaFinal();
-		float result= 0;
-		while (fechaInicial != this.getFechaFinal()) {
-			result+= this.getPrecio().getPrecio(fechaInicial);
-			fechaFinal= fechaFinal.plusDays(1);
-		}
-		return result + this.getPrecio().getPrecio(fechaInicial);
-	}
+        LocalDate fechaInicialAVerificar = this.fechaInicial;
+        float result= 0;
+        while (!fechaInicialAVerificar.equals(this.fechaFinal)) {
+            result+= this.getPrecioTemporada().getPrecio(fechaInicialAVerificar);
+            fechaInicialAVerificar= fechaInicialAVerificar.plusDays(1);
+        }
+        return result + this.getPrecioTemporada().getPrecio(fechaInicialAVerificar);
+    }
 
-	
-	/*
-	 * Indica si las fechas dadas estan dentro del rango
-	 * */
-	public boolean lasFechasEstanEnElRango(LocalDate fechaEntrada, LocalDate fechaSalida) {
-		return (this.getFechaInicial().isBefore(fechaEntrada) &&
-				this.getFechaFinal().isAfter(fechaSalida));
-		
-	}
-//
-//	public boolean elPrecioEstaEntreElRangoDe(float precioMinimo, float precioMaximo) {
-//		
-//		return false;
-//	}
+    public float darPrecioSegunLaTemporada(LocalDate fecha) {
+        return this.getPrecioTemporada().getPrecio(fecha);
+    }
+    
+    
+      /*
+     * Indica si las fechas dadas estan dentro del rango
+     * */
+    public boolean lasFechasEstanEnElRango(LocalDate fechaEntrada, LocalDate fechaSalida) {
+        return ((this.getFechaInicial().equals(fechaEntrada)|| this.getFechaInicial().isBefore(fechaEntrada)) &&
+                (this.getFechaFinal().equals(fechaSalida) ||this.getFechaFinal().isAfter(fechaSalida)));
+    }
 
-	public float precioMaximoEntreElRangoDeFechas(LocalDate fechaEntrada, LocalDate fechaSalida) {
-		float precio = 0;
-		for (LocalDate fechaActual = fechaEntrada; fechaActual.isBefore(fechaSalida); fechaActual = fechaActual.plusDays(1)){
-		    precio = (this.getTemporada().getPrecio(fechaActual) > precio)
-		    		? this.getTemporada().getPrecio(fechaActual)
-		    		: precio;
-		  	}
-	return precio;
-	}
+    public float precioMaximoEntreElRangoDeFechas(LocalDate fechaEntrada, LocalDate fechaSalida) {
+        float precio = 0;
+        for (LocalDate fechaActual = fechaEntrada; fechaActual.isBefore(fechaSalida) || fechaActual.equals(fechaEntrada); fechaActual = fechaActual.plusDays(1)){
+            precio = (this.getPrecioTemporada().getPrecio(fechaActual) > precio)
+                    ? this.getPrecioTemporada().getPrecio(fechaActual)
+                    : precio;
+              }
+    return precio;
+    }
 }		
 

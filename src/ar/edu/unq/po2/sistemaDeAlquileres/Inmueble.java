@@ -11,6 +11,7 @@ import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.Rango
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
+import ar.edu.unq.po2.sistemaDeAlquileres.temporada.Temporada;
 import junit.framework.AssertionFailedError;
 
 public class Inmueble {
@@ -67,6 +68,10 @@ public class Inmueble {
 		this.cantidadDeVecesAlquilado= 0;
 		this.dueño = dueño;
 		
+	}
+	
+	public ArrayList<String> tiposDeInmueblesValidos(){
+		return (serviciosValidos);
 	}
 	
 	public Usuario getDueño() {
@@ -176,9 +181,19 @@ public class Inmueble {
 		return (this.getCantidadDeVecesAlquilado() > 0);
 	}
 	
-	//esto no tiene que ser Ranking.class y ahi darle la categoria? para que la tengan todas las clases futuras? 
+	
 	public void agregarCategoria(String categoria) {
 		this.getRanking().addCategoria(categoria);
+	}
+
+	public static void darDeAltaElServicio(String servicio) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void darDeAltaAlTipoDeInmueble(String tipoDeInmueble2) {
+		// TODO Auto-generated method stub
+		
 	}	
 
 }
