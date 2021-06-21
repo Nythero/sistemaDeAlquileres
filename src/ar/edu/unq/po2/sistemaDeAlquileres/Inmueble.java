@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
@@ -33,8 +35,8 @@ public class Inmueble {
 	private Map<String,ArrayList<String>> comentariosPorCategorias;
 	private Integer cantidadDeVecesAlquilado; 
 	private ArrayList<RangoDeFechaConPrecioDeterminado> rangosDeFechas;
-	private static ArrayList<String> tiposDeInmueblesValidos = new ArrayList<String>();
-	private static ArrayList<String> serviciosValidos = new ArrayList<String>();
+	private static Set<String> tiposDeInmueblesValidos = new HashSet<String>();
+	private static Set<String> serviciosValidos = new HashSet<String>();
 	private ArrayList<Reserva> reservas;
 	 
 	
@@ -70,8 +72,8 @@ public class Inmueble {
 		
 	}
 	
-	public ArrayList<String> tiposDeInmueblesValidos(){
-		return (serviciosValidos);
+	public HashSet<String> tiposDeInmueblesValidos(){
+		return (HashSet<String>) (serviciosValidos);
 	}
 	
 	public Usuario getDueño() {
@@ -172,14 +174,26 @@ public class Inmueble {
 		return precioMaximoDelRango;
 	}
 	
+//	 elInmuebleFueAlquilado()
+//	public boolean estaLibre() {
+//		return (this.getCantidadDeVecesAlquilado() == 0);
+//	}
 	
-	public boolean estaLibre() {
-		return (this.getCantidadDeVecesAlquilado() == 0);
-	}
+	//lo cambiamos por estaAlquiladoActualmente()
+//	public boolean estaAlquilado() {
+//		return (this.getCantidadDeVecesAlquilado() > 0);
+//	}
 	
-	public boolean estaAlquilado() {
-		return (this.getCantidadDeVecesAlquilado() > 0);
+	public boolean estaAlquiladoActualmente() {
+		boolean estaAlquilado = false;
+		int i = 0; 
+		while (!this.getReservas().isEmpty() && i < this.getReservas().size()) {
+			estaAlquilado = this.getReservas().get(i).laFechaActualEstaDentroDelRango();
+			i++;
+		}
+		return estaAlquilado;
 	}
+
 	
 	
 	public void agregarCategoria(String categoria) {
@@ -187,13 +201,10 @@ public class Inmueble {
 	}
 
 	public static void darDeAltaElServicio(String servicio) {
-		// TODO Auto-generated method stub
-		
+		serviciosValidos.add(servicio);
 	}
 
-	public static void darDeAltaAlTipoDeInmueble(String tipoDeInmueble2) {
-		// TODO Auto-generated method stub
-		
+	public static void darDeAltaAlTipoDeInmueble(String tipoDeInmueble) {
+		tiposDeInmueblesValidos.add(tipoDeInmueble);
 	}	
-
 }

@@ -133,7 +133,7 @@ public class Usuario {
 		reserva.setPuntajeCategoriaAInmueble(servicio,puntaje);
 	}
 	
-	
+	 
 	public ArrayList<Inmueble> buscarInmuebles(Sitio sitio,String ciudad,LocalDate fechaEntrada,
 												LocalDate fechaSalida,Integer huespedes,float precioMinimo,
 												float precioMaximo){
@@ -185,17 +185,17 @@ public class Usuario {
 		this.getReservas().add(reserva);
 	}
 	
-	public void realizarReserva (Inmueble inmueble, Sitio sitio, Date fechaInicio, 
-								 Date fechaFinal, String formaDePago) {
-
-		throw new Exception("TO DO");
-	}
-	
-	//terminar aca 
-	public void cancelarReserva(Reserva reserva,Sitio sitio) {
-		throw new Exception("TO DO");
-	}
-	
+//	public void realizarReserva (Inmueble inmueble, Sitio sitio, Date fechaInicio, 
+//								 Date fechaFinal, String formaDePago) {
+//
+//		throw new Exception("TO DO");
+//	}
+//	
+//	//terminar aca 
+//	public void cancelarReserva(Reserva reserva,Sitio sitio) {
+//		throw new Exception("TO DO");
+//	}
+//	
 	
 	
 	

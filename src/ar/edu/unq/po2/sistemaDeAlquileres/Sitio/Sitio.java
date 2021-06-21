@@ -106,7 +106,7 @@ public class Sitio {
 			usuariosTop.add(listaARecorrer.get(i));
 		}
 		return usuariosTop;
-	} 
+	}  
 	
 	//ordena a los usuarios de mayor a menor, en base a la cantidad de reservas que hayan hecho
 	public ArrayList<Usuario> usuariosOrdenadosPorReservasRealizadas() {
@@ -121,7 +121,7 @@ public class Sitio {
 	public Integer getCantidadDeInmueblesLibres() {
 		Integer cantidadDeInmueblesLibres = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
-			if (inmueble.estaLibre()) {
+			if (!inmueble.estaAlquiladoActualmente()) {
 				cantidadDeInmueblesLibres =+ 1;
 			} 
 		}
@@ -131,7 +131,7 @@ public class Sitio {
 	public Integer getCantidadDeInmueblesAlquilados() {
 		Integer cantidadDeInmueblesAlquilados = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
-			if (inmueble.estaAlquilado()) {
+			if (inmueble.estaAlquiladoActualmente()) {
 				cantidadDeInmueblesAlquilados =+ 1;
 			} 
 		}

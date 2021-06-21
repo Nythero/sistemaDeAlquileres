@@ -114,8 +114,12 @@ public class Reserva {
 	public boolean laFechaInicialDelRangoEstaDespuesDelDiaActual() {
 		return (this.getRango().getFechaInicial().isAfter(LocalDate.now()));
 	}
-	
+	 
 	public String getCiudad(){
 		return (this.getInmueble().getCiudad());
+	}
+
+	public boolean laFechaActualEstaDentroDelRango() {
+		return (this.getRango().lasFechasEstanEnElRango(LocalDate.now(), LocalDate.now()));
 	}
 }

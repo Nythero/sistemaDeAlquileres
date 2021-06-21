@@ -34,12 +34,11 @@ public class Administrador {
 	}
 	
 	
-	
 	//obtiene el topten de los inquilinos, es decir los usuarios que mas veces alquilaron
 	public ArrayList<Usuario> getTopTen(Sitio sitio) {
 		return (sitio.obtenerElTopTenDeInquilinos());
 	}		
-		
+		 
 	public Integer getCantidadDeInmueblesLibres(Sitio sitio) {
 		return (sitio.getCantidadDeInmueblesLibres());
 	}

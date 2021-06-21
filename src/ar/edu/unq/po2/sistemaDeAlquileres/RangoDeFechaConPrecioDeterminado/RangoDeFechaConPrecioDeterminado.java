@@ -10,7 +10,7 @@ public class RangoDeFechaConPrecioDeterminado {
 	private LocalDate fechaInicial;
 	private LocalDate fechaFinal;
 	private Temporada precio;
-	private ArrayList<Integer> colaDeInquilinos;
+	private ArrayList<Integer> colaDeInquilinos; 
 	
 	RangoDeFechaConPrecioDeterminado(LocalDate fechaInicial, LocalDate fechaFinal,Temporada precio){
 		this.fechaInicial= fechaInicial;
