@@ -1,34 +1,16 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado;
+package ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFechaConPrecioDeterminado;
 
 import java.time.LocalDate;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
+import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFechas;
 
-public class RangoDeFechaConPrecioDeterminado {
-	private LocalDate fechaInicial;
-	private LocalDate fechaFinal;
+public class RangoDeFechaConPrecioDeterminado extends RangoDeFechas{
 	private Temporada precio;
 	
 	public RangoDeFechaConPrecioDeterminado(LocalDate fechaInicial, LocalDate fechaFinal,Temporada precio){
-		this.fechaInicial= fechaInicial;
-		this.fechaFinal= fechaFinal;
+		super(fechaInicial, fechaFinal);
 		this.precio = precio;
-	}
-
-	public LocalDate getFechaInicial() {
-		return this.fechaInicial;
-	}
-
-	public void setFechaInicial(LocalDate fechaInicial) {
-		this.fechaInicial = fechaInicial;
-	}
-
-	public LocalDate getFechaFinal() {
-		return this.fechaFinal;
-	}
-
-	public void setFechaFinal(LocalDate fechaFinal) {
-		this.fechaFinal = fechaFinal;
 	}
 
 	public Temporada getPrecioTemporada() {

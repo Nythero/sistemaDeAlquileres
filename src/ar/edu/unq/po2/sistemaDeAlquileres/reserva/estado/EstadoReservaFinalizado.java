@@ -38,4 +38,14 @@ public class EstadoReservaFinalizado implements EstadoReserva {
 	public void setPuntajeAInmueble(Reserva reserva, String categoria, Integer puntaje) {
 		reserva.getInmueble().getRanking().addPuntajePorCategoria(categoria, puntaje);
 	}
+
+	@Override
+	public boolean estaPendienteDeAprobacion() {
+		return false;
+	}
+
+	@Override
+	public boolean estaConcretada() {
+		return false;
+	}
 }

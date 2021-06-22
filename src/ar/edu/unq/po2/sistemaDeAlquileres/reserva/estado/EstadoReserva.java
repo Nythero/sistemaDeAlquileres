@@ -18,4 +18,8 @@ public interface EstadoReserva {
 
 	void setPuntajeAInmueble(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError;
 
+	boolean estaPendienteDeAprobacion();
+
+	boolean estaConcretada();
+
 }

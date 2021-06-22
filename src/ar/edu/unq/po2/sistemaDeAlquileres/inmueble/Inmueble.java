@@ -1,10 +1,12 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.inmueble;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFechas;
+import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFechas.RangosDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.temporada.Temporada;
@@ -18,40 +20,39 @@ public class Inmueble {
 	private String pais;
 	private String ciudad;
 	private String direccion;
-	private ArrayList<String> servicios;
 	private Integer capacidad;
-	private ArrayList<String> fotos;
-	private java.util.Date horaDeCheckIn;
-	private java.util.Date horaDeCheckOut;
-	private ArrayList<String> formasDePago;
+	private Date horaDeCheckIn;
+	private Date horaDeCheckOut;
 	private Temporada precio;
-	private ArrayList<String> comentariosGenerales;
-	private Map<String,ArrayList<String>> comentariosPorCategorias;
-	private Integer cantidadDeVecesAlquilado;
+	private final Map<String,ArrayList<String>> comentariosPorCategorias = new HashMap<String,ArrayList<String>>();
+	private final ArrayList<String> comentariosGenerales = new ArrayList<String>();
+	private final ArrayList<String> servicios = new ArrayList<String>();
+	private final ArrayList<String> formasDePago = new ArrayList<String>();
+	private final ArrayList<String> fotos = new ArrayList<String>();
+	private final ArrayList<Reserva> reservas = new ArrayList<Reserva>();
+	private RangosDeFechas rangosDeFechas;
 
-	public Inmueble(Usuario dueño,String tipoDeInmueble,int superficie,String pais,String ciudad,String direccion,
-			ArrayList<String> servicios,int capacidad,ArrayList<String> fotos, java.util.Date horaDeCheckIn,
-			 java.util.Date horaDeCheckOut,ArrayList<String> formasDePago,Temporada precio) {
-		
-		this.tipoDeInmueble= tipoDeInmueble;
-		this.ranking= new Ranking();
-		this.superficie= superficie;
-		this.pais= pais;
-		this.ciudad= ciudad;
-		this.direccion= direccion;
-		this.servicios= servicios;
-		this.capacidad= capacidad;
-		this.fotos= fotos;
-		this.horaDeCheckIn= horaDeCheckIn;
-		this.horaDeCheckOut= horaDeCheckOut;
-		this.formasDePago= formasDePago;
-		this.precio= precio;
-		this.comentariosGenerales= new ArrayList<String>();
-		this.comentariosPorCategorias= new HashMap<String,ArrayList<String>>();
-		this.cantidadDeVecesAlquilado= 0;
+	public Inmueble(Usuario dueño, String tipoDeInmueble, int superficie, String pais, String ciudad, String direccion,
+			int capacidad, Date horaDeCheckIn, Date horaDeCheckOut, Temporada precio, Ranking ranking, RangosDeFechas rangosDeFechas) {
+
 		this.dueño = dueño;
+		this.tipoDeInmueble = tipoDeInmueble;
+		this.superficie = superficie;
+		this.pais = pais;
+		this.ciudad = ciudad;
+		this.direccion = direccion;
+		this.capacidad = capacidad;
+		this.horaDeCheckIn = horaDeCheckIn;
+		this.horaDeCheckOut = horaDeCheckOut;
+		this.precio = precio;
+		this.ranking = ranking;
+		this.setRangosDeFechas(rangosDeFechas);
 	}
-	
+
+	private void setRangosDeFechas(RangosDeFechas rangosDeFechas) {
+		this.rangosDeFechas = rangosDeFechas;
+	}
+
 	public Usuario getDueño() {
 		return this.dueño;
 	}
@@ -92,11 +93,11 @@ public class Inmueble {
 		return fotos;
 	}
 
-	public java.util.Date getHoraDeCheckIn() {
+	public Date getHoraDeCheckIn() {
 		return this.horaDeCheckIn;
 	}
 
-	public java.util.Date getHoraDeCheckOut() {
+	public Date getHoraDeCheckOut() {
 		return this.horaDeCheckOut;
 	}
 
@@ -107,6 +108,10 @@ public class Inmueble {
 	public Temporada getPrecio() {
 		return this.precio;
 	}
+	
+	private RangosDeFechas getRangosDeFechas() {
+		return this.rangosDeFechas;
+	}
 
 	public ArrayList<String> getComentariosGenerales() {
 		return this.comentariosGenerales;
@@ -116,30 +121,35 @@ public class Inmueble {
 		return this.comentariosPorCategorias;
 	}
 
-	public Integer getCantidadDeVecesAlquilado() {
-		return this.cantidadDeVecesAlquilado;
-	}
-
-	public void cancelarReserva(Reserva reserva) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void aceptarReserva(Reserva reserva) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void finalizarReserva(Reserva reserva) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void agregarComentario(String comentario) {
-		// TODO Auto-generated method stub
-		
+		this.getComentariosGenerales().add(comentario);
 	}
 	
+	public void agregarReserva(Reserva reserva) throws Exception{
+		this.verificarReserva(reserva);
+		this.reservas.add(reserva);
+	}
 	
+	private void verificarReserva(Reserva reserva) throws Exception {
+		if (reserva.getInmueble() != this ||
+			!this.getRangosDeFechas().contains(reserva.getRangoDeFechas()) ||
+			!this.getFormasDePago().contains(reserva.getFormaDePago()) ||
+			!reserva.estaPendienteDeAprobacion()) {
+			throw new Exception("Reserva Invalida");
+		}
+	}
 
+	public void agregarFormaDePago(String string) {
+		this.getFormasDePago().add(string);
+	}
+
+	public boolean yaEstaReservado(RangoDeFechas rangoDeFechas) {
+		boolean yaEstaReservado = false;
+		for(Reserva reserva : reservas) {
+			if (reserva.estaConcretada()) {
+				yaEstaReservado = yaEstaReservado || rangoDeFechas.intersectanLosRangos(reserva.getRangoDeFechas());
+			}
+		}
+		return yaEstaReservado;
+	}
 }

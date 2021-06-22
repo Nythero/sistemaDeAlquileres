@@ -7,16 +7,19 @@ public class EstadoReservaPendienteDeAprobacion implements EstadoReserva {
 
 	@Override
 	public EstadoReserva cancelar(Reserva reserva) {
-		reserva.getInmueble().cancelarReserva(reserva);
 		MailSender.mandarMailDeCancelacion(reserva);
 		return new EstadoReservaCancelado();
 	}
 
 	@Override
 	public EstadoReserva aceptar(Reserva reserva) {
-		reserva.getInmueble().aceptarReserva(reserva);
 		MailSender.mandarMailDeConfirmacion(reserva);
-		return new EstadoReservaAprobado();
+		if (!reserva.getInmueble().yaEstaReservado(reserva.getRangoDeFechas())) {
+			return new EstadoReservaConcretado();
+		}
+		else {
+			return new EstadoReservaCondicional();
+		}
 	}
 
 	@Override
@@ -42,5 +45,15 @@ public class EstadoReservaPendienteDeAprobacion implements EstadoReserva {
 	@Override
 	public void setPuntajeAInmueble(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError{
 		throw new EstadoEquivocadoError("Pendiente de Aprobacion", " puntuar al inmueble");
+	}
+
+	@Override
+	public boolean estaPendienteDeAprobacion() {
+		return true;
+	}
+
+	@Override
+	public boolean estaConcretada() {
+		return false;
 	}
 }

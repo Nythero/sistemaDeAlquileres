@@ -1,7 +1,7 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.reserva;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
-import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFecha;
+import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado.CambioDeEstadoError;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado.EstadoEquivocadoError;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado.EstadoReserva;
@@ -9,23 +9,30 @@ import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
 
 public class Reserva {
 	
-	private RangoDeFecha dias;
+	private RangoDeFechas rangoDeFechas;
 	private Inmueble inmueble;
 	private EstadoReserva estado;
 	private Usuario solicitante;
+	private String formaDePago;
+	private Float total;
 
-	public Reserva(RangoDeFecha dias, Inmueble inmueble, Usuario solicitante, EstadoReserva estado) {
-		this.setDias(dias);
+	public Reserva(Inmueble inmueble, RangoDeFechas rangoDeFechas, Usuario solicitante, String formaDePago, EstadoReserva estado) {
+		this.setRangoDeFechas(rangoDeFechas);
 		this.setSolicitante(solicitante);
 		this.setInmueble(inmueble);
 		this.setEstado(estado);
-	}
-	
-	private void setDias(RangoDeFecha dias) {
-		this.dias = dias;
+		this.setFormaDePago(formaDePago);
 	}
 
-	private EstadoReserva getEstado() {
+	public RangoDeFechas getRangoDeFechas() {
+		return this.rangoDeFechas;
+	}
+	
+	private void setRangoDeFechas(RangoDeFechas rangoDeFechas) {
+		this.rangoDeFechas = rangoDeFechas;
+	}
+
+	public EstadoReserva getEstado() {
 		return estado;
 	}
 	
@@ -48,11 +55,15 @@ public class Reserva {
 	private void setSolicitante(Usuario solicitante) {
 		this.solicitante = solicitante;
 	}
-	
-	private RangoDeFecha getDias(){
-		return this.dias;
+
+	public String getFormaDePago() {
+		return this.formaDePago;
 	}
 
+	private void setFormaDePago(String formaDePago) {
+		this.formaDePago = formaDePago;
+	}
+	
 	public void cancelar() {
 		try {
 			this.setEstado(this.getEstado().cancelar(this));
@@ -77,14 +88,22 @@ public class Reserva {
 	}
 	
 	public void setComentario(String comentario) throws EstadoEquivocadoError {
-		this.estado.setComentario(this, comentario);
+		this.getEstado().setComentario(this, comentario);
     }
     
     public void setPuntajeADuenho (String categoria, Integer puntaje) throws EstadoEquivocadoError {
-		this.estado.setPuntajeADuenho(this, categoria, puntaje);
+		this.getEstado().setPuntajeADuenho(this, categoria, puntaje);
     }
     
     public void setPuntajeAInquilino (String categoria, Integer puntaje) throws EstadoEquivocadoError {
-    	this.estado.setPuntajeAInquilino(this, categoria, puntaje);
+    	this.getEstado().setPuntajeAInquilino(this, categoria, puntaje);
     }
+
+	public boolean estaPendienteDeAprobacion() {
+		return this.getEstado().estaPendienteDeAprobacion();
+	}
+
+	public boolean estaConcretada() {
+		return this.getEstado().estaConcretada();
+	}
 }
