@@ -80,13 +80,9 @@ class EstadoReservaCondicionalTestCase {
 	}
 
 	@Test
-	void EstadoReservaCondicional_EstaPendienteDeAprobacion_False() {
-		assertFalse(estado.estaPendienteDeAprobacion());
-	}
-
-	@Test
-	void EstadoReservaCondicional_EstaConcretada_False() {
-		assertFalse(estado.estaConcretada());
+	void EstadoReservaCondicional_Esta_Success() {
+		assertFalse(estado.esta("Concretado"));
+		assertTrue(estado.esta("Condicional"));
 	}
 	
 	@AfterAll

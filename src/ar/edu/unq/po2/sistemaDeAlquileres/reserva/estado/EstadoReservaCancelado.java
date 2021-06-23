@@ -1,8 +1,8 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado;
 
-public class EstadoReservaCancelado extends EstadoReserva {
+class EstadoReservaCancelado extends EstadoReserva {
 	@Override
-	String codigo() {
+	public String codigo() {
 		return "Cancelado";
 	}
 }

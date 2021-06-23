@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.AfterAll;
@@ -16,9 +15,7 @@ import org.mockito.MockedStatic;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.mail.MailSender;
-import ar.edu.unq.po2.sistemaDeAlquileres.ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
-import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
 
 class EstadoReservaConcretadoTestCase {
 
@@ -80,15 +77,11 @@ class EstadoReservaConcretadoTestCase {
 	void EstadoReservaConcretado_PuntuarInmueble_EstadoEquivocadoError() throws EstadoEquivocadoError{
 		assertThrows(EstadoEquivocadoError.class, () -> estado.puntuarInmueble(null, null, null));
 	}
-
+	
 	@Test
-	void EstadoReservaConcretado_EstaPendienteDeAprobacion_False() {
-		assertFalse(estado.estaPendienteDeAprobacion());
-	}
-
-	@Test
-	void EstadoReservaConcretado_EstaConcretada_True() {
-		assertTrue(estado.estaConcretada());
+	void EstadoReservaConcretado_Esta_Success() {
+		assertTrue(estado.esta("Concretado"));
+		assertFalse(estado.esta("Condicional"));
 	}
 	
 	@AfterAll

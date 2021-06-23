@@ -56,6 +56,4 @@ class ReservaTestCase {
 		
 		verify(estado).finalizar(reserva);
 	}
-	
-	@Test
 }

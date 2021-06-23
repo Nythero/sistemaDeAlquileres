@@ -94,13 +94,9 @@ class EstadoReservaPendienteDeAprobacionTestCase {
 	}
 
 	@Test
-	void EstadoReservaPendienteDeAprobacion_EstaPendienteDeAprobacion_True() {
-		assertTrue(estado.estaPendienteDeAprobacion());
-	}
-
-	@Test
-	void EstadoReservaPendienteDeAprobacion_EstaConcretada_False() {
-		assertFalse(estado.estaConcretada());
+	void EstadoReservaPendienteDeAprobacion_Esta_Success() {
+		assertTrue(estado.esta("PendienteDeAprobacion"));
+		assertFalse(estado.esta("Finalizado"));
 	}
 	
 	@AfterAll

@@ -104,10 +104,14 @@ public class Reserva {
     }
     
 	public boolean estaPendienteDeAprobacion() {
-		return this.getEstado().estaPendienteDeAprobacion();
+		return this.getEstado().esta("PendienteDeAprobacion");
 	}
 
 	public boolean estaConcretada() {
-		return this.getEstado().estaConcretada();
+		return this.getEstado().esta("Concretada");
+	}
+	
+	public boolean estaFinalizada() {
+		return this.getEstado().esta("Finalizada");
 	}
 }

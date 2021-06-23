@@ -23,12 +23,7 @@ public class EstadoReservaPendienteDeAprobacion extends EstadoReserva {
 	}
 
 	@Override
-	public boolean estaPendienteDeAprobacion() {
-		return true;
-	}
-
-	@Override
 	String codigo() {
-		return "Pendiente de Aprobacion";
+		return "PendienteDeAprobacion";
 	}
 }

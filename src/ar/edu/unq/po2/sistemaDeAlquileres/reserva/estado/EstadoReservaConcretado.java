@@ -17,12 +17,7 @@ public class EstadoReservaConcretado extends EstadoReserva {
 	}
 
 	@Override
-	public boolean estaConcretada() {
-		return true;
-	}
-
-	@Override
-	String codigo() {
+	public String codigo() {
 		return "Concretado";
 	}
 
