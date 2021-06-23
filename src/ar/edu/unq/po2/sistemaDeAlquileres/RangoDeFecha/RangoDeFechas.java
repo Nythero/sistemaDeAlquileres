@@ -44,7 +44,7 @@ public class RangoDeFechas {
 	public int cantidadDeDias() {
 		LocalDate diaAVerificar = this.getFechaInicial();
 		int result= 0;
-		while (!diaAVerificar.equals(this.getFechaFinal())) {
+		while (!diaAVerificar.isEqual(this.getFechaFinal())) {
 			result+= 1;
 			diaAVerificar= diaAVerificar.plusDays(1);
 		}

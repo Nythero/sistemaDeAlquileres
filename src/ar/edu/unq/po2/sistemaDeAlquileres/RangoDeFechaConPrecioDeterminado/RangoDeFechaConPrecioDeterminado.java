@@ -28,8 +28,8 @@ public class RangoDeFechaConPrecioDeterminado extends RangoDeFechas {
 	public float getMontoTotal() {
 		LocalDate fechaInicialAVerificar = this.getFechaInicial();
         float result= 0;
-        while (!fechaInicialAVerificar.equals(this.getFechaFinal())) {
-            result+= this.getPrecioTemporada().getPrecio(fechaInicialAVerificar);
+        while (!fechaInicialAVerificar.isEqual(this.getFechaFinal())) {
+            result+= this.darPrecioSegunLaTemporada(fechaInicialAVerificar);
             fechaInicialAVerificar= fechaInicialAVerificar.plusDays(1); 
         }
         return result + this.getPrecioTemporada().getPrecio(fechaInicialAVerificar);
