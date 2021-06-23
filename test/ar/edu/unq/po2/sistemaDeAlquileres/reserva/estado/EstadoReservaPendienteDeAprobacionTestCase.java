@@ -8,6 +8,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -100,5 +101,10 @@ class EstadoReservaPendienteDeAprobacionTestCase {
 	@Test
 	void EstadoReservaPendienteDeAprobacion_EstaConcretada_False() {
 		assertFalse(estado.estaConcretada());
+	}
+	
+	@AfterAll
+	static void teardown() {
+		email.close();
 	}
 }
