@@ -83,7 +83,7 @@ public class RangoDeFechaConPrecioDeterminado {
 
     public float precioMaximoEntreElRangoDeFechas(LocalDate fechaEntrada, LocalDate fechaSalida) {
         float precio = 0;
-        for (LocalDate fechaActual = fechaEntrada; fechaActual.isBefore(fechaSalida) || fechaActual.equals(fechaEntrada); fechaActual = fechaActual.plusDays(1)){
+        for (LocalDate fechaActual = fechaEntrada; fechaActual.isBefore(fechaSalida) || fechaActual.equals(fechaSalida); fechaActual = fechaActual.plusDays(1)){
             precio = (this.getPrecioTemporada().getPrecio(fechaActual) > precio)
                     ? this.getPrecioTemporada().getPrecio(fechaActual)
                     : precio;

@@ -22,6 +22,7 @@ public class AdministradorTestCase {
 	private Administrador administrador;
 	private Sitio sitio;
 	private Inmueble inmueble;
+	private Inmueble inmueble2;
 	private Usuario usuario1;
 	private Usuario usuario2;
 	private MockedStatic<Inmueble> inmueble1;
@@ -30,6 +31,7 @@ public class AdministradorTestCase {
 	void setUp() throws Exception {
 		administrador = new Administrador();
 		sitio = mock(Sitio.class);
+		inmueble = mock(Inmueble.class);
 		inmueble = mock(Inmueble.class);
 		usuario1 = mock (Usuario.class);
 		usuario2 = mock (Usuario.class);
@@ -54,19 +56,19 @@ public class AdministradorTestCase {
 		verify(sitio).addCategoriaAInmueble("Seguridad");
 	}
 	
-	@Test
-	void testDarDeAltaAlTipoDeInmueble() {
-		administrador.addTipoDeInmueble("Choza");
-		verify(inmueble).darDeAltaAlTipoDeInmueble("Choza");	
-	}
-	
-	
-	@Test
-	void testVoidaddAltaServicio() {
-		inmueble1 = mockStatic(Inmueble.class);
-		administrador.addAltaServicio("Gas");
-		inmueble1.verify(()->Inmueble.darDeAltaElServicio("Gas"));	
-	}
+//	@Test
+//	void testDarDeAltaAlTipoDeInmueble() {
+//		administrador.addTipoDeInmueble("Choza");
+//		verify(inmueble).darDeAltaAlTipoDeInmueble("Choza");	
+//	}
+//	
+//	
+//	@Test
+//	void testVoidaddAltaServicio() {
+//		inmueble1 = mockStatic(Inmueble.class);
+//		administrador.addAltaServicio("Gas");
+//		inmueble1.verify(()->Inmueble.darDeAltaElServicio("Gas"));	
+//	}
 	
 //	@Test
 //	void testVoidaddAltaServicio() {
@@ -78,16 +80,27 @@ public class AdministradorTestCase {
 //		finally {}
 //	}
 //	
-//	@Test
-//	void testGetTopTen() {
-//		ArrayList<Usuario> usuariosTopTen = new ArrayList<Usuario>();
-//		usuariosTopTen.add(usuario1);
-//		usuariosTopTen.add(usuario2);
-//		verify(sitio).obtenerElTopTenDeInquilinos();
-//		when(sitio.obtenerElTopTenDeInquilinos()).thenReturn(usuariosTopTen);
-//		assertEquals(usuariosTopTen,administrador.getTopTen(sitio));
-//	}
+	@Test
+	void testGetTopTen() {
+		ArrayList<Usuario> usuariosTopTen = new ArrayList<Usuario>();
+		usuariosTopTen.add(usuario1);
+		usuariosTopTen.add(usuario2);
+		when(sitio.obtenerElTopTenDeInquilinos()).thenReturn(usuariosTopTen);
+		assertEquals(usuariosTopTen,administrador.getTopTen(sitio));
+		verify(sitio).obtenerElTopTenDeInquilinos();
+	}
 	
-
-
+	@Test
+	void testGetCantidadDeInmueblesLibres() {
+		when(sitio.getCantidadDeInmueblesLibres()).thenReturn(2);
+		assertEquals(2,administrador.getCantidadDeInmueblesLibres(sitio));
+		verify(sitio).getCantidadDeInmueblesLibres();
+	}
+	
+	@Test
+	void testGetTasaOcupacional() {
+		when(sitio.getTasaOcupacional()).thenReturn(10);
+		assertEquals(10,administrador.getTasaOcupacional(sitio));
+		verify(sitio).getTasaOcupacional(); 
+	}
 }

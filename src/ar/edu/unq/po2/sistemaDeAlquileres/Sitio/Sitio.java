@@ -14,17 +14,42 @@ import junit.framework.AssertionFailedError;
 public class Sitio {
 	private ArrayList<Usuario> usuarios; 
 	private ArrayList<Inmueble> inmuebles;
+	private ArrayList<String> tiposDeServicios;
+	private ArrayList<String> tiposDeInmueblesValidos;
 	
+	public Sitio() {
+		this.usuarios = new ArrayList<Usuario>();
+		this.inmuebles = new ArrayList<Inmueble>();
+		this.tiposDeServicios = new ArrayList<String>();
+		this.tiposDeInmueblesValidos = new ArrayList<String>();
+		
+	}
 	public ArrayList<Usuario> getUsuarios() {
-		return usuarios;
+		return this.usuarios;
 	}
 	
+	public ArrayList<String> getTiposDeServiciosValidos() {
+		return tiposDeServicios;
+	}
+
+	public void setTiposDeServicios(ArrayList<String> tiposDeServicios) {
+		this.tiposDeServicios = tiposDeServicios;
+	}
+
+	public ArrayList<String> getTiposDeInmueblesValidos() {
+		return tiposDeInmueblesValidos;
+	}
+
+	public void setTiposDeInmueblesValidos(ArrayList<String> tiposDeInmueblesValidos) {
+		this.tiposDeInmueblesValidos = tiposDeInmueblesValidos;
+	}
+
 	public ArrayList<Inmueble> getInmuebles() {
 		return inmuebles;
 	}
 	
 	public boolean esUsuario(Usuario usuario) {
-		return this.getUsuarios().contains(usuario);
+		return (this.getUsuarios().contains(usuario));
 	}
 	
 	public void registrarUsuario(Usuario usuario) {
@@ -43,9 +68,29 @@ public class Sitio {
 	}
 	
 	public void agregarInmueble (Inmueble inmueble) {
-		//checkear si es valido 
-		this.getInmuebles().add(inmueble);
+		if (this.esInmuebleValido(inmueble)) {
+			this.getInmuebles().add(inmueble);
+		}
+		else {
+			throw new AssertionFailedError();
+		}
+		
 	}
+	
+	public boolean esInmuebleValido(Inmueble inmueble) {
+		return (this.getTiposDeInmueblesValidos().contains(inmueble.getTipoDeInmueble())
+				&& inmueble.poseeTodosLosServiciosValidosDelSitio(this));
+	}
+	
+	public void agregarServicioValido(String servicio) {
+		this.getTiposDeServiciosValidos().add(servicio);
+		
+	} 
+	
+	public void agregarTipoDeInmuebleValido(String tipoDeInmueble) {
+		this.getTiposDeInmueblesValidos().add(tipoDeInmueble);
+		
+	} 
 	
 	public void addCategoriaAInquilino(String categoria) {
 		for(Usuario usuario : this.getUsuarios()) {
@@ -58,7 +103,7 @@ public class Sitio {
 		for(Usuario usuario : this.getUsuarios()) {
 			usuario.getRankingComoDuenho().addCategoria(categoria);;
 		}
-	}
+	} 
 	
 	
 	public void addCategoriaAInmueble(String categoria) {
@@ -76,9 +121,9 @@ public class Sitio {
 		ArrayList<Inmueble> inmuebles = new ArrayList<Inmueble>();
 		for (Inmueble inmueble : this.filtrarInmueblesQuePertenezcanALasFechas(fechaEntrada, fechaSalida)) {
 			if (inmueble.getCiudad() == ciudad 
-				&& inmueble.getCapacidad() >= huespedes
-				&& inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) > precioMinimo
-				&& inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) < precioMaximo) {
+				&& (null == inmueble.getCapacidad()  || inmueble.getCapacidad() >= huespedes)
+				&& (null == new Float (precioMaximo) || inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) > precioMinimo )
+				&& (null == new Float (precioMaximo) || inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) < precioMaximo)) {
 				
 				inmuebles.add(inmueble);
 			}
@@ -113,7 +158,7 @@ public class Sitio {
 		ArrayList<Usuario> usuarios = this.getUsuarios();
 //		usuarios.sort(usuarios, Comparator.comparing(Usuario -> 
 //												Usuario.getReservasRealizadas().size()));
-		usuarios.sort(Comparator.comparing(usuario -> usuario.getReservasRealizadas().size()));
+		usuarios.sort(Comparator.comparingInt(usuario -> ((Usuario) usuario).getReservasRealizadas().size()).reversed());
 		return usuarios;
 	}
 
@@ -122,7 +167,7 @@ public class Sitio {
 		Integer cantidadDeInmueblesLibres = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
 			if (!inmueble.estaAlquiladoActualmente()) {
-				cantidadDeInmueblesLibres =+ 1;
+				cantidadDeInmueblesLibres += 1;
 			} 
 		}
 		return cantidadDeInmueblesLibres;
@@ -132,7 +177,7 @@ public class Sitio {
 		Integer cantidadDeInmueblesAlquilados = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
 			if (inmueble.estaAlquiladoActualmente()) {
-				cantidadDeInmueblesAlquilados =+ 1;
+				cantidadDeInmueblesAlquilados += 1;
 			} 
 		}
 		return cantidadDeInmueblesAlquilados;

@@ -102,7 +102,7 @@ public class Usuario {
 	public Ranking getRankingComoInquilino() {
 		return this.rankingComoInquilino;
 	}
-	
+	 
 	public Date getFechaDeCreacion() {
 		return (this.fechaDeCreacion);
 	}

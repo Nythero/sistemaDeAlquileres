@@ -12,6 +12,7 @@ import java.util.Set;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.Sitio.Sitio;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 import ar.edu.unq.po2.sistemaDeAlquileres.temporada.Temporada;
 import junit.framework.AssertionFailedError;
@@ -155,7 +156,7 @@ public class Inmueble {
 	
 	//indica si las fechas dadas, estan dentro del rango
 	public boolean hayAlgunRangoDeFechasQuePoseaLasFecha(LocalDate fechaEntrada, LocalDate fechaSalida) {
-		boolean elRangoEstaEntreLaFecha = !(this.getRangos().isEmpty()) ;
+		boolean elRangoEstaEntreLaFecha = true;//!(this.getRangos().isEmpty()) ;
 		for(RangoDeFechaConPrecioDeterminado rango : this.getRangos()) {
 			elRangoEstaEntreLaFecha |= rango.lasFechasEstanEnElRango(fechaEntrada,fechaSalida);
 		}
@@ -206,5 +207,17 @@ public class Inmueble {
 
 	public static void darDeAltaAlTipoDeInmueble(String tipoDeInmueble) {
 		tiposDeInmueblesValidos.add(tipoDeInmueble);
-	}	
+	}
+	
+	
+	public boolean poseeTodosLosServiciosValidosDelSitio(Sitio sitio) {
+		ArrayList<String> serviciosValidos = sitio.getTiposDeServiciosValidos();
+		boolean losServiciosSonValidos = true;
+		int i = 0;
+		while (serviciosValidos.size() > i) {
+			losServiciosSonValidos &= this.getServicios().contains(serviciosValidos.get(i));
+			i++;
+		}
+		return losServiciosSonValidos;
+	}	 
 }
