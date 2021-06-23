@@ -25,7 +25,7 @@ public class AdministradorTestCase {
 	private Inmueble inmueble2;
 	private Usuario usuario1;
 	private Usuario usuario2;
-	private MockedStatic<Inmueble> inmueble1;
+	private MockedStatic<Inmueble> inmueble1; 
 	
 	@BeforeEach
 	void setUp() throws Exception {

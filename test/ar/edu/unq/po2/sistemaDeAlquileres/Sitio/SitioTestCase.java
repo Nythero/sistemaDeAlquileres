@@ -84,7 +84,7 @@ class SitioTestCase {
 	
 	@Test
 	void testAgregarInmuebleLanzaUnaExcepcionYaQueElInmuebleEsInvalido() {
-		when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(false);
+		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(false);
 		Assertions.assertThrows(AssertionFailedError.class, () -> {
 			sitio.agregarInmueble(inmueble1);
 		});
@@ -95,7 +95,7 @@ class SitioTestCase {
 		sitio.agregarTipoDeInmuebleValido("choza");
 		sitio.agregarServicioValido("gas");
 		when(inmueble1.getTipoDeInmueble()).thenReturn("choza");
-		when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		
 		sitio.agregarInmueble(inmueble1);
 		
@@ -137,9 +137,9 @@ class SitioTestCase {
 		sitio.agregarTipoDeInmuebleValido("choza");
 		sitio.agregarServicioValido("gas");
 		when(inmueble1.getTipoDeInmueble()).thenReturn("choza");
-		when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		when(inmueble2.getTipoDeInmueble()).thenReturn("choza");
-		when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+		//when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		sitio.agregarInmueble(inmueble1);
 		sitio.agregarInmueble(inmueble2);
 		when(inmueble1.getRanking()).thenReturn(ranking1);
@@ -159,64 +159,54 @@ class SitioTestCase {
 		assertEquals(2, sitio.cuantosInmueblesAlquilo(usuario1));
 	}
 
-//	@Test
-//	void testFiltrarInmueblesQuePertenezcanALasFechasDadas() {
-//		LocalDate fecha1 = LocalDate.of(2020, 5,10);
-//		LocalDate fecha2 = LocalDate.of(2020, 5,10);
-//		sitio.agregarInmueble(inmueble1);
-//		sitio.agregarInmueble(inmueble2);
-//		when(inmueble1.hayAlgunRangoDeFechasQuePoseaLasFecha(fecha1,fecha2)).thenReturn(true);
-//		when(inmueble2.hayAlgunRangoDeFechasQuePoseaLasFecha(fecha1,fecha2)).thenReturn(true);
-//		ArrayList<Inmueble>inmueblesFiltados = sitio.filtrarInmueblesQuePertenezcanALasFechas(fecha1, fecha2);
-//		 
-//		assertTrue(inmueblesFiltados.contains(inmueble1));
-//		assertTrue(inmueblesFiltados.contains(inmueble2));
-//	}
-	
-	
-//	@Test 
-//	void testBuscarInmuebles() {
-//		sitio.agregarInmueble(inmueble1);
-//		sitio.agregarInmueble(inmueble2);
-//		LocalDate fecha3 = LocalDate.of(2020, 5,10);
-//		LocalDate fecha4 = LocalDate.of(2020, 5,20);
-//		when(inmueble1.getCiudad()).thenReturn("Quilmes");
-//		when(inmueble2.getCiudad()).thenReturn("Quilmes");
-//		when(inmueble1.getCapacidad()).thenReturn(5);
-//		when(inmueble2.getCapacidad()).thenReturn(4);
-//		when(inmueble1.precioMaximoDelRangoDeFechasEntre(fecha3,fecha4)).thenReturn(200f);
-//		when(inmueble2.precioMaximoDelRangoDeFechasEntre(fecha3,fecha4)).thenReturn(500f);
-//		
-//		ArrayList<Inmueble> inmuebles = sitio.buscarInmuebles("Quilmes",fecha3,fecha4,3,100f,300f);
-//		
-//		assertTrue(inmuebles.contains(inmueble1));
-//		
+	@Test
+	void testFiltrarInmueblesQuePertenezcanALasFechasDadas() {
+		sitio.agregarTipoDeInmuebleValido("casa");
+		when(inmueble1.getTipoDeInmueble()).thenReturn("casa");
+		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+		when(inmueble2.getTipoDeInmueble()).thenReturn("casa");
+		//when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+		sitio.agregarInmueble(inmueble1);
+		sitio.agregarInmueble(inmueble2);
+		LocalDate fecha1 = LocalDate.of(2020, 5,10);
+		LocalDate fecha2 = LocalDate.of(2020, 5,10);
+		when(inmueble1.hayAlgunRangoDeFechasQuePoseaLasFecha(fecha1,fecha2)).thenReturn(true);
+		when(inmueble2.hayAlgunRangoDeFechasQuePoseaLasFecha(fecha1,fecha2)).thenReturn(false);
+		
+		ArrayList<Inmueble>inmueblesFiltados = sitio.filtrarInmueblesQuePertenezcanALasFechas(fecha1, fecha2);
+		 
+		assertTrue(inmueblesFiltados.contains(inmueble1));
+		assertFalse(inmueblesFiltados.contains(inmueble2));
+	}
 //	
-//		//assertTrue(sitio.buscarInmuebles("Quilmes",fecha1,fecha2,3,100f,300f).contains(inmueble2));
-//	}
+//	
+	@Test 
+	void testBuscarInmuebles() {
+		sitio.agregarTipoDeInmuebleValido("casa");
+		when(inmueble1.getTipoDeInmueble()).thenReturn("casa");
+		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+		when(inmueble2.getTipoDeInmueble()).thenReturn("casa");
+		//when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+		sitio.agregarInmueble(inmueble1); 
+		sitio.agregarInmueble(inmueble2);
+		LocalDate fecha3 = LocalDate.of(2020, 5,10);
+		LocalDate fecha4 = LocalDate.of(2020, 5,20);
+		when(inmueble1.getCiudad()).thenReturn("Quilmes");
+		when(inmueble2.getCiudad()).thenReturn("Quilmes");
+		when(inmueble1.getCapacidad()).thenReturn(5);
+		when(inmueble2.getCapacidad()).thenReturn(4);
+		when(inmueble1.precioMaximoDelRangoDeFechasEntre(fecha3,fecha4)).thenReturn(200f);
+		when(inmueble2.precioMaximoDelRangoDeFechasEntre(fecha3,fecha4)).thenReturn(500f);
+		when(inmueble1.hayAlgunRangoDeFechasQuePoseaLasFecha(fecha3,fecha4)).thenReturn(true);
+		when(inmueble2.hayAlgunRangoDeFechasQuePoseaLasFecha(fecha3,fecha4)).thenReturn(false);
+		
+		ArrayList<Inmueble> inmuebles = sitio.buscarInmuebles("Quilmes",fecha3,fecha4,3,100f,300f);
+		
+		assertTrue(inmuebles.contains(inmueble1));
+		assertFalse(inmuebles.contains(inmueble2));
+
+	}
 	
-//	@Test
-//	void obtenerElTopTenDeInquilinos () {
-//		sitio.registrarUsuario(usuario1);
-//		sitio.registrarUsuario(usuario2);
-//		sitio.registrarUsuario(usuario3);
-//		ArrayList <Reserva> reservas1 = new ArrayList<Reserva>();
-//		ArrayList <Reserva> reservas2 = new ArrayList<Reserva>();
-//		ArrayList <Reserva> reservas3 = new ArrayList<Reserva>();
-//		reservas1.add(reserva1);
-//		reservas1.add(reserva2);
-//		reservas1.add(reserva3);
-//		reservas2.add(reserva4);
-//		reservas2.add(reserva5);
-//		reservas3.add(reserva6);
-//		when(usuario1.getReservasRealizadas()).thenReturn(reservas1);
-// 		when(usuario2.getReservasRealizadas()).thenReturn(reservas3);
-//		when(usuario3.getReservasRealizadas()).thenReturn(reservas2);
-//		
-//		ArrayList<Usuario>usuariosTop = sitio.obtenerElTopTenDeInquilinos();
-//		ArrayList<Usuario>usuariosTop = sitio.obtenerElTopTenDeInquilinos();
-//		ArrayList<Usuario>usuariosTop = sitio.obtenerElTopTenDeInquilinos();
-//	}
 	
 	@Test
 	void testUsuariosOrdenadosPorReservasRealizadas() {
@@ -240,16 +230,35 @@ class SitioTestCase {
 		assertEquals(usuario2,sitio.usuariosOrdenadosPorReservasRealizadas().get(2));
 		assertEquals(usuario1,sitio.usuariosOrdenadosPorReservasRealizadas().get(0));
 	}
-	
-	
-	
+//	
+	@Test
+	void obtenerElTopTenDeInquilinos () {
+		sitio.registrarUsuario(usuario1);
+		sitio.registrarUsuario(usuario2);
+		sitio.registrarUsuario(usuario3);
+		ArrayList <Reserva> reservas1 = new ArrayList<Reserva>();
+		ArrayList <Reserva> reservas2 = new ArrayList<Reserva>();
+		ArrayList <Reserva> reservas3 = new ArrayList<Reserva>();
+		reservas1.add(reserva1);
+		reservas1.add(reserva2);
+		reservas1.add(reserva3);
+		reservas2.add(reserva4);
+		reservas2.add(reserva5);
+		reservas3.add(reserva6);
+		when(usuario1.getReservasRealizadas()).thenReturn(reservas1);
+ 		when(usuario2.getReservasRealizadas()).thenReturn(reservas3);
+		when(usuario3.getReservasRealizadas()).thenReturn(reservas2);
+		
+		ArrayList<Usuario>usuariosTop = sitio.obtenerElTopTenDeInquilinos();
+	}
+//	
 	@Test
 	void testGetCantidadDeInmueblesLibres() {
 		sitio.agregarTipoDeInmuebleValido("casa");
 		when(inmueble1.getTipoDeInmueble()).thenReturn("casa");
-		when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		when(inmueble2.getTipoDeInmueble()).thenReturn("casa");
-		when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+		//when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		sitio.agregarInmueble(inmueble1);
 		sitio.agregarInmueble(inmueble2);
 		when(inmueble1.estaAlquiladoActualmente()).thenReturn(false);
@@ -262,9 +271,9 @@ class SitioTestCase {
 	void testGetCantidadDeInmueblesAlquilados() {
 		sitio.agregarTipoDeInmuebleValido("casa");
 		when(inmueble1.getTipoDeInmueble()).thenReturn("casa");
-		when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		when(inmueble2.getTipoDeInmueble()).thenReturn("casa");
-		when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+		//when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		sitio.agregarInmueble(inmueble1);
 		sitio.agregarInmueble(inmueble2);
 		when(inmueble1.estaAlquiladoActualmente()).thenReturn(true);
@@ -277,14 +286,13 @@ class SitioTestCase {
 	void testGetTasaOcupacional() {
 		sitio.agregarTipoDeInmuebleValido("casa");
 		when(inmueble1.getTipoDeInmueble()).thenReturn("casa");
-		when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		when(inmueble2.getTipoDeInmueble()).thenReturn("casa");
-		when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+		//when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		sitio.agregarInmueble(inmueble1);
 		sitio.agregarInmueble(inmueble2);
 		when(inmueble1.estaAlquiladoActualmente()).thenReturn(true);
 		when(inmueble2.estaAlquiladoActualmente()).thenReturn(true);
-		
 		
 		assertEquals(1,sitio.getTasaOcupacional());
 	}

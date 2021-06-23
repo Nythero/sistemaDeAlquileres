@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Administrador.Administrador;
@@ -14,35 +16,35 @@ import junit.framework.AssertionFailedError;
 public class Sitio {
 	private ArrayList<Usuario> usuarios; 
 	private ArrayList<Inmueble> inmuebles;
-	private ArrayList<String> tiposDeServicios;
-	private ArrayList<String> tiposDeInmueblesValidos;
+	private Set<String> tiposDeServicios;
+	private Set<String> tiposDeInmueblesValidos;
 	
 	public Sitio() {
 		this.usuarios = new ArrayList<Usuario>();
 		this.inmuebles = new ArrayList<Inmueble>();
-		this.tiposDeServicios = new ArrayList<String>();
-		this.tiposDeInmueblesValidos = new ArrayList<String>();
+		this.tiposDeServicios = new HashSet<String>();
+		this.tiposDeInmueblesValidos = new HashSet<String>();
 		
 	}
 	public ArrayList<Usuario> getUsuarios() {
 		return this.usuarios;
 	}
 	
-	public ArrayList<String> getTiposDeServiciosValidos() {
-		return tiposDeServicios;
+	public Set<String> getTiposDeServiciosValidos() {
+		return this.tiposDeServicios;
 	}
 
-	public void setTiposDeServicios(ArrayList<String> tiposDeServicios) {
-		this.tiposDeServicios = tiposDeServicios;
+//	public void setTiposDeServicios(ArrayList<String> tiposDeServicios) {
+//		this.tiposDeServicios = tiposDeServicios;
+//	}
+
+	public Set<String> getTiposDeInmueblesValidos() {
+		return this.tiposDeInmueblesValidos;
 	}
 
-	public ArrayList<String> getTiposDeInmueblesValidos() {
-		return tiposDeInmueblesValidos;
-	}
-
-	public void setTiposDeInmueblesValidos(ArrayList<String> tiposDeInmueblesValidos) {
-		this.tiposDeInmueblesValidos = tiposDeInmueblesValidos;
-	}
+//	public void setTiposDeInmueblesValidos(ArrayList<String> tiposDeInmueblesValidos) {
+//		this.tiposDeInmueblesValidos = tiposDeInmueblesValidos;
+//	}
 
 	public ArrayList<Inmueble> getInmuebles() {
 		return inmuebles;
@@ -79,8 +81,19 @@ public class Sitio {
 	
 	public boolean esInmuebleValido(Inmueble inmueble) {
 		return (this.getTiposDeInmueblesValidos().contains(inmueble.getTipoDeInmueble())
-				&& inmueble.poseeTodosLosServiciosValidosDelSitio(this));
-	}
+				&& this.getTiposDeServiciosValidos().containsAll(inmueble.getServicios()));
+		}
+	
+//	public boolean poseeTodosLosServiciosValidosDelSitio(Inmueble inmueble) {
+//	ArrayList<String> serviciosARecorrer = inmueble.getServicios();
+//	boolean losServiciosSonValidos = true;
+//	int i = 0;
+//	while (serviciosARecorrer.size() > i && this.getTiposDeServiciosValidos().contains(serviciosARecorrer.get(i))) {
+//		//losServiciosSonValidos &= this.getServicios().contains(serviciosARecorrer.get(i));
+//		i++;
+//	}
+//	return losServiciosSonValidos;
+//}	
 	
 	public void agregarServicioValido(String servicio) {
 		this.getTiposDeServiciosValidos().add(servicio);
@@ -126,8 +139,8 @@ public class Sitio {
 				&& (null == new Float (precioMaximo) || inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) < precioMaximo)) {
 				
 				inmuebles.add(inmueble);
-			}
-		}
+			} 
+		} 
 		return(inmuebles);
 	}
 	
@@ -147,7 +160,7 @@ public class Sitio {
 		ArrayList<Usuario> listaARecorrer = this.usuariosOrdenadosPorReservasRealizadas();
 		ArrayList<Usuario> usuariosTop = new ArrayList<Usuario>();
 		
-		for(int i = 0; i < 10 || i != (usuarios.size() - 1); i++) {
+		for(int i = 0; i < 10 && i != (usuarios.size() - 1); i++) {
 			usuariosTop.add(listaARecorrer.get(i));
 		}
 		return usuariosTop;

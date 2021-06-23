@@ -36,8 +36,8 @@ public class Inmueble {
 	private Map<String,ArrayList<String>> comentariosPorCategorias;
 	private Integer cantidadDeVecesAlquilado; 
 	private ArrayList<RangoDeFechaConPrecioDeterminado> rangosDeFechas;
-	private static Set<String> tiposDeInmueblesValidos = new HashSet<String>();
-	private static Set<String> serviciosValidos = new HashSet<String>();
+	//private static Set<String> tiposDeInmueblesValidos = new HashSet<String>();
+	//private static Set<String> serviciosValidos = new HashSet<String>();
 	private ArrayList<Reserva> reservas;
 	 
 	
@@ -73,9 +73,9 @@ public class Inmueble {
 		
 	}
 	
-	public HashSet<String> tiposDeInmueblesValidos(){
-		return (HashSet<String>) (serviciosValidos);
-	}
+//	public HashSet<String> tiposDeInmueblesValidos(){
+//		return (HashSet<String>) (serviciosValidos);
+//	}
 	
 	public Usuario getDueño() {
 		return this.dueño;
@@ -174,7 +174,7 @@ public class Inmueble {
 		}
 		return precioMaximoDelRango;
 	}
-	
+	 
 //	 elInmuebleFueAlquilado()
 //	public boolean estaLibre() {
 //		return (this.getCantidadDeVecesAlquilado() == 0);
@@ -210,14 +210,14 @@ public class Inmueble {
 	}
 	
 	
-	public boolean poseeTodosLosServiciosValidosDelSitio(Sitio sitio) {
-		ArrayList<String> serviciosValidos = sitio.getTiposDeServiciosValidos();
-		boolean losServiciosSonValidos = true;
-		int i = 0;
-		while (serviciosValidos.size() > i) {
-			losServiciosSonValidos &= this.getServicios().contains(serviciosValidos.get(i));
-			i++;
-		}
-		return losServiciosSonValidos;
-	}	 
+//	public boolean poseeTodosLosServiciosValidosDelSitio(Sitio sitio) {
+//		ArrayList<String> serviciosValidos = sitio.getTiposDeServiciosValidos();
+//		boolean losServiciosSonValidos = true;
+//		int i = 0;
+//		while (serviciosValidos.size() > i) {
+//			losServiciosSonValidos &= this.getServicios().contains(serviciosValidos.get(i));
+//			i++;
+//		}
+//		return losServiciosSonValidos;
+//	}	  
 }
