@@ -28,22 +28,22 @@ public class EstadoReservaPendienteDeAprobacion implements EstadoReserva {
 	}
 
 	@Override
-	public void setComentario(Reserva reserva, String comentario) throws EstadoEquivocadoError{
+	public void comentarInmueble(Reserva reserva, String comentario) throws EstadoEquivocadoError{
 		throw new EstadoEquivocadoError("Pendiente de Aprobacion", " publicar un comentario");
 	}
 
 	@Override
-	public void setPuntajeADuenho(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
+	public void puntuarDuenho(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
 		throw new EstadoEquivocadoError("Pendiente de Aprobacion", " puntuar al dueño");
 	}
 
 	@Override
-	public void setPuntajeAInquilino(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
+	public void puntuarInquilino(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
 		throw new EstadoEquivocadoError("Pendiente de Aprobacion", " puntuar al inquilino");
 	}
 	
 	@Override
-	public void setPuntajeAInmueble(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError{
+	public void puntuarInmueble(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError{
 		throw new EstadoEquivocadoError("Pendiente de Aprobacion", " puntuar al inmueble");
 	}
 

@@ -10,13 +10,13 @@ public interface EstadoReserva {
 
 	EstadoReserva finalizar(Reserva reserva) throws CambioDeEstadoError;
 
-	void setComentario(Reserva reserva, String comentario) throws EstadoEquivocadoError;
+	void comentarInmueble(Reserva reserva, String comentario) throws EstadoEquivocadoError;
 
-	void setPuntajeADuenho(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError;
+	void puntuarDuenho(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError;
 
-	void setPuntajeAInquilino(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError;
+	void puntuarInquilino(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError;
 
-	void setPuntajeAInmueble(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError;
+	void puntuarInmueble(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError;
 
 	boolean estaPendienteDeAprobacion();
 

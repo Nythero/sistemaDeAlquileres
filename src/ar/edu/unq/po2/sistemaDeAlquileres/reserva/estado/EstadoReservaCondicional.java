@@ -20,22 +20,22 @@ public class EstadoReservaCondicional implements EstadoReserva {
 	}
 
 	@Override
-	public void setComentario(Reserva reserva, String comentario) throws EstadoEquivocadoError {
+	public void comentarInmueble(Reserva reserva, String comentario) throws EstadoEquivocadoError {
 		throw new EstadoEquivocadoError("Condicional", " comentar el inmueble");
 	}
 
 	@Override
-	public void setPuntajeADuenho(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
+	public void puntuarDuenho(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
 		throw new EstadoEquivocadoError("Condicional", " puntuar al dueño");
 	}
 
 	@Override
-	public void setPuntajeAInquilino(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
+	public void puntuarInquilino(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
 		throw new EstadoEquivocadoError("Condicional", " puntuar al inquilino");
 	}
 
 	@Override
-	public void setPuntajeAInmueble(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
+	public void puntuarInmueble(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
 		throw new EstadoEquivocadoError("Condicional", " puntuar al inmueble");
 	}
 

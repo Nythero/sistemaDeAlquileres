@@ -20,22 +20,22 @@ public class EstadoReservaFinalizado implements EstadoReserva {
 	}
 
 	@Override
-	public void setComentario(Reserva reserva, String comentario) {
+	public void comentarInmueble(Reserva reserva, String comentario) {
 		reserva.getInmueble().agregarComentario(comentario);
 	}
 
 	@Override
-	public void setPuntajeADuenho(Reserva reserva, String categoria, Integer puntaje) {
+	public void puntuarDuenho(Reserva reserva, String categoria, Integer puntaje) {
 		reserva.getInmueble().getDueño().getRankingComoDuenho().addPuntajePorCategoria(categoria, puntaje);
 	}
 
 	@Override
-	public void setPuntajeAInquilino(Reserva reserva, String categoria, Integer puntaje) {
+	public void puntuarInquilino(Reserva reserva, String categoria, Integer puntaje) {
 		reserva.getSolicitante().getRankingComoInquilino().addPuntajePorCategoria(categoria, puntaje);
 	}
 	
 	@Override
-	public void setPuntajeAInmueble(Reserva reserva, String categoria, Integer puntaje) {
+	public void puntuarInmueble(Reserva reserva, String categoria, Integer puntaje) {
 		reserva.getInmueble().getRanking().addPuntajePorCategoria(categoria, puntaje);
 	}
 

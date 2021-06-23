@@ -10,7 +10,7 @@ import ar.edu.unq.po2.sistemaDeAlquileres.*;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
 
-class EstadoReservaAprobadoTestCase {
+class EstadoReservaCondicionalTestCase {
 
 	Reserva reserva;
 	Inmueble inmueble;
@@ -20,7 +20,7 @@ class EstadoReservaAprobadoTestCase {
 	@Test
 	void EstadoReservaAprobado_Aceptar_CambioEstadoError() throws CambioDeEstadoError {
 		inmueble = mock(Inmueble.class);
-		estado = new EstadoReservaAprobado();
+		estado = new EstadoReservaC();
 		solicitante = mock(Usuario.class);
 		reserva = mock(Reserva.class);
 		

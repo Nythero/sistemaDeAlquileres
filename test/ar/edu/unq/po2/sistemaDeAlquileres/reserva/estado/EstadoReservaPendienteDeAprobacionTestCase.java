@@ -1,12 +1,20 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ar.edu.unq.po2.sistemaDeAlquileres.*;
+import org.mockito.MockedStatic;
+
+import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.mail.MailSender;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
 
@@ -14,44 +22,83 @@ class EstadoReservaPendienteDeAprobacionTestCase {
 
 	Reserva reserva;
 	Inmueble inmueble;
-	EstadoReserva estado;
+	EstadoReservaPendienteDeAprobacion estado;
 	Usuario solicitante;
+	static MockedStatic<MailSender> email;
 	
-	@Test
-	void ReservaEstadoPendienteDeAprobacion_Aceptar_Success() throws CambioDeEstadoError {
-		inmueble = mock(Inmueble.class);
+	@BeforeAll
+	static void setupStatic() {
+		email = mockStatic(MailSender.class);
+	}
+	
+	@BeforeEach
+	void setup() {
 		estado = new EstadoReservaPendienteDeAprobacion();
-		solicitante = mock(Usuario.class);
 		reserva = mock(Reserva.class);
-		
-		when(reserva.getInmueble()).thenReturn(inmueble);
-		
-		estado.aceptar(reserva);
-		
-		verify(inmueble).aceptarReserva(reserva);
 	}
 	
 	@Test
-	void ReservaEstadoPendienteDeAprobacion_Cancelar_Success() throws CambioDeEstadoError {
-		inmueble = mock(Inmueble.class);
-		estado = new EstadoReservaPendienteDeAprobacion();
-		solicitante = mock(Usuario.class);
-		reserva = mock(Reserva.class);
-		
+	void ReservaEstadoPendienteDeAprobacion_Aceptar_ReturnsEstadoReservaCondicional() throws CambioDeEstadoError {
+		Inmueble inmueble = mock(Inmueble.class);
 		when(reserva.getInmueble()).thenReturn(inmueble);
+		when(inmueble.yaEstaReservado(reserva.getRangoDeFechas())).thenReturn(true);
 		
+		EstadoReserva estadoDevuelto = estado.aceptar(reserva);
+		
+		email.verify(() -> MailSender.mandarMailDeConfirmacion(reserva));
+		assertTrue(estadoDevuelto.getClass().equals(EstadoReservaCondicional.class));
+	}
+	
+	@Test
+	void ReservaEstadoPendienteDeAprobacion_Aceptar_ReturnsEstadoReservaConcretado() throws CambioDeEstadoError {
+		Inmueble inmueble = mock(Inmueble.class);
+		when(reserva.getInmueble()).thenReturn(inmueble);
+		when(inmueble.yaEstaReservado(reserva.getRangoDeFechas())).thenReturn(false);
+		
+		EstadoReserva estadoDevuelto = estado.aceptar(reserva);
+		
+		email.verify(() -> MailSender.mandarMailDeConfirmacion(reserva));
+		assertTrue(estadoDevuelto.getClass().equals(EstadoReservaConcretado.class));
+	}
+	@Test
+	void ReservaEstadoPendienteDeAprobacion_Cancelar_Success() throws CambioDeEstadoError {
 		estado.cancelar(reserva);
 		
-		verify(inmueble).cancelarReserva(reserva);
+		email.verify(() -> MailSender.mandarMailDeCancelacion(reserva));
 	}
 	
 	@Test
 	void ReservaEstadoPendienteDeAprobacion_Finalizar_CambioDeEstadoError() throws CambioDeEstadoError {
-		inmueble = mock(Inmueble.class);
-		estado = new EstadoReservaPendienteDeAprobacion();
-		solicitante = mock(Usuario.class);
-		reserva = mock(Reserva.class);
-		
 		assertThrows(CambioDeEstadoError.class, () -> estado.finalizar(reserva));
+	}
+
+	@Test
+	public void ReservaEstadoPendienteDeAprobacion_ComentarInmueble_EstadoEquivocadoError() {
+		assertThrows(EstadoEquivocadoError.class, () -> estado.comentarInmueble(null, null));
+	}
+
+	@Test
+	public void ReservaEstadoPendienteDeAprobacion_PuntuarDuenho_EstadoEquivocadoError() {
+		assertThrows(EstadoEquivocadoError.class, () -> estado.puntuarDuenho(null, null, null));
+	}
+
+	@Test
+	public void ReservaEstadoPendienteDeAprobacion_PuntuarInquilino_EstadoEquivocadoError() {
+		assertThrows(EstadoEquivocadoError.class, () -> estado.puntuarInquilino(null, null, null));
+	}
+
+	@Test
+	public void ReservaEstadoPendienteDeAprobacion_PuntuarInmueble_EstadoEquivocadoError() throws EstadoEquivocadoError{
+		assertThrows(EstadoEquivocadoError.class, () -> estado.puntuarInmueble(null, null, null));
+	}
+
+	@Test
+	public void ReservaEstadoPendienteDeAprobacion_EstaPendienteDeAprobacion_True() {
+		assertTrue(estado.estaPendienteDeAprobacion());
+	}
+
+	@Test
+	public void ReservaEstadoPendienteDeAprobacion_EstaConcretada_False() {
+		assertFalse(estado.estaConcretada());
 	}
 }

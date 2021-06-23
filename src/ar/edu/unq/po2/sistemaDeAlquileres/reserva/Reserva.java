@@ -87,18 +87,22 @@ public class Reserva {
 		catch (CambioDeEstadoError error) {}
 	}
 	
-	public void setComentario(String comentario) throws EstadoEquivocadoError {
-		this.getEstado().setComentario(this, comentario);
+	public void comentarInmueble(String comentario) throws EstadoEquivocadoError {
+		this.getEstado().comentarInmueble(this, comentario);
     }
     
-    public void setPuntajeADuenho (String categoria, Integer puntaje) throws EstadoEquivocadoError {
-		this.getEstado().setPuntajeADuenho(this, categoria, puntaje);
+    public void puntuarDuenho(String categoria, Integer puntaje) throws EstadoEquivocadoError {
+		this.getEstado().puntuarDuenho(this, categoria, puntaje);
     }
     
-    public void setPuntajeAInquilino (String categoria, Integer puntaje) throws EstadoEquivocadoError {
-    	this.getEstado().setPuntajeAInquilino(this, categoria, puntaje);
+    public void puntuarInquilino(String categoria, Integer puntaje) throws EstadoEquivocadoError {
+    	this.getEstado().puntuarInquilino(this, categoria, puntaje);
     }
 
+    public void  puntuarInmueble(String categoria, Integer puntaje) throws EstadoEquivocadoError {
+    	this.getEstado().puntuarInmueble(this, categoria, puntaje);
+    }
+    
 	public boolean estaPendienteDeAprobacion() {
 		return this.getEstado().estaPendienteDeAprobacion();
 	}
