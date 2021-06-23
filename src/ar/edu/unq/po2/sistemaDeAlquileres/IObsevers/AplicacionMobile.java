@@ -1,6 +1,6 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.IObsevers;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
 
 public class AplicacionMobile implements IObserver{
 	private PopUpWindow popUpWindow;

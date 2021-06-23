@@ -6,10 +6,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Sitio.Sitio;
+import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
 import junit.framework.AssertionFailedError;
 
 public class Usuario {

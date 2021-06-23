@@ -1,14 +1,15 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.PoliticaDeCancelacion;
 
 
+import java.time.LocalDate;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 
 public class CancelacionGratuita extends PoliticaDeCancelacion {
 	
 	@Override
-	public void cancelarReserva(Reserva reserva) {
-		if(this.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(reserva)>=10) {
+	public void cancelarReserva(LocalDate diaActual, Reserva reserva) {
+		if(this.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(diaActual,reserva)>=10) {
 			reserva.devolverMontoAInquilinoSegunCancelacion(reserva.getMontoTotal());
 			reserva.extraerMontoADueñoSegunCancelacion(reserva.getMontoTotal());
 		}

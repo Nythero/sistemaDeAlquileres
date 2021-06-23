@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.IObsevers.IObserver;
-import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
 import junit.framework.AssertionFailedError;
 
 public class Observable {

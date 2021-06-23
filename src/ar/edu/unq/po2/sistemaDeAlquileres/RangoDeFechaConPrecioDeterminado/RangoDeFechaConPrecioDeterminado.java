@@ -2,34 +2,15 @@ package ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado;
 
 import java.time.LocalDate;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
 
-public class RangoDeFechaConPrecioDeterminado {
-	private LocalDate fechaInicial;
-	private LocalDate fechaFinal;
+public class RangoDeFechaConPrecioDeterminado extends RangoDeFechas {
 	private Temporada precio;
 	
 	public RangoDeFechaConPrecioDeterminado(LocalDate fechaInicial, LocalDate fechaFinal,Temporada precio){
-		this.fechaInicial= fechaInicial;
-		this.fechaFinal= fechaFinal;
+		super(fechaInicial,fechaFinal);
 		this.precio= precio;
-	}
-	
-	/**
-	 * Devuelve la fecha Inicial
-	 * @return
-	 */
-	public LocalDate getFechaInicial() {
-		return this.fechaInicial;
-	}
-	
-
-	/**
-	 * Devuelve la fecha Final
-	 * @return
-	 */
-	public LocalDate getFechaFinal() {
-		return this.fechaFinal;
 	}
 
 	/**
@@ -45,9 +26,9 @@ public class RangoDeFechaConPrecioDeterminado {
 	 * @return
 	 */
 	public float getMontoTotal() {
-		LocalDate fechaInicialAVerificar = this.fechaInicial;
+		LocalDate fechaInicialAVerificar = this.getFechaInicial();
         float result= 0;
-        while (!fechaInicialAVerificar.equals(this.fechaFinal)) {
+        while (!fechaInicialAVerificar.equals(this.getFechaFinal())) {
             result+= this.getPrecioTemporada().getPrecio(fechaInicialAVerificar);
             fechaInicialAVerificar= fechaInicialAVerificar.plusDays(1); 
         }
@@ -62,21 +43,7 @@ public class RangoDeFechaConPrecioDeterminado {
 	public float darPrecioSegunLaTemporada(LocalDate fecha) {
 		return this.getPrecioTemporada().getPrecio(fecha);
 	}
-	
-	
-	/**
-	 * Dada una fechaEntrada y una FechaSalida devuelve si se encuentra dentro de los 
-	 * rangos de la reserva
-	 * @param fechaEntrada
-	 * @param fechaSalida
-	 * @return
-	 */
-    public boolean lasFechasEstanEnElRango(LocalDate fechaEntrada, LocalDate fechaSalida) {
-        return ((this.fechaInicial.equals(fechaEntrada)|| this.fechaInicial.isBefore(fechaEntrada)) &&
-        		(this.fechaFinal.equals(fechaSalida) ||this.fechaFinal.isAfter(fechaSalida)));
-    }
-    
-    
+	   
     /**
      * Dada una fechaEntrada y una FechaSalida devuelve el precio maximo entre
      * el rango de fechas
@@ -86,11 +53,23 @@ public class RangoDeFechaConPrecioDeterminado {
      */
     public float precioMaximoEntreElRangoDeFechas(LocalDate fechaEntrada, LocalDate fechaSalida) {
         float precio = 0;
-        for (LocalDate fechaActual = fechaEntrada; fechaActual.isBefore(fechaSalida) || fechaActual.equals(fechaEntrada); fechaActual = fechaActual.plusDays(1)){
-            precio = (this.getPrecioTemporada().getPrecio(fechaActual) > precio)
+        for (LocalDate fechaActual = fechaEntrada; fechaActual.isBefore(fechaSalida) || fechaActual.isEqual(fechaSalida); fechaActual = fechaActual.plusDays(1)){
+        	precio = (this.getPrecioTemporada().getPrecio(fechaActual) > precio)
                     ? this.getPrecioTemporada().getPrecio(fechaActual)
                     : precio;
               }
     return precio;
     }
+
+	public float obtenerMontoPorCantidadDeDias(int cantidadDeDias) {
+		float result= 0;
+		int diaActual= 0;
+		LocalDate diaInicial = this.getFechaInicial();
+		while(diaActual != cantidadDeDias){
+			result+= this.darPrecioSegunLaTemporada(diaInicial);
+			diaActual++;
+			diaInicial= diaInicial.plusDays(1);
+		}
+		return result;
+	}
 }

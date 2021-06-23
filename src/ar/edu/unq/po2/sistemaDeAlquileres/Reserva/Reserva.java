@@ -2,172 +2,145 @@ package ar.edu.unq.po2.sistemaDeAlquileres.Reserva;
 
 import java.time.LocalDate;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
+import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Estado.CambioDeEstadoError;
+import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Estado.EstadoEquivocadoError;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
+import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
 
 public class Reserva {
+	
+	private RangoDeFechaConPrecioDeterminado rangoDeFechas;
+	private Inmueble inmueble;
+	private EstadoReserva estado;
+	private Usuario solicitante;
+	private String formaDePago;
+	private float total;
 
-    
-    private RangoDeFechaConPrecioDeterminado rango;
-    private Inmueble inmueble;
-    private EstadoReserva estado;
-    private Usuario solicitante;
+	public Reserva(Inmueble inmueble, RangoDeFechaConPrecioDeterminado rangoDeFechas, Usuario solicitante, String formaDePago, EstadoReserva estado) {
+		this.setRangoDeFechas(rangoDeFechas);
+		this.setSolicitante(solicitante);
+		this.setInmueble(inmueble);
+		this.setEstado(estado);
+		this.setFormaDePago(formaDePago);
+	}
 
-    public Reserva(RangoDeFechaConPrecioDeterminado rango, Inmueble inmueble, Usuario solicitante, EstadoReserva estado) {
-        this.rango(rango);
-        this.setSolicitante(solicitante);
-        this.setInmueble(inmueble);
-        this.setEstado(estado);
+	public RangoDeFechaConPrecioDeterminado getRangoDeFechas() {
+		return this.rangoDeFechas;
+	}
+	
+	private void setRangoDeFechas(RangoDeFechaConPrecioDeterminado rangoDeFechas) {
+		this.rangoDeFechas = rangoDeFechas;
+	}
+
+	public EstadoReserva getEstado() {
+		return estado;
+	}
+	
+	private void setEstado(EstadoReserva estado) {
+		this.estado = estado;
+	}
+	
+	public Inmueble getInmueble() {
+		return this.inmueble;
+	}
+	
+	private void setInmueble(Inmueble inmueble) {
+		this.inmueble = inmueble;
+	}
+	
+	public Usuario getSolicitante() {
+		return this.solicitante;
+	}
+	
+	private void setSolicitante(Usuario solicitante) {
+		this.solicitante = solicitante;
+	}
+
+	public String getFormaDePago() {
+		return this.formaDePago;
+	}
+
+	private void setFormaDePago(String formaDePago) {
+		this.formaDePago = formaDePago;
+	}
+	
+	public void cancelar() {
+		try {
+			this.setEstado(this.getEstado().cancelar(this));
+		}
+		catch (CambioDeEstadoError error) {
+			
+		}
+	}
+	
+	public void aceptar() {
+		try {
+			this.setEstado(this.getEstado().aceptar(this));
+		}
+		catch (CambioDeEstadoError error) {}
+	}
+	
+	public void finalizar() {
+		try {
+			this.setEstado(this.getEstado().finalizar(this));
+		}
+		catch (CambioDeEstadoError error) {}
+	}
+	
+	public void setComentario(String comentario) throws EstadoEquivocadoError {
+		this.getEstado().setComentario(this, comentario);
     }
     
-    public LocalDate getFechaInicial() {
-		return this.rango.getFechaInicial();
+    public void setPuntajeADuenho (String categoria, Integer puntaje) throws EstadoEquivocadoError {
+		this.getEstado().setPuntajeADuenho(this, categoria, puntaje);
+    }
+    
+    public void setPuntajeAInquilino (String categoria, Integer puntaje) throws EstadoEquivocadoError {
+    	this.getEstado().setPuntajeAInquilino(this, categoria, puntaje);
+    }
+
+	public boolean estaPendienteDeAprobacion() {
+		return this.getEstado().estaPendienteDeAprobacion();
+	}
+
+	public boolean estaConcretada() {
+		return this.getEstado().estaConcretada();
+	}
+
+	public float getMontoTotal() {
+		return this.total;
+	}
+
+	public LocalDate getFechaInicial() {
+		return this.getRangoDeFechas().getFechaInicial();
 	}
 	
 	public LocalDate getFechaFinal() {
-		return this.rango.getFechaFinal();
-	}	
-	
-    public void devolverMontoAInquilinoSegunCancelacion(float monto){
-		this.getSolicitante().recibirPago(monto);
+		return this.getRangoDeFechas().getFechaFinal();
 	}
 
+	public void devolverMontoAInquilinoSegunCancelacion(float monto){
+		this.getSolicitante().recibirPago(monto);
+	}
 
 	public void extraerMontoADueñoSegunCancelacion(float monto){
 		this.getInmueble().getDueño().extraerMonto(monto);
 	}
 
-	public float getMontoTotal() {
-			return this.getRango().getMontoTotal();
-		}
+	public int cantidadDeDias() {
+		return this.getRangoDeFechas().cantidadDeDias();
+	}
 
 	public void exigirMontoFaltanteAInquilino() {
 		LocalDate diaInicial = this.getFechaInicial().plusDays(1);
-		float monto = this.getRango().getPrecioTemporada().getPrecio(diaInicial);
-		this.getInmueble().getDueño().recibirPago(monto);
+		float monto= this.getRangoDeFechas().darPrecioSegunLaTemporada(diaInicial);
+			this.getInmueble().getDueño().recibirPago(monto);
 		}
 
-	public int cantidadDeDias() {
-		LocalDate diaAVerificar = this.getFechaInicial();
-		int result= 0;
-		while (!diaAVerificar.equals(this.getFechaFinal())) {
-			result+= 1;
-			diaAVerificar= diaAVerificar.plusDays(1);
-		}
-		return result;
+	public float obtenerMontoSegunDias(int cantidadDeDias) {
+		return this.getRangoDeFechas().obtenerMontoPorCantidadDeDias(cantidadDeDias);
 	}
 	
-	public float obtenerMontoSegunDias(int cantidadDeDias) {
-		float result= 0;
-		int diaActual= 0;
-		LocalDate diaInicial = this.rango.getFechaInicial();
-		while(diaActual != cantidadDeDias){
-			result+= this.rango.darPrecioSegunLaTemporada(diaInicial);
-			diaActual++;
-			diaInicial= diaInicial.plusDays(1);
-		}
-		return result;
-	}
-    
-    private void rango(RangoDeFechaConPrecioDeterminado rango) {
-        this.rango = rango;
-    }
-
-    private EstadoReserva getEstado() {
-        return estado;
-    }
-    
-    private void setEstado(EstadoReserva estado) {
-        this.estado = estado;
-    }
-    
-    public Inmueble getInmueble() {
-        return this.inmueble;
-    }
-    
-    private void setInmueble(Inmueble inmueble) {
-        this.inmueble = inmueble;
-    }
-    
-    public Usuario getSolicitante() {
-        return this.solicitante;
-    }
-    
-    private void setSolicitante(Usuario solicitante) {
-        this.solicitante = solicitante;
-    }
-    
-
-    public RangoDeFechaConPrecioDeterminado getRango() {
-        return this.rango;
-    }
-    
-//    public int getCantidadDias() {
-//        return this.getRango().get;
-//    }
-
-    public void cancelar() {
-        this.setEstado(this.getEstado().cancelar(this));
-    }
-    
-    public void aceptar() {
-        this.setEstado(this.getEstado().aceptar(this));
-    }
-    
-    public void finalizar() {
-        this.setEstado(this.getEstado().finalizar(this));
-    }
-
-    
-
-//    public void setPuntajeInquilino(String categoria, Integer puntaje) {
-//        // TODO Auto-generated method stub
-//        
-//    }
-//
-//    public boolean SeRellenoElFormulario() {
-//        // TODO Auto-generated method stub
-//        
-//    }
-
-//    public boolean lasFechaEstanEnElRango(LocalDate fechaEntrada, LocalDate fechaSalida) {
-//        return (this.getRango().lasFechasEstanEnElRango(fechaEntrada,fechaSalida));
-//    }
-
-    
-//    public boolean elPrecioEstaEnElRangoDe(float precioMinimo, float precioMaximo) {
-//        return (this.getRango().elPrecioEstaEntreElRangoDe(precioMinimo,precioMaximo));
-//    }
-    
-    public void setComentario(String comentario) {
-        
-    }
-
-    public void setPuntajeCategoriaAInmueble(String servicio, Integer puntaje) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void setPuntajeAInquilino(String categoria, Integer puntaje) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void setPuntajeADuenho(String categoria, Integer puntaje) {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    public boolean laFechaInicialDelRangoEstaDespuesDelDiaActual() {
-        return (this.getRango().getFechaInicial().isAfter(LocalDate.now()));
-    }
-     
-    public String getCiudad(){
-        return (this.getInmueble().getCiudad());
-    }
-
-    public boolean laFechaActualEstaDentroDelRango() {
-        return (this.getRango().lasFechasEstanEnElRango(LocalDate.now(), LocalDate.now()));
-    }
 }
