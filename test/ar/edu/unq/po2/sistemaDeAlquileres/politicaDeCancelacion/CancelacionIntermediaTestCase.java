@@ -7,67 +7,94 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-
-import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
+import junit.framework.AssertionFailedError;
 
 class CancelacionIntermediaTestCase {
 	private CancelacionIntermedia cancelacionIntermedia;
 	@Mock private LocalDate fechaActual;
 	@Mock private Reserva reserva;
-	@Mock private RangoDeFechaConPrecioDeterminado rangoDeFechas;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		this.cancelacionIntermedia= new CancelacionIntermedia();
 		this.fechaActual= mock(LocalDate.class);
 		this.reserva= mock(Reserva.class);
-		this.rangoDeFechas= mock(RangoDeFechaConPrecioDeterminado.class);	
 	}
 
 	@Test
 	void testSeCancelaConMasDe20Dias() {
-		/*LocalDate fechaActual = LocalDate.of(2021, 6, 19);
-		when(reserva.getFechaInicial()).thenReturn(LocalDate.of(2021, 7, 20));
-		when(reserva.getMontoTotal()).thenReturn(500f);
+		when(fechaActual.isAfter(reserva.getFechaInicial())).thenReturn(false).thenReturn(false);
+		when(fechaActual.isEqual(reserva.getFechaInicial())).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(true).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(true).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).
+		thenReturn(false).thenReturn(true);
+		
+		when(fechaActual.plusDays(1)).thenReturn(fechaActual).thenReturn(fechaActual).thenReturn(fechaActual);
+		when(reserva.getMontoTotal()).thenReturn(500f).thenReturn(500f).thenReturn(500f);
+		
 		cancelacionIntermedia.cancelarReserva(fechaActual,reserva);
-		
-		verify(reserva,times(68)).getFechaInicial();
-		verify(reserva).devolverMontoAInquilinoSegunCancelacion(500f);
-		verify(reserva).extraerMontoADueñoSegunCancelacion(500f);*/
-		
-		when(reserva.getFechaInicial()).thenReturn(fechaActual);
-		when(reserva.getMontoTotal()).thenReturn(500f);
-		cancelacionIntermedia.cancelarReserva(fechaActual,reserva);
-		
-		verify(reserva,times(68)).getFechaInicial();
+		verify(reserva,times(52)).getFechaInicial();
 		verify(reserva).devolverMontoAInquilinoSegunCancelacion(500f);
 		verify(reserva).extraerMontoADueñoSegunCancelacion(500f);
-		
 	}
-	
 	@Test
 	void testSeCancelaEntre19Y10Dias() {
-		LocalDate fechaActual = LocalDate.of(2021, 6, 19);
-		when(reserva.getFechaInicial()).thenReturn(LocalDate.of(2021, 7, 2));
-		when(reserva.getMontoTotal()).thenReturn(500f);
+		when(fechaActual.isAfter(reserva.getFechaInicial())).thenReturn(false).thenReturn(false);
+		when(fechaActual.isEqual(reserva.getFechaInicial())).thenReturn(false).thenReturn(false)
+		.thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false)
+		.thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(true).thenReturn(false).thenReturn(false)
+		.thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false)
+		.thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(true);
+		when(fechaActual.plusDays(1)).thenReturn(fechaActual).thenReturn(fechaActual);
+		when(reserva.getMontoTotal()).thenReturn(500f).thenReturn(500f);
 		cancelacionIntermedia.cancelarReserva(fechaActual,reserva);
 		
-		verify(reserva,times(32)).getFechaInicial();
+		verify(reserva,times(28)).getFechaInicial();
 		verify(reserva).devolverMontoAInquilinoSegunCancelacion(250f);
 		verify(reserva).extraerMontoADueñoSegunCancelacion(250f);
 	}
 	
 	@Test
 	void testSeCancelaConMenosDe10Dias() {
-		LocalDate fechaActual = LocalDate.of(2021, 6, 19);
-		when(reserva.getFechaInicial()).thenReturn(LocalDate.of(2021, 6, 22));
+		when(fechaActual.isAfter(reserva.getFechaInicial())).thenReturn(false).thenReturn(false).thenReturn(false);
+		when(fechaActual.isEqual(reserva.getFechaInicial())).thenReturn(false).thenReturn(false)
+		.thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false)
+		.thenReturn(false).thenReturn(true).thenReturn(false).thenReturn(false)
+		.thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false)
+		.thenReturn(false).thenReturn(true).thenReturn(false).thenReturn(false)
+		.thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false).thenReturn(false)
+		.thenReturn(false).thenReturn(true);
+		when(fechaActual.plusDays(1)).thenReturn(fechaActual).thenReturn(fechaActual).thenReturn(fechaActual);
 		cancelacionIntermedia.cancelarReserva(fechaActual,reserva);
 		
-		verify(reserva,times(18)).getFechaInicial();
+		verify(reserva,times(32)).getFechaInicial();
 	}
-
+	
+	@Test
+	void testCuandoNoSePuedeCancelarLaReseva() {
+		when(fechaActual.isEqual(reserva.getFechaInicial())).thenReturn(true);
+		
+		Assertions.assertThrows(AssertionFailedError.class, () -> {
+			cancelacionIntermedia.cancelarReserva(fechaActual,reserva);
+		  });
+		
+		verify(reserva,times(2)).getFechaInicial();
+	}
 }

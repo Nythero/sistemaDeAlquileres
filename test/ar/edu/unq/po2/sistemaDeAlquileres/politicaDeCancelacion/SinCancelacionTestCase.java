@@ -1,15 +1,20 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.PoliticaDeCancelacion;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
+import junit.framework.AssertionFailedError;
 
 class SinCancelacionTestCase {
 	private PoliticaDeCancelacion sinCancelacion;

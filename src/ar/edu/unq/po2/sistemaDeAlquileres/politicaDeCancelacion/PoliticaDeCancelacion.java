@@ -20,16 +20,16 @@ public abstract class PoliticaDeCancelacion {
 	 * @return
 	 */
 	public int darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(LocalDate diaActual, Reserva reserva) {
-		if(diaActual.isEqual(reserva.getFechaInicial()) || diaActual.isAfter(reserva.getFechaInicial())){
+		LocalDate fecha= diaActual;
+		if(fecha.isEqual(reserva.getFechaInicial()) || diaActual.isAfter(reserva.getFechaInicial())){
 			throw new AssertionFailedError("Ya paso la etapa de cancelacion");
 		}
 		else {
 			int result= 0;
-			while (!diaActual.isEqual(reserva.getFechaInicial())) {
+			while (!fecha.isEqual(reserva.getFechaInicial())) {
 				result+= 1;
-				diaActual= diaActual.plusDays(1);
+				fecha= diaActual.plusDays(1);
 			}
-			System.out.print(result);
 			return result;
 		}
 	}
