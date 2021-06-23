@@ -38,7 +38,7 @@ class EstadoReservaPendienteDeAprobacionTestCase {
 	}
 	
 	@Test
-	void ReservaEstadoPendienteDeAprobacion_Aceptar_ReturnsEstadoReservaCondicional() throws CambioDeEstadoError {
+	void EstadoReservaPendienteDeAprobacion_Aceptar_ReturnsEstadoReservaCondicional() throws CambioDeEstadoError {
 		Inmueble inmueble = mock(Inmueble.class);
 		when(reserva.getInmueble()).thenReturn(inmueble);
 		when(inmueble.yaEstaReservado(reserva.getRangoDeFechas())).thenReturn(true);
@@ -50,7 +50,7 @@ class EstadoReservaPendienteDeAprobacionTestCase {
 	}
 	
 	@Test
-	void ReservaEstadoPendienteDeAprobacion_Aceptar_ReturnsEstadoReservaConcretado() throws CambioDeEstadoError {
+	void EstadoReservaPendienteDeAprobacion_Aceptar_ReturnsEstadoReservaConcretado() throws CambioDeEstadoError {
 		Inmueble inmueble = mock(Inmueble.class);
 		when(reserva.getInmueble()).thenReturn(inmueble);
 		when(inmueble.yaEstaReservado(reserva.getRangoDeFechas())).thenReturn(false);
@@ -61,44 +61,44 @@ class EstadoReservaPendienteDeAprobacionTestCase {
 		assertTrue(estadoDevuelto.getClass().equals(EstadoReservaConcretado.class));
 	}
 	@Test
-	void ReservaEstadoPendienteDeAprobacion_Cancelar_Success() throws CambioDeEstadoError {
+	void EstadoReservaPendienteDeAprobacion_Cancelar_Success() throws CambioDeEstadoError {
 		estado.cancelar(reserva);
 		
 		email.verify(() -> MailSender.mandarMailDeCancelacion(reserva));
 	}
 	
 	@Test
-	void ReservaEstadoPendienteDeAprobacion_Finalizar_CambioDeEstadoError() throws CambioDeEstadoError {
+	void EstadoReservaPendienteDeAprobacion_Finalizar_CambioDeEstadoError() throws CambioDeEstadoError {
 		assertThrows(CambioDeEstadoError.class, () -> estado.finalizar(reserva));
 	}
 
 	@Test
-	public void ReservaEstadoPendienteDeAprobacion_ComentarInmueble_EstadoEquivocadoError() {
+	void EstadoReservaPendienteDeAprobacion_ComentarInmueble_EstadoEquivocadoError() {
 		assertThrows(EstadoEquivocadoError.class, () -> estado.comentarInmueble(null, null));
 	}
 
 	@Test
-	public void ReservaEstadoPendienteDeAprobacion_PuntuarDuenho_EstadoEquivocadoError() {
+	void EstadoReservaPendienteDeAprobacion_PuntuarDuenho_EstadoEquivocadoError() {
 		assertThrows(EstadoEquivocadoError.class, () -> estado.puntuarDuenho(null, null, null));
 	}
 
 	@Test
-	public void ReservaEstadoPendienteDeAprobacion_PuntuarInquilino_EstadoEquivocadoError() {
+	void EstadoReservaPendienteDeAprobacion_PuntuarInquilino_EstadoEquivocadoError() {
 		assertThrows(EstadoEquivocadoError.class, () -> estado.puntuarInquilino(null, null, null));
 	}
 
 	@Test
-	public void ReservaEstadoPendienteDeAprobacion_PuntuarInmueble_EstadoEquivocadoError() throws EstadoEquivocadoError{
+	void EstadoReservaPendienteDeAprobacion_PuntuarInmueble_EstadoEquivocadoError() throws EstadoEquivocadoError{
 		assertThrows(EstadoEquivocadoError.class, () -> estado.puntuarInmueble(null, null, null));
 	}
 
 	@Test
-	public void ReservaEstadoPendienteDeAprobacion_EstaPendienteDeAprobacion_True() {
+	void EstadoReservaPendienteDeAprobacion_EstaPendienteDeAprobacion_True() {
 		assertTrue(estado.estaPendienteDeAprobacion());
 	}
 
 	@Test
-	public void ReservaEstadoPendienteDeAprobacion_EstaConcretada_False() {
+	void EstadoReservaPendienteDeAprobacion_EstaConcretada_False() {
 		assertFalse(estado.estaConcretada());
 	}
 }
