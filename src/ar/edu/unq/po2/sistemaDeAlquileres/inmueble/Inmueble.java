@@ -101,7 +101,7 @@ public class Inmueble {
 		return this.horaDeCheckOut;
 	}
 
-	public ArrayList<String> getFormasDePago() {
+	private ArrayList<String> getFormasDePago() {
 		return this.formasDePago;
 	}
 
@@ -113,11 +113,11 @@ public class Inmueble {
 		return this.rangosDeFechas;
 	}
 
-	public ArrayList<String> getComentariosGenerales() {
+	private ArrayList<String> getComentariosGenerales() {
 		return this.comentariosGenerales;
 	}
 
-	public Map<String, ArrayList<String>> getComentariosPorCategorias() {
+	private Map<String, ArrayList<String>> getComentariosPorCategorias() {
 		return this.comentariosPorCategorias;
 	}
 

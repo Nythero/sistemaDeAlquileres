@@ -124,4 +124,8 @@ class InmuebleTestCase {
 		assertFalse(inmueble.yaEstaReservado(rango));
 	}
 	
+	@Test
+	void Inmueble_AgregarComentario_Success() {
+		assertDoesNotThrow(() -> inmueble.agregarComentario("Comentario"));
+	}
 }
