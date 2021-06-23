@@ -23,13 +23,13 @@ public class CancelacionIntermedia extends PoliticaDeCancelacion {
 		}
 	}
 	
-	public boolean tieneFechaEntre19Y10(LocalDate diaActual,Reserva reserva) {
+	private boolean tieneFechaEntre19Y10(LocalDate diaActual,Reserva reserva) {
 		return (this.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(diaActual,reserva)<=19) &&
 				(this.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(diaActual,reserva)>=10);
 	}
 
 	
-	public boolean tieneFechaMenorA10Dias(LocalDate diaActual,Reserva reserva) {
+	private boolean tieneFechaMenorA10Dias(LocalDate diaActual,Reserva reserva) {
 		return this.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(diaActual,reserva)<=9;
 	}
 	
