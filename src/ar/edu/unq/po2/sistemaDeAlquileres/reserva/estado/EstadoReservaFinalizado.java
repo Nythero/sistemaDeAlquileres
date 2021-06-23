@@ -2,22 +2,7 @@ package ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
 
-public class EstadoReservaFinalizado implements EstadoReserva {
-
-	@Override
-	public EstadoReserva cancelar(Reserva reserva) throws CambioDeEstadoError {
-		throw new CambioDeEstadoError("Finalizado", "cancelar");
-	}
-
-	@Override
-	public EstadoReserva aceptar(Reserva reserva) throws CambioDeEstadoError {
-		throw new CambioDeEstadoError("Finalizado", "aceptar");
-	}
-
-	@Override
-	public EstadoReserva finalizar(Reserva reserva) throws CambioDeEstadoError {
-		throw new CambioDeEstadoError("Finalizado", "finalizar");
-	}
+public class EstadoReservaFinalizado extends EstadoReserva {
 
 	@Override
 	public void comentarInmueble(Reserva reserva, String comentario) {
@@ -40,12 +25,7 @@ public class EstadoReservaFinalizado implements EstadoReserva {
 	}
 
 	@Override
-	public boolean estaPendienteDeAprobacion() {
-		return false;
-	}
-
-	@Override
-	public boolean estaConcretada() {
-		return false;
+	String codigo() {
+		return "Finalizado";
 	}
 }
