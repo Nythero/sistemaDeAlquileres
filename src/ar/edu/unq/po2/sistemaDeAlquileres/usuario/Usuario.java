@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
-import ar.edu.unq.po2.sistemaDeAlquileres.Ranking;
+import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.sitio.Sitio;
 

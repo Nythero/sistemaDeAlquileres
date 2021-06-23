@@ -1,6 +1,5 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -34,6 +33,7 @@ class EstadoReservaCanceladoTestCase {
 	void EstadoReservaCancelado_Finalizar_CambioDeEstadoError() throws CambioDeEstadoError {
 		assertThrows(CambioDeEstadoError.class, () -> estado.finalizar(reserva));
 	}
+	
 	@Test
 	void EstadoReservaCancelado_ComentarInmueble_EstadoEquivocadoError() {
 		assertThrows(EstadoEquivocadoError.class, () -> estado.comentarInmueble(null, null));
