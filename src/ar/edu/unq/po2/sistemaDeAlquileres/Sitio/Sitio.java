@@ -84,16 +84,6 @@ public class Sitio {
 				&& this.getTiposDeServiciosValidos().containsAll(inmueble.getServicios()));
 		}
 	
-//	public boolean poseeTodosLosServiciosValidosDelSitio(Inmueble inmueble) {
-//	ArrayList<String> serviciosARecorrer = inmueble.getServicios();
-//	boolean losServiciosSonValidos = true;
-//	int i = 0;
-//	while (serviciosARecorrer.size() > i && this.getTiposDeServiciosValidos().contains(serviciosARecorrer.get(i))) {
-//		//losServiciosSonValidos &= this.getServicios().contains(serviciosARecorrer.get(i));
-//		i++;
-//	}
-//	return losServiciosSonValidos;
-//}	
 	
 	public void agregarServicioValido(String servicio) {
 		this.getTiposDeServiciosValidos().add(servicio);
@@ -195,7 +185,7 @@ public class Sitio {
 		}
 		return cantidadDeInmueblesAlquilados;
 	}
-	
+	 
 	public Integer getTasaOcupacional() {
 		return (this.getCantidadDeInmueblesAlquilados() / this.getInmuebles().size());
 	}

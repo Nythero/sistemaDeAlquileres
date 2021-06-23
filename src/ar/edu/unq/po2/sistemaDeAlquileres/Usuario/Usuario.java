@@ -117,20 +117,31 @@ public class Usuario {
 	
 	
 	public void setComentarioAReserva(Reserva reserva, String comentario) {
-		reserva.setComentario(comentario);
+		if(this.getReservasRealizadas().contains(reserva)) {
+			reserva.setComentario(comentario);
+		}
 	}
 	
 	
 	public void setPuntajeADuenho (Reserva reserva,String categoria, Integer puntaje) {
-		reserva.setPuntajeADuenho(categoria,puntaje);
+		if(this.getReservasRealizadas().contains(reserva)) {
+			reserva.setPuntajeADuenho(categoria,puntaje);
+		}
+		
 	}
 	
 	public void setPuntajeAInquilino (Reserva reserva,String categoria, Integer puntaje) {
-		reserva.setPuntajeAInquilino(categoria,puntaje);
+		if(this.getReservasRealizadas().contains(reserva)) {
+			reserva.setPuntajeAInquilino(categoria,puntaje);
+		}
+		
 	}
 	
 	public void setPuntajeCategoriaAInmueble (Reserva reserva, String servicio, Integer puntaje) {
-		reserva.setPuntajeCategoriaAInmueble(servicio,puntaje);
+		if(this.getReservasRealizadas().contains(reserva)) {
+			reserva.setPuntajeCategoriaAInmueble(servicio,puntaje);
+		}
+		
 	}
 	
 	 

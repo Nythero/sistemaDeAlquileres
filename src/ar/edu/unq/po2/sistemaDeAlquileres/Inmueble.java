@@ -36,22 +36,12 @@ public class Inmueble {
 	private Map<String,ArrayList<String>> comentariosPorCategorias;
 	private Integer cantidadDeVecesAlquilado; 
 	private ArrayList<RangoDeFechaConPrecioDeterminado> rangosDeFechas;
-	//private static Set<String> tiposDeInmueblesValidos = new HashSet<String>();
-	//private static Set<String> serviciosValidos = new HashSet<String>();
 	private ArrayList<Reserva> reservas;
 	 
 	
 	public Inmueble(Usuario dueño,String tipoDeInmueble,int superficie,String pais,String ciudad,String direccion,
 			ArrayList<String> servicios,int capacidad,ArrayList<String> fotos, LocalTime horaDeCheckIn,
 			LocalTime horaDeCheckOut,ArrayList<String> formasDePago,Temporada precio) {
-		
-		if(!tiposDeInmueblesValidos.contains(tipoDeInmueble)) {
-			throw new AssertionFailedError("El tipo de inmueble es invalido");
-		}
-		
-		if(!serviciosValidos.containsAll(servicios)) {
-			throw new AssertionFailedError("El tipo de servicio es invalido");
-		}
 		
 		this.tipoDeInmueble= tipoDeInmueble;
 		this.ranking= new Ranking();
@@ -170,7 +160,7 @@ public class Inmueble {
 			if (rango.lasFechasEstanEnElRango(fechaEntrada, fechaSalida)) {
 				precioMaximoDelRango = rango.precioMaximoEntreElRangoDeFechas(fechaEntrada,fechaSalida);
 			    break;
-			}
+			} 
 		}
 		return precioMaximoDelRango;
 	}

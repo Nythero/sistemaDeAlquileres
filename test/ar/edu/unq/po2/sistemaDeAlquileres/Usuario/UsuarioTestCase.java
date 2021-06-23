@@ -29,7 +29,7 @@ public class UsuarioTestCase {
 //	private String mail;
 //	private String telefono; no se usan 
 	private Ranking rankingComoDuenho;
-	private Ranking rankingComoInquilino;
+	private Ranking rankingComoInquilino; 
 //	private Date fechaDeCreacion;  
 	private Sitio sitio;
 	private Usuario usuario1;
@@ -64,30 +64,33 @@ public class UsuarioTestCase {
 	
 	@Test
 	void testSetComentarioAReserva() {
+		usuario1.agregarReserva(reserva1);
 		usuario1.setComentarioAReserva(reserva1,"Comentario");
 		verify(reserva1).setComentario("Comentario");
 	}
 	
 	@Test
 	void testSetPuntajeADuenho() {
+		usuario1.agregarReserva(reserva1);
 		usuario1.setPuntajeADuenho(reserva1,"amabilidad", 5);
 		verify(reserva1).setPuntajeADuenho("amabilidad",5);
 	}
 	
 	@Test
 	void testSetPuntajeAInquilino() {
+		usuario1.agregarReserva(reserva1);
 		usuario1.setPuntajeAInquilino(reserva1,"honestidad", 5);
 		verify(reserva1).setPuntajeAInquilino("honestidad",5);
 	}
 	
 	@Test
 	void testSetPuntajeCategoriaAInmueble() {
+		usuario1.agregarReserva(reserva1);
 		usuario1.setPuntajeCategoriaAInmueble(reserva1,"seguridad", 5);
 		verify(reserva1).setPuntajeCategoriaAInmueble("seguridad",5);
 	}
 	
-	@Test //preguntar si dejarlo asi, o hacer la forma en la que el sitio tire errores
-	     // con un test que pase que el usuario no esta registrado, otro que le pases parametros invalidos
+	
 	void testBuscarInmuebles() {
 		LocalDate fechaEntrada = LocalDate.of(2020, 5,10);
 		LocalDate fechaSalida = LocalDate.of(2020, 5,20);
@@ -266,13 +269,8 @@ public class UsuarioTestCase {
 	    	
 		assertEquals(inmueblesQueHanSidoAlquilados,usuario1.getInmueblesQueHanSidoAlquilados());
 	}
-	
-	
-}
-	
 
-// los de realizarReserva,las futuras y las de las ciudades, faltan resolver como armar la reserva
-// falta lo de reserva condicional
+}
 
 
 
