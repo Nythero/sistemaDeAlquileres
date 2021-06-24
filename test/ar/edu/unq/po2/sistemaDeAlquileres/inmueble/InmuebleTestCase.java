@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,9 +14,8 @@ import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.temporada.Temporada;
 import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
+import ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion.PoliticaDeCancelacion;
 import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFechas;
-import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFechas.RangosDeFechas;
-import ar.edu.unq.po2.sistemaDeAlquileres.ranking.Ranking;
 
 
 class InmuebleTestCase {
@@ -27,6 +25,7 @@ class InmuebleTestCase {
 	private Temporada precio;
 	private Usuario usuario;
 	private RangoDeFechas rango;
+	private PoliticaDeCancelacion politica;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -35,9 +34,10 @@ class InmuebleTestCase {
 		precio= mock(Temporada.class);
 		usuario = mock(Usuario.class);
 		rango = mock(RangoDeFechas.class);
+		politica = mock(PoliticaDeCancelacion.class);
 		
 		inmueble = new Inmueble(usuario, "apartamento", 200, "Argentina", "Quilmes", "Calle falsa 123",
-				3, horaDeCheckIn, horaDeCheckOut, precio);
+				3, horaDeCheckIn, horaDeCheckOut, precio, politica);
 		inmueble.agregarRangoDeFechas(rango);
 		when(rango.estaIncluidoElRango(rango)).thenReturn(true);
 	}

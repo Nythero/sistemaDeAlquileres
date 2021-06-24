@@ -13,10 +13,10 @@ import ar.edu.unq.po2.sistemaDeAlquileres.ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.temporada.Temporada;
 import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
+import ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion.PoliticaDeCancelacion;
 import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFechas.RangosDeFechas;
-import ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion.PoliticaDeCancelacion;
 
 public class Inmueble {
 	private Usuario duenho;
@@ -26,6 +26,7 @@ public class Inmueble {
 	private LocalTime horaDeCheckIn;
 	private LocalTime horaDeCheckOut;
 	private Temporada precio;
+	private PoliticaDeCancelacion politicaDeCancelacion;
 	private final Ranking ranking;
 	private final String pais;
 	private final String ciudad;
@@ -36,11 +37,11 @@ public class Inmueble {
 	private final ArrayList<String> comentarios;
 	private final ArrayList<RangoDeFechas> rangosDeFechas;
 	private final ArrayList<Reserva> reservas;
-	private final PoliticaDeCancelacion politicaDeCancelacion;
 	 
 	
 	public Inmueble(Usuario duenho, String tipoDeInmueble, int superficie, String pais, String ciudad, String direccion,
-			int capacidad, LocalTime horaDeCheckIn, LocalTime horaDeCheckOut, Temporada precio) {
+			int capacidad, LocalTime horaDeCheckIn, LocalTime horaDeCheckOut, Temporada precio,
+			PoliticaDeCancelacion politicaDeCancelacion) {
 
 		this.setDuenho(duenho);
 		this.setTipoDeInmueble(tipoDeInmueble);
@@ -49,6 +50,7 @@ public class Inmueble {
 		this.setHoraDeCheckin(horaDeCheckIn);
 		this.setHoraDeCheckout(horaDeCheckOut);
 		this.setPrecio(precio);
+		this.setPoliticaDeCancelacion(politicaDeCancelacion);
 		
 		this.ranking = new Ranking();
 		this.pais = pais;
@@ -119,6 +121,14 @@ public class Inmueble {
 	public void setPrecio(Temporada precio) {
 		this.precio = precio;
 	}
+	
+	private PoliticaDeCancelacion getPoliticaDeCancelacion() {
+		return this.politicaDeCancelacion;
+	}
+	
+	private void setPoliticaDeCancelacion(PoliticaDeCancelacion politicaDeCancelacion) {
+		this.politicaDeCancelacion = politicaDeCancelacion;
+	}
 
 	//Getters de atributos finales
 	
@@ -143,7 +153,7 @@ public class Inmueble {
 	}
 
 	private ArrayList<String> getFotos() {
-		return fotos;
+		return this.fotos;
 	}
 
 	private ArrayList<String> getFormasDePago() {
@@ -160,10 +170,6 @@ public class Inmueble {
 	
 	private ArrayList<Reserva> getReservas() {
 		return reservas;
-	}
-	
-	private PoliticaDeCancelacion getPoliticaDeCancelacion() {
-		return this.politicaDeCancelacion;
 	}
 
 	//Manejo de elementos de las colecciones
@@ -276,7 +282,7 @@ public class Inmueble {
 	}
 
 	public void cancelarReserva(Reserva reserva) throws Exception {
-		this.getPoliticaDeCancelacion().cancelarReserva(LocalDate.now(), reserva));
+		//this.getPoliticaDeCancelacion().cancelarReserva(reserva));
 		this.notify("Cancelado", this, null);
 		for(Reserva reservaN : this.getReservas()) {
 			if(reservaN.getRangoDeFechas().intersectanLosRangos(reserva.getRangoDeFechas()))){
