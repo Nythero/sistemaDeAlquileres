@@ -36,4 +36,8 @@ public class RangoDeFechas {
 		return this.getFechaInicial().isBefore(dia) && this.getFechaFinal().isAfter(dia) ||
 			   this.getFechaInicial().isEqual(dia) || this.getFechaFinal().isEqual(dia); 
 	}
+	
+	public boolean estaIncluidoElRango(RangoDeFechas rango) {
+        return this.estaElDiaEntre(rango.getFechaInicial()) && this.estaElDiaEntre(rango.getFechaFinal());
+    }
 }

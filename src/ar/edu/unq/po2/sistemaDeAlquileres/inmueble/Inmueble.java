@@ -16,6 +16,7 @@ import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
 import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFechas.RangosDeFechas;
+import ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion.PoliticaDeCancelacion;
 
 public class Inmueble {
 	private Usuario duenho;
@@ -33,8 +34,9 @@ public class Inmueble {
 	private final ArrayList<String> fotos;
 	private final ArrayList<String> formasDePago;
 	private final ArrayList<String> comentarios;
-	private final ArrayList<RangoDeFechaConPrecioDeterminado> rangosDeFechas;
+	private final ArrayList<RangoDeFechas> rangosDeFechas;
 	private final ArrayList<Reserva> reservas;
+	private final PoliticaDeCancelacion politicaDeCancelacion;
 	 
 	
 	public Inmueble(Usuario duenho, String tipoDeInmueble, int superficie, String pais, String ciudad, String direccion,
@@ -56,7 +58,7 @@ public class Inmueble {
 		this.fotos = new ArrayList<String>();
 		this.formasDePago = new ArrayList<String>();
 		this.comentarios = new ArrayList<String>();
-		this.rangosDeFechas = new ArrayList<RangoDeFechaConPrecioDeterminado>();
+		this.rangosDeFechas = new ArrayList<RangoDeFechas>();
 		this.reservas = new ArrayList<Reserva>();
 	}
 	
@@ -152,12 +154,16 @@ public class Inmueble {
 		return this.comentarios;
 	}
 	
-	private ArrayList<RangoDeFechaConPrecioDeterminado> getRangos() {
+	private ArrayList<RangoDeFechas> getRangos() {
 		return this.rangosDeFechas;
 	}
 	
 	private ArrayList<Reserva> getReservas() {
 		return reservas;
+	}
+	
+	private PoliticaDeCancelacion getPoliticaDeCancelacion() {
+		return this.politicaDeCancelacion;
 	}
 
 	//Manejo de elementos de las colecciones
@@ -183,7 +189,7 @@ public class Inmueble {
 		this.getComentarios().add(comentario);
 	}
 
-	public void agregarRangoDeFechas(RangoDeFechaConPrecioDeterminado rango) {
+	public void agregarRangoDeFechas(RangoDeFechas rango) {
 		this.getRangos().add(rango);
 	}
 	
@@ -242,12 +248,22 @@ public class Inmueble {
 
 	private void verificarReserva(Reserva reserva) throws Exception {
 		if (reserva.getInmueble() != this ||
-				!this.getRangos().contains(reserva.getRangoDeFechas()) ||
+				!this.estaIncluidoEnUnRango(reserva.getRangoDeFechas()) ||
 				!this.getFormasDePago().contains(reserva.getFormaDePago()) ||
 				!reserva.estaEnEstado("PendienteDeAprobacion")) {
 			throw new Exception("Reserva Invalida");
 		}
 	}
+	
+	private boolean estaIncluidoEnUnRango(RangoDeFechas rango) {
+        boolean result = false;
+        int i=0;
+        while(!this.getRangos().isEmpty() && i < this.getRangos().size()) {
+            result |= this.getRangos().get(i).estaIncluidoElRango(rango);
+            i++;
+        }
+        return result;
+    }
 
 	public boolean yaEstaReservado(RangoDeFechas rangoDeFechas) {
 		boolean yaEstaReservado = false;
