@@ -70,7 +70,7 @@ public class UsuarioTestCase {
 		verify(reserva1).puntuarInmueble("seguridad",5);
 	}
 	
-	
+	@Test
 	void testBuscarInmuebles() {
 		LocalDate fechaEntrada = LocalDate.of(2020, 5,10);
 		LocalDate fechaSalida = LocalDate.of(2020, 5,20);
