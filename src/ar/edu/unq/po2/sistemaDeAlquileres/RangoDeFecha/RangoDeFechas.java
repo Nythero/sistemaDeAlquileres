@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
 import junit.framework.AssertionFailedError;
 
 public class RangoDeFechas {
@@ -82,6 +83,45 @@ public class RangoDeFechas {
 		while(!rangos.isEmpty() && i < rangos.size()) {
 			result|= this.lasFechasEstanEnElRango(rangos.get(i).getFechaInicial(), rangos.get(i).getFechaFinal());
 			i++;
+		}
+		return result;
+	}
+	
+	public float getMontoTotal(Temporada temporada) {
+		LocalDate fechaInicialAVerificar = this.getFechaInicial();
+        float result= 0;
+        while (!fechaInicialAVerificar.isEqual(this.getFechaFinal())) {
+            result+= temporada.getPrecio(fechaInicialAVerificar);
+            fechaInicialAVerificar= fechaInicialAVerificar.plusDays(1); 
+        }
+        return result + temporada.getPrecio(fechaInicialAVerificar);
+	}
+	   
+    /**
+     * Dada una fechaEntrada y una FechaSalida devuelve el precio maximo entre
+     * el rango de fechas
+     * @param fechaEntrada
+     * @param fechaSalida
+     * @return
+     */
+    public float precioMaximoEntreElRangoDeFechas(Temporada temporada, LocalDate fechaEntrada, LocalDate fechaSalida) {
+        float precio = 0;
+        for (LocalDate fechaActual = fechaEntrada; fechaActual.isBefore(fechaSalida) || fechaActual.isEqual(fechaSalida); fechaActual = fechaActual.plusDays(1)){
+        	precio = (temporada.getPrecio(fechaActual) > precio)
+                    ? temporada.getPrecio(fechaActual)
+                    : precio;
+              }
+    return precio;
+    }
+
+	public float obtenerMontoPorCantidadDeDias(Temporada temporada,int cantidadDeDias) {
+		float result= 0;
+		int diaActual= 0;
+		LocalDate diaInicial = this.getFechaInicial();
+		while(diaActual != cantidadDeDias){
+			result+= temporada.getPrecio(diaInicial);
+			diaActual++;
+			diaInicial= diaInicial.plusDays(1);
 		}
 		return result;
 	}

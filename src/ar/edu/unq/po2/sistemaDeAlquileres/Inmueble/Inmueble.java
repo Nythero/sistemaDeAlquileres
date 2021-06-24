@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.Foto.Foto;
+import ar.edu.unq.po2.sistemaDeAlquileres.Observable.Observable;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
@@ -17,32 +19,34 @@ import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 import junit.framework.AssertionFailedError;
 
-public class Inmueble {
+public class Inmueble extends Observable{
 	private Usuario dueño;
 	private String tipoDeInmueble;
-	private Ranking ranking;
-	private Integer superficie;
 	private String pais;
 	private String ciudad;
 	private String direccion;
-	private ArrayList<String> servicios;
+	private Integer superficie;
+	private Ranking ranking;
 	private Integer capacidad;
-	private ArrayList<String> fotos;
 	private LocalTime horaDeCheckIn;
 	private LocalTime horaDeCheckOut;
+	private ArrayList<String> servicios;
+	private ArrayList<Reserva> reservas;
+	private ArrayList<Foto> fotos;
 	private ArrayList<String> formasDePago;
-	private Temporada precio;
-	private ArrayList<String> comentariosGenerales;
+	private ArrayList<String> comentarios;
 	private Map<String,ArrayList<String>> comentariosPorCategorias;
 	private Integer cantidadDeVecesAlquilado; 
+	private Temporada precio;
 	private ArrayList<RangoDeFechaConPrecioDeterminado> rangosDeFechas;
-	private ArrayList<Reserva> reservas;
+	
 	 
 	
 	public Inmueble(Usuario dueño,String tipoDeInmueble,int superficie,String pais,String ciudad,String direccion,
-			ArrayList<String> servicios,int capacidad,ArrayList<String> fotos, LocalTime horaDeCheckIn,
-			LocalTime horaDeCheckOut,ArrayList<String> formasDePago,Temporada precio) {
+			ArrayList<String> servicios,int capacidad,LocalTime horaDeCheckIn,
+			LocalTime horaDeCheckOut,ArrayList<String> formasDePago, Temporada precio2) {
 		
+		this.dueño = dueño;
 		this.tipoDeInmueble= tipoDeInmueble;
 		this.ranking= new Ranking();
 		this.superficie= superficie;
@@ -51,15 +55,16 @@ public class Inmueble {
 		this.direccion= direccion;
 		this.servicios= servicios;
 		this.capacidad= capacidad;
-		this.fotos= fotos;
+		this.fotos= new ArrayList<Foto>();
 		this.horaDeCheckIn= horaDeCheckIn;
 		this.horaDeCheckOut= horaDeCheckOut;
 		this.formasDePago= formasDePago;
 		this.rangosDeFechas = new ArrayList<RangoDeFechaConPrecioDeterminado>();
-		this.comentariosGenerales= new ArrayList<String>();
+		this.comentarios= new ArrayList<String>();
 		this.comentariosPorCategorias= new HashMap<String,ArrayList<String>>();
 		this.cantidadDeVecesAlquilado= 0;
-		this.dueño = dueño;
+		this.precio= precio2;
+		
 		
 	}
 	
@@ -183,6 +188,16 @@ public class Inmueble {
 			i++;
 		}
 		return estaAlquilado;
+	}
+	
+	public void bajarPrecioCotidiano(RangoDeFechaConPrecioDeterminado rango,float monto) {
+		this.precio.bajarAlPrecioCotidiano(monto);
+		this.notify("Baja de precio", this, monto);
+	}
+	
+	public void bajarPrecioEspecial(RangoDeFechaConPrecioDeterminado rango,float monto) {
+		this.precio.bajarPrecioEspecial(monto);
+		this.notify("Baja de precio", this, monto);
 	}
 
 	

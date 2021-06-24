@@ -1,10 +1,9 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha;
 
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -20,8 +19,6 @@ import org.mockito.Mock;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
-
-
 
 
 class RangoDeFechaTestCase {
@@ -118,7 +115,7 @@ class RangoDeFechaTestCase {
 		
 		boolean result = rangoDeFechas.lasFechasEstanEnElRango(fechaInicialAComparar, fechaFinalAComparar);
 		
-		assertEquals(false,result);
+		assertFalse(result);
 	}
 	
 	@Test
@@ -131,7 +128,7 @@ class RangoDeFechaTestCase {
 		
 		boolean result = rangoDeFechas.lasFechasEstanEnElRango(fechaInicialAComparar, fechaFinalAComparar);
 		
-		assertEquals(true,result);
+		assertTrue(result);
 	}
 	
 	@Test
@@ -141,6 +138,41 @@ class RangoDeFechaTestCase {
 		assertEquals(false,result);
 	}
 	
+	@Test
+	void testCalcularMontoTotalSegunElRango() {
+		when(fechaInicial.isEqual(fechaFinal)).thenReturn(false).thenReturn(false).thenReturn(true);
+		when(fechaInicial.plusDays(1)).thenReturn(fechaInicial);
+		when(precio.getPrecio(fechaInicial)).thenReturn(500f).thenReturn(600f).thenReturn(500f);
+		float result = rangoDeFechas.getMontoTotal(precio);
+		
+		verify(fechaInicial,times(3)).isEqual(fechaFinal);
+		verify(precio,times(3)).getPrecio(fechaInicial);
+		assertEquals(1600f, result);
+	}
 	
+	
+	@Test
+	void testPrecioMaximoEntreElRangoDeFechas() {
+		when(fechaInicial.isBefore(fechaFinal)).thenReturn(false);
+		when(fechaInicial.isEqual(fechaFinal)).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
+		when(fechaInicial.plusDays(1)).thenReturn(fechaInicial);
+		when(precio.getPrecio(fechaInicial)).thenReturn(500f).thenReturn(600f).thenReturn(1000f);
+		float result = rangoDeFechas.precioMaximoEntreElRangoDeFechas(precio,fechaInicial, fechaFinal);
+		
+		verify(fechaInicial,times(4)).isEqual(fechaFinal);
+		verify(precio,times(5)).getPrecio(fechaInicial);
+		assertEquals(1000f,result);
+		
+	}
+	
+	@Test
+	void testObtenerMontoPorCantidadDeDias() {
+		when(fechaInicial.plusDays(1)).thenReturn(fechaInicial);
+		when(precio.getPrecio(fechaInicial)).thenReturn(500f).thenReturn(600f);
+		float result = rangoDeFechas.obtenerMontoPorCantidadDeDias(precio,2);
+		
+		verify(precio,times(2)).getPrecio(fechaInicial);
+		assertEquals(1100f, result);
+	}
 	
 }
