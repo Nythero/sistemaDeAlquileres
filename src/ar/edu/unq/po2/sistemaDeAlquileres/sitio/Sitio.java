@@ -60,7 +60,7 @@ public class Sitio {
 		
 	}
 	
-	public boolean esInmuebleValido(Inmueble inmueble) {
+	private boolean esInmuebleValido(Inmueble inmueble) {
 		return (this.getTipoDeInmueblesValidos().contains(inmueble.getTipoDeInmueble())
 				&& this.getTiposDeServicios().containsAll(inmueble.getServicios()));
 	}
@@ -115,13 +115,13 @@ public class Sitio {
 		ArrayList<Usuario> listaARecorrer = this.usuariosOrdenadosPorReservasRealizadas();
 		ArrayList<Usuario> usuariosTop = new ArrayList<Usuario>();
 		
-		for(int i = 0; i < 10 && i != (usuarios.size() - 1); i++) {
+		for(int i = 0; i < 10 && i < usuarios.size(); i++) {
 			usuariosTop.add(listaARecorrer.get(i));
 		}
 		return usuariosTop;
 	} 
 	//ordena a los usuarios de mayor a menor, en base a la cantidad de reservas que hayan hecho
-	public ArrayList<Usuario> usuariosOrdenadosPorReservasRealizadas() {
+	private ArrayList<Usuario> usuariosOrdenadosPorReservasRealizadas() {
 		ArrayList<Usuario> usuarios = this.getUsuarios();
 		usuarios.sort(Comparator.comparingInt(usuario -> ((Usuario) usuario).cantidadReservas()).reversed());
 		return usuarios;
