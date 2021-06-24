@@ -34,7 +34,7 @@ public abstract class EstadoReserva {
 	
 	abstract String codigo();
 	
-	public boolean esta(String estado) {
+	public boolean esEstado(String estado) {
 		return this.codigo() == estado;
 	}
 }

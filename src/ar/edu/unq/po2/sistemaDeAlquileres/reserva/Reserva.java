@@ -99,19 +99,11 @@ public class Reserva {
     	this.getEstado().puntuarInquilino(this, categoria, puntaje);
     }
 
-    public void  puntuarInmueble(String categoria, Integer puntaje) throws EstadoEquivocadoError {
+    public void puntuarInmueble(String categoria, Integer puntaje) throws EstadoEquivocadoError {
     	this.getEstado().puntuarInmueble(this, categoria, puntaje);
     }
     
-	public boolean estaPendienteDeAprobacion() {
-		return this.getEstado().esta("PendienteDeAprobacion");
-	}
-
-	public boolean estaConcretada() {
-		return this.getEstado().esta("Concretada");
-	}
-	
-	public boolean estaFinalizada() {
-		return this.getEstado().esta("Finalizada");
+	public boolean estaEnEstado(String codigoEstado) {
+		return this.getEstado().esEstado("codigoEstado");
 	}
 }

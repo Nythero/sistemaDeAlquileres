@@ -1,72 +1,127 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.inmueble;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFechas;
-import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFechas.RangosDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.temporada.Temporada;
 import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
+import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFechas;
+import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
+import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFechas.RangosDeFechas;
 
 public class Inmueble {
-	private Usuario dueño;
+	private Usuario duenho;
 	private String tipoDeInmueble;
-	private Ranking ranking;
 	private Integer superficie;
-	private String pais;
-	private String ciudad;
-	private String direccion;
 	private Integer capacidad;
-	private Date horaDeCheckIn;
-	private Date horaDeCheckOut;
+	private LocalTime horaDeCheckIn;
+	private LocalTime horaDeCheckOut;
 	private Temporada precio;
-	private final Map<String,ArrayList<String>> comentariosPorCategorias = new HashMap<String,ArrayList<String>>();
-	private final ArrayList<String> comentariosGenerales = new ArrayList<String>();
-	private final ArrayList<String> servicios = new ArrayList<String>();
-	private final ArrayList<String> formasDePago = new ArrayList<String>();
-	private final ArrayList<String> fotos = new ArrayList<String>();
-	private final ArrayList<Reserva> reservas = new ArrayList<Reserva>();
-	private RangosDeFechas rangosDeFechas;
+	private final Ranking ranking;
+	private final String pais;
+	private final String ciudad;
+	private final String direccion;
+	private final ArrayList<String> servicios;
+	private final ArrayList<String> fotos;
+	private final ArrayList<String> formasDePago;
+	private final ArrayList<String> comentarios;
+	private final ArrayList<RangoDeFechaConPrecioDeterminado> rangosDeFechas;
+	private final ArrayList<Reserva> reservas;
+	 
+	
+	public Inmueble(Usuario duenho, String tipoDeInmueble, int superficie, String pais, String ciudad, String direccion,
+			int capacidad, LocalTime horaDeCheckIn, LocalTime horaDeCheckOut, Temporada precio) {
 
-	public Inmueble(Usuario dueño, String tipoDeInmueble, int superficie, String pais, String ciudad, String direccion,
-			int capacidad, Date horaDeCheckIn, Date horaDeCheckOut, Temporada precio, Ranking ranking, RangosDeFechas rangosDeFechas) {
-
-		this.dueño = dueño;
-		this.tipoDeInmueble = tipoDeInmueble;
-		this.superficie = superficie;
+		this.setDuenho(duenho);
+		this.setTipoDeInmueble(tipoDeInmueble);
+		this.setSuperficie(superficie);
+		this.setCapacidad(capacidad);
+		this.setHoraDeCheckin(horaDeCheckIn);
+		this.setHoraDeCheckout(horaDeCheckOut);
+		this.setPrecio(precio);
+		
+		this.ranking = new Ranking();
 		this.pais = pais;
 		this.ciudad = ciudad;
 		this.direccion = direccion;
-		this.capacidad = capacidad;
-		this.horaDeCheckIn = horaDeCheckIn;
-		this.horaDeCheckOut = horaDeCheckOut;
-		this.precio = precio;
-		this.ranking = ranking;
-		this.setRangosDeFechas(rangosDeFechas);
+		this.servicios = new ArrayList<String>();
+		this.fotos = new ArrayList<String>();
+		this.formasDePago = new ArrayList<String>();
+		this.comentarios = new ArrayList<String>();
+		this.rangosDeFechas = new ArrayList<RangoDeFechaConPrecioDeterminado>();
+		this.reservas = new ArrayList<Reserva>();
 	}
-
-	private void setRangosDeFechas(RangosDeFechas rangosDeFechas) {
-		this.rangosDeFechas = rangosDeFechas;
+	
+	//Setters y Getters de atributos no finales
+	
+	public Usuario getDuenhoo() {
+		return this.duenho;
 	}
-
-	public Usuario getDueño() {
-		return this.dueño;
+	
+	private void setDuenho(Usuario usuario) {
+		this.duenho = usuario;
 	}
 	
 	public String getTipoDeInmueble() {
 		return this.tipoDeInmueble;
 	}
-
-	public Ranking getRanking() {
-		return this.ranking;
+	
+	private void setTipoDeInmueble(String tipo) {
+		this.tipoDeInmueble = tipo;
 	}
 
 	public Integer getSuperficie() {
 		return this.superficie;
+	}
+	
+	private void setSuperficie(Integer superficie) {
+		this.superficie = superficie;
+	}
+
+	public Integer getCapacidad() {
+		return this.capacidad;
+	}
+	
+	private void setCapacidad(Integer capacidad) {
+		this.capacidad = capacidad;
+	}
+
+	public LocalTime getHoraDeCheckIn() {
+		return this.horaDeCheckIn;
+	}
+	
+	private void setHoraDeCheckin(LocalTime hora) {
+		this.horaDeCheckIn = hora;
+	}
+
+	public LocalTime getHoraDeCheckOut() {
+		return this.horaDeCheckOut;
+	}
+	
+	private void setHoraDeCheckout(LocalTime hora) {
+		this.horaDeCheckOut = hora;
+	}
+
+	public Temporada getPrecio() {
+		return this.precio;
+	}
+	
+	public void setPrecio(Temporada precio) {
+		this.precio = precio;
+	}
+
+	//Getters de atributos finales
+	
+	public Ranking getRanking() {
+		return this.ranking;
 	}
 
 	public String getPais() {
@@ -82,47 +137,54 @@ public class Inmueble {
 	}
 
 	public ArrayList<String> getServicios() {
-		return this.servicios;
+		return new ArrayList<String>(this.servicios);
 	}
 
-	public Integer getCapacidad() {
-		return this.capacidad;
-	}
-
-	public ArrayList<String> getFotos() {
+	private ArrayList<String> getFotos() {
 		return fotos;
-	}
-
-	public Date getHoraDeCheckIn() {
-		return this.horaDeCheckIn;
-	}
-
-	public Date getHoraDeCheckOut() {
-		return this.horaDeCheckOut;
 	}
 
 	private ArrayList<String> getFormasDePago() {
 		return this.formasDePago;
 	}
 
-	public Temporada getPrecio() {
-		return this.precio;
+	private ArrayList<String> getComentarios() {
+		return this.comentarios;
 	}
 	
-	private RangosDeFechas getRangosDeFechas() {
+	private ArrayList<RangoDeFechaConPrecioDeterminado> getRangos() {
 		return this.rangosDeFechas;
 	}
-
-	private ArrayList<String> getComentariosGenerales() {
-		return this.comentariosGenerales;
+	
+	private ArrayList<Reserva> getReservas() {
+		return reservas;
 	}
 
-	private Map<String, ArrayList<String>> getComentariosPorCategorias() {
-		return this.comentariosPorCategorias;
+	//Manejo de elementos de las colecciones
+	
+	public void agregarServicio(String servicio) {
+		this.getServicios().add(servicio);
+	}
+	
+	public void agregarFotos(String foto) throws Exception {
+		if (this.getFotos().size() < 5) {
+			this.getFotos().add(foto);
+		}
+		else {
+			throw new Exception("El inmueble solo puede tener 5 fotos");
+		}
+	}
+
+	public void agregarFormaDePago(String string) {
+		this.getFormasDePago().add(string);
 	}
 
 	public void agregarComentario(String comentario) {
-		this.getComentariosGenerales().add(comentario);
+		this.getComentarios().add(comentario);
+	}
+
+	public void agregarRangoDeFechas(RangoDeFechaConPrecioDeterminado rango) {
+		this.getRangos().add(rango);
 	}
 	
 	public void agregarReserva(Reserva reserva) throws Exception{
@@ -130,17 +192,61 @@ public class Inmueble {
 		this.reservas.add(reserva);
 	}
 	
-	private void verificarReserva(Reserva reserva) throws Exception {
-		if (reserva.getInmueble() != this ||
-			!this.getRangosDeFechas().contains(reserva.getRangoDeFechas()) ||
-			!this.getFormasDePago().contains(reserva.getFormaDePago()) ||
-			!reserva.estaPendienteDeAprobacion()) {
-			throw new Exception("Reserva Invalida");
+	public void agregarCategoria(String categoria) {
+		this.getRanking().addCategoria(categoria);
+	}
+	
+	//
+	
+	public Integer getCantidadDeVecesAlquilado() {
+		int cantidad = 0;
+		for (Reserva reserva : this.getReservas()) {
+			cantidad += (reserva.estaFinalizada())? 1 : 0;
 		}
+		return cantidad;
+	}
+	
+	//indica si las fechas dadas, estan dentro del rango
+	public boolean hayAlgunRangoDeFechasQuePoseaLasFecha(LocalDate fechaEntrada, LocalDate fechaSalida) {
+		boolean elRangoEstaEntreLaFecha = true;//!(this.getRangos().isEmpty()) ;
+		for(RangoDeFechaConPrecioDeterminado rango : this.getRangos()) {
+			elRangoEstaEntreLaFecha |= rango.lasFechasEstanEnElRango(fechaEntrada,fechaSalida);
+		}
+		return elRangoEstaEntreLaFecha;
 	}
 
-	public void agregarFormaDePago(String string) {
-		this.getFormasDePago().add(string);
+	//devuelve el precio maximo del rango de fechas dadas
+	public float precioMaximoDelRangoDeFechasEntre(LocalDate fechaEntrada, LocalDate fechaSalida) {
+		float precioMaximoDelRango = 0;
+		for (RangoDeFechaConPrecioDeterminado rango : this.getRangos()) {
+			if (rango.lasFechasEstanEnElRango(fechaEntrada, fechaSalida)) {
+				precioMaximoDelRango = rango.precioMaximoEntreElRangoDeFechas(fechaEntrada,fechaSalida);
+			    break;
+			} 
+		}
+		return precioMaximoDelRango;
+	}
+	
+	public boolean estaAlquiladoActualmente() {
+		boolean estaAlquilado = false;
+		int i = 0;
+		for(Reserva reserva : this.getReservas()) {
+			estaAlquilado |= reserva.estaEnCurso();
+		}
+//		while (!this.getReservas().isEmpty() && i < this.getReservas().size()) {
+//			estaAlquilado = this.getReservas().get(i).laFechaActualEstaDentroDelRango();
+//			i++;
+//		}
+		return estaAlquilado;
+	}
+
+	private void verificarReserva(Reserva reserva) throws Exception {
+		if (reserva.getInmueble() != this ||
+				!this.getRangos().contains(reserva.getRangoDeFechas()) ||
+				!this.getFormasDePago().contains(reserva.getFormaDePago()) ||
+				!reserva.estaPendienteDeAprobacion()) {
+			throw new Exception("Reserva Invalida");
+		}
 	}
 
 	public boolean yaEstaReservado(RangoDeFechas rangoDeFechas) {
