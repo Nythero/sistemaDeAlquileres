@@ -1,54 +1,195 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.sitio;
+package ar.edu.unq.po2.sistemaDeAlquileres.Sitio;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
-import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
+import ar.edu.unq.po2.sistemaDeAlquileres.Administrador.Administrador;
+import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
+import junit.framework.AssertionFailedError;
 
 public class Sitio {
 	private ArrayList<Usuario> usuarios; 
 	private ArrayList<Inmueble> inmuebles;
+	private Set<String> tiposDeServicios;
+	private Set<String> tiposDeInmueblesValidos;
 	
 	public Sitio() {
-		usuarios  = new ArrayList<Usuario>();
-		inmuebles = new ArrayList<Inmueble>();
+		this.usuarios = new ArrayList<Usuario>();
+		this.inmuebles = new ArrayList<Inmueble>();
+		this.tiposDeServicios = new HashSet<String>();
+		this.tiposDeInmueblesValidos = new HashSet<String>();
+		
+	}
+	public ArrayList<Usuario> getUsuarios() {
+		return this.usuarios;
 	}
 	
-	private ArrayList<Usuario> getUsuarios() {
-		return usuarios;
+	public Set<String> getTiposDeServiciosValidos() {
+		return this.tiposDeServicios;
 	}
-	
-	private ArrayList<Inmueble> getInmuebles() {
+
+//	public void setTiposDeServicios(ArrayList<String> tiposDeServicios) {
+//		this.tiposDeServicios = tiposDeServicios;
+//	}
+
+	public Set<String> getTiposDeInmueblesValidos() {
+		return this.tiposDeInmueblesValidos;
+	}
+
+//	public void setTiposDeInmueblesValidos(ArrayList<String> tiposDeInmueblesValidos) {
+//		this.tiposDeInmueblesValidos = tiposDeInmueblesValidos;
+//	}
+
+	public ArrayList<Inmueble> getInmuebles() {
 		return inmuebles;
 	}
 	
 	public boolean esUsuario(Usuario usuario) {
-		return this.getUsuarios().contains(usuario);
+		return (this.getUsuarios().contains(usuario));
 	}
 	
-	public void registrarUsuario(Usuario usuario) throws Exception {
-		if (this.esUsuario(usuario)) {
-			throw new Exception("El usuario ya existe");
+	public void registrarUsuario(Usuario usuario) {
+		if (!this.esUsuario(usuario)) {
+			this.getUsuarios().add(usuario);
 		}
-		this.getUsuarios().add(usuario);
 	}
 	
-	public void agregarInmueble (Inmueble inmueble) throws Exception {
-		if (this.getInmuebles().contains(inmueble)) {
-			throw new Exception("El inmueble ya existe");
+	public Date desdeCuandoElPerfilFueCreado(Usuario usuario) {
+		if(!this.esUsuario(usuario)) {
+			throw new AssertionFailedError("El usuario no esta registrado");
 		}
-		this.getInmuebles().add(inmueble);
+		else {
+			return usuario.getFechaDeCreacion();
+		}
 	}
+	
+	public void agregarInmueble (Inmueble inmueble) {
+		if (this.esInmuebleValido(inmueble)) {
+			this.getInmuebles().add(inmueble);
+		}
+		else {
+			throw new AssertionFailedError();
+		}
+		
+	}
+	
+	public boolean esInmuebleValido(Inmueble inmueble) {
+		return (this.getTiposDeInmueblesValidos().contains(inmueble.getTipoDeInmueble())
+				&& this.getTiposDeServiciosValidos().containsAll(inmueble.getServicios()));
+		}
+	
+	
+	public void agregarServicioValido(String servicio) {
+		this.getTiposDeServiciosValidos().add(servicio);
+		
+	} 
+	
+	public void agregarTipoDeInmuebleValido(String tipoDeInmueble) {
+		this.getTiposDeInmueblesValidos().add(tipoDeInmueble);
+		
+	} 
 	
 	public void addCategoriaAInquilino(String categoria) {
-		this.usuarios.forEach(usuario -> usuario.getRankingComoInquilino().addCategoria(categoria));
+		for(Usuario usuario : this.getUsuarios()) {
+			usuario.getRankingComoInquilino().addCategoria(categoria);
+		}
 	}
 	
-	public void addCategoriaAInmueble(String categoria) {
-		this.inmuebles.forEach(inmueble -> inmueble.getRanking().addCategoria(categoria));
-	}
 	
 	public void addCategoriaADuenho(String categoria) {
-		this.usuarios.forEach(usuario -> usuario.getRankingComoDuenho().addCategoria(categoria));
+		for(Usuario usuario : this.getUsuarios()) {
+			usuario.getRankingComoDuenho().addCategoria(categoria);;
+		}
+	} 
+	
+	
+	public void addCategoriaAInmueble(String categoria) {
+		for(Inmueble inmueble : this.getInmuebles()) {
+			inmueble.getRanking().addCategoria(categoria);  
+		}
+	}
+	
+	public Integer cuantosInmueblesAlquilo(Usuario usuario) {
+		return (usuario.cantidadDeVecesQueAlquilo());
+	}
+
+	public ArrayList<Inmueble> buscarInmuebles(String ciudad, LocalDate fechaEntrada, LocalDate fechaSalida, Integer huespedes,
+												float precioMinimo, float precioMaximo) {
+		ArrayList<Inmueble> inmuebles = new ArrayList<Inmueble>();
+		for (Inmueble inmueble : this.filtrarInmueblesQuePertenezcanALasFechas(fechaEntrada, fechaSalida)) {
+			if (inmueble.getCiudad() == ciudad 
+				&& (null == inmueble.getCapacidad()  || inmueble.getCapacidad() >= huespedes)
+				&& (null == new Float (precioMaximo) || inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) > precioMinimo )
+				&& (null == new Float (precioMaximo) || inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) < precioMaximo)) {
+				
+				inmuebles.add(inmueble);
+			} 
+		} 
+		return(inmuebles);
+	}
+	
+	//devuelve los inmuebles que al menos uno de sus rangos este entre las fechas dadas 
+	public ArrayList<Inmueble> filtrarInmueblesQuePertenezcanALasFechas(LocalDate fechaEntrada, LocalDate fechaSalida){												
+		ArrayList<Inmueble>inmueblesFiltrados = new ArrayList<Inmueble>();
+		for (Inmueble inmueble : this.getInmuebles()) {
+			if (inmueble.hayAlgunRangoDeFechasQuePoseaLasFecha(fechaEntrada,fechaSalida)) {
+				inmueblesFiltrados.add(inmueble);
+			}		
+		}
+		return inmueblesFiltrados;
+	}
+	
+	
+	public ArrayList<Usuario> obtenerElTopTenDeInquilinos() {
+		ArrayList<Usuario> listaARecorrer = this.usuariosOrdenadosPorReservasRealizadas();
+		ArrayList<Usuario> usuariosTop = new ArrayList<Usuario>();
+		
+		for(int i = 0; i < 10 && i != (usuarios.size() - 1); i++) {
+			usuariosTop.add(listaARecorrer.get(i));
+		}
+		return usuariosTop;
+	}  
+	
+	//ordena a los usuarios de mayor a menor, en base a la cantidad de reservas que hayan hecho
+	public ArrayList<Usuario> usuariosOrdenadosPorReservasRealizadas() {
+		ArrayList<Usuario> usuarios = this.getUsuarios();
+//		usuarios.sort(usuarios, Comparator.comparing(Usuario -> 
+//												Usuario.getReservasRealizadas().size()));
+		usuarios.sort(Comparator.comparingInt(usuario -> ((Usuario) usuario).getReservasRealizadas().size()).reversed());
+		return usuarios;
+	}
+
+	
+	public Integer getCantidadDeInmueblesLibres() {
+		Integer cantidadDeInmueblesLibres = 0;
+		for (Inmueble inmueble : this.getInmuebles()) {
+			if (!inmueble.estaAlquiladoActualmente()) {
+				cantidadDeInmueblesLibres += 1;
+			} 
+		}
+		return cantidadDeInmueblesLibres;
+	}
+	
+	public Integer getCantidadDeInmueblesAlquilados() {
+		Integer cantidadDeInmueblesAlquilados = 0;
+		for (Inmueble inmueble : this.getInmuebles()) {
+			if (inmueble.estaAlquiladoActualmente()) {
+				cantidadDeInmueblesAlquilados += 1;
+			} 
+		}
+		return cantidadDeInmueblesAlquilados;
+	}
+	 
+	public Integer getTasaOcupacional() {
+		return (this.getCantidadDeInmueblesAlquilados() / this.getInmuebles().size());
 	}
 }
+
+
+

@@ -1,1 +1,1 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.sitio;
+package ar.edu.unq.po2.sistemaDeAlquileres.Sitio;

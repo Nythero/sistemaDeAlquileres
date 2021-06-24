@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.IObsevers.IObserver;
-import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import junit.framework.AssertionFailedError;
 
 class ObservableTestCase {

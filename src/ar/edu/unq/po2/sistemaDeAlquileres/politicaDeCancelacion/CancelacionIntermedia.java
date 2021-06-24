@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.PoliticaDeCancelacion;
+package ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion;
 
 import java.time.LocalDate;
 
@@ -11,26 +11,26 @@ public class CancelacionIntermedia extends PoliticaDeCancelacion {
 
 	public void cancelarReserva(LocalDate diaActual, Reserva reserva) {
 		if (this.tieneFechaEntre19Y10(diaActual,reserva)){
-			reserva.devolverMontoAInquilinoSegunCancelacion(montoEntreDias19Y10(reserva));
-			reserva.extraerMontoADueñoSegunCancelacion(montoEntreDias19Y10(reserva));
+			reserva.getInquilino().recibirPago(this.montoEntreDias19Y10(reserva));
+			reserva.getDueño().extraerMonto(this.montoEntreDias19Y10(reserva));
 		}
 		else if (this.tieneFechaMenorA10Dias(diaActual,reserva)) {
 			
 		}
 		else {
-			reserva.devolverMontoAInquilinoSegunCancelacion(reserva.getMontoTotal());
-			reserva.extraerMontoADueñoSegunCancelacion(reserva.getMontoTotal());
+			reserva.getInquilino().recibirPago((reserva.getMontoTotal()));
+			reserva.getDueño().extraerMonto(reserva.getMontoTotal());
 		}
 	}
 	
 	private boolean tieneFechaEntre19Y10(LocalDate diaActual,Reserva reserva) {
-		return (this.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(diaActual,reserva)<=19) &&
-				(this.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(diaActual,reserva)>=10);
+		return (reserva.getRangoDeFechas().darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(diaActual,reserva)<=19) &&
+				(reserva.getRangoDeFechas().darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(diaActual,reserva)>=10);
 	}
 
 	
 	private boolean tieneFechaMenorA10Dias(LocalDate diaActual,Reserva reserva) {
-		return this.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(diaActual,reserva)<=9;
+		return reserva.getRangoDeFechas().darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(diaActual,reserva)<=9;
 	}
 	
 	

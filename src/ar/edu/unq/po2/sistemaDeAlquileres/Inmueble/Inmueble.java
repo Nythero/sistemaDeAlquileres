@@ -1,16 +1,21 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.inmueble;
+package ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
+import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.Sitio.Sitio;
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
-
+import junit.framework.AssertionFailedError;
 
 public class Inmueble {
 	private Usuario dueño;
@@ -20,39 +25,48 @@ public class Inmueble {
 	private String pais;
 	private String ciudad;
 	private String direccion;
+	private ArrayList<String> servicios;
 	private Integer capacidad;
-	private Date horaDeCheckIn;
-	private Date horaDeCheckOut;
+	private ArrayList<String> fotos;
+	private LocalTime horaDeCheckIn;
+	private LocalTime horaDeCheckOut;
+	private ArrayList<String> formasDePago;
 	private Temporada precio;
-	private final Map<String,ArrayList<String>> comentariosPorCategorias = new HashMap<String,ArrayList<String>>();
-	private final ArrayList<String> comentariosGenerales = new ArrayList<String>();
-	private final ArrayList<String> servicios = new ArrayList<String>();
-	private final ArrayList<String> formasDePago = new ArrayList<String>();
-	private final ArrayList<String> fotos = new ArrayList<String>();
-	private final ArrayList<Reserva> reservas = new ArrayList<Reserva>();
-	private RangoDeFechas rangosDeFechas;
-
-	public Inmueble(Usuario dueño, String tipoDeInmueble, int superficie, String pais, String ciudad, String direccion,
-			int capacidad, Date horaDeCheckIn, Date horaDeCheckOut, Temporada precio, Ranking ranking, RangosDeFechas rangosDeFechas) {
-
+	private ArrayList<String> comentariosGenerales;
+	private Map<String,ArrayList<String>> comentariosPorCategorias;
+	private Integer cantidadDeVecesAlquilado; 
+	private ArrayList<RangoDeFechaConPrecioDeterminado> rangosDeFechas;
+	private ArrayList<Reserva> reservas;
+	 
+	
+	public Inmueble(Usuario dueño,String tipoDeInmueble,int superficie,String pais,String ciudad,String direccion,
+			ArrayList<String> servicios,int capacidad,ArrayList<String> fotos, LocalTime horaDeCheckIn,
+			LocalTime horaDeCheckOut,ArrayList<String> formasDePago,Temporada precio) {
+		
+		this.tipoDeInmueble= tipoDeInmueble;
+		this.ranking= new Ranking();
+		this.superficie= superficie;
+		this.pais= pais;
+		this.ciudad= ciudad;
+		this.direccion= direccion;
+		this.servicios= servicios;
+		this.capacidad= capacidad;
+		this.fotos= fotos;
+		this.horaDeCheckIn= horaDeCheckIn;
+		this.horaDeCheckOut= horaDeCheckOut;
+		this.formasDePago= formasDePago;
+		this.rangosDeFechas = new ArrayList<RangoDeFechaConPrecioDeterminado>();
+		this.comentariosGenerales= new ArrayList<String>();
+		this.comentariosPorCategorias= new HashMap<String,ArrayList<String>>();
+		this.cantidadDeVecesAlquilado= 0;
 		this.dueño = dueño;
-		this.tipoDeInmueble = tipoDeInmueble;
-		this.superficie = superficie;
-		this.pais = pais;
-		this.ciudad = ciudad;
-		this.direccion = direccion;
-		this.capacidad = capacidad;
-		this.horaDeCheckIn = horaDeCheckIn;
-		this.horaDeCheckOut = horaDeCheckOut;
-		this.precio = precio;
-		this.ranking = ranking;
-		this.setRangosDeFechas(rangosDeFechas);
+		
 	}
-
-	private void setRangosDeFechas(RangoDeFechas rangosDeFechas) {
-		this.rangosDeFechas = rangosDeFechas;
-	}
-
+	
+//	public HashSet<String> tiposDeInmueblesValidos(){
+//		return (HashSet<String>) (serviciosValidos);
+//	}
+	
 	public Usuario getDueño() {
 		return this.dueño;
 	}
@@ -93,11 +107,11 @@ public class Inmueble {
 		return fotos;
 	}
 
-	public Date getHoraDeCheckIn() {
+	public LocalTime getHoraDeCheckIn() {
 		return this.horaDeCheckIn;
 	}
 
-	public Date getHoraDeCheckOut() {
+	public LocalTime getHoraDeCheckOut() {
 		return this.horaDeCheckOut;
 	}
 
@@ -108,10 +122,6 @@ public class Inmueble {
 	public Temporada getPrecio() {
 		return this.precio;
 	}
-	
-	private RangoDeFechas getRangoDeFechas() {
-		return this.rangosDeFechas;
-	}
 
 	public ArrayList<String> getComentariosGenerales() {
 		return this.comentariosGenerales;
@@ -121,35 +131,83 @@ public class Inmueble {
 		return this.comentariosPorCategorias;
 	}
 
-	public void agregarComentario(String comentario) {
-		this.getComentariosGenerales().add(comentario);
-	}
-	
-	public void agregarReserva(Reserva reserva) throws Exception{
-		this.verificarReserva(reserva);
-		this.reservas.add(reserva);
-	}
-	
-	private void verificarReserva(Reserva reserva) throws Exception {
-		if (reserva.getInmueble() != this ||
-			!this.getRangoDeFechas().contains(reserva.getRangoDeFechas()) ||
-			!this.getFormasDePago().contains(reserva.getFormaDePago()) ||
-			!reserva.estaPendienteDeAprobacion()) {
-			throw new Exception("Reserva Invalida");
-		}
+	public Integer getCantidadDeVecesAlquilado() {
+		return this.cantidadDeVecesAlquilado;
 	}
 
-	public void agregarFormaDePago(String string) {
-		this.getFormasDePago().add(string);
+	
+	public ArrayList<Reserva> getReservas() {
+		return reservas;
+	}
+	
+	public ArrayList<RangoDeFechaConPrecioDeterminado>getRangos() {
+		return (this.rangosDeFechas);
+	}
+	
+	//indica si las fechas dadas, estan dentro del rango
+	public boolean hayAlgunRangoDeFechasQuePoseaLasFecha(LocalDate fechaEntrada, LocalDate fechaSalida) {
+		boolean elRangoEstaEntreLaFecha = true;//!(this.getRangos().isEmpty()) ;
+		for(RangoDeFechaConPrecioDeterminado rango : this.getRangos()) {
+			elRangoEstaEntreLaFecha |= rango.lasFechasEstanEnElRango(fechaEntrada,fechaSalida);
+		}
+		return elRangoEstaEntreLaFecha;
 	}
 
-	public boolean yaEstaReservado(RangoDeFechas rangoDeFechas) {
-		boolean yaEstaReservado = false;
-		for(Reserva reserva : reservas) {
-			if (reserva.estaConcretada()) {
-				yaEstaReservado = yaEstaReservado || rangoDeFechas.intersectanLosRangos(reserva.getRangoDeFechas());
-			}
+	//devuelve el precio maximo del rango de fechas dadas
+	public float precioMaximoDelRangoDeFechasEntre(LocalDate fechaEntrada, LocalDate fechaSalida) {
+		float precioMaximoDelRango = 0;
+		for (RangoDeFechaConPrecioDeterminado rango : this.getRangos()) {
+			if (rango.lasFechasEstanEnElRango(fechaEntrada, fechaSalida)) {
+				precioMaximoDelRango = rango.precioMaximoEntreElRangoDeFechas(fechaEntrada,fechaSalida);
+			    break;
+			} 
 		}
-		return yaEstaReservado;
+		return precioMaximoDelRango;
 	}
+	 
+//	 elInmuebleFueAlquilado()
+//	public boolean estaLibre() {
+//		return (this.getCantidadDeVecesAlquilado() == 0);
+//	}
+	
+	//lo cambiamos por estaAlquiladoActualmente()
+//	public boolean estaAlquilado() {
+//		return (this.getCantidadDeVecesAlquilado() > 0);
+//	}
+	
+	public boolean estaAlquiladoActualmente() {
+		boolean estaAlquilado = false;
+		int i = 0; 
+		while (!this.getReservas().isEmpty() && i < this.getReservas().size()) {
+			estaAlquilado = this.getReservas().get(i).getRangoDeFechas().laFechaActualEstaDentroDelRango();
+			i++;
+		}
+		return estaAlquilado;
+	}
+
+	
+	
+	public void agregarCategoria(String categoria) {
+		this.getRanking().addCategoria(categoria);
+	}
+
+	public static void darDeAltaElServicio(String servicio) {
+		serviciosValidos.add(servicio);
+	}
+
+	public static void darDeAltaAlTipoDeInmueble(String tipoDeInmueble) {
+		tiposDeInmueblesValidos.add(tipoDeInmueble);
+	}
+	
+	
+//	public boolean poseeTodosLosServiciosValidosDelSitio(Sitio sitio) {
+//		ArrayList<String> serviciosValidos = sitio.getTiposDeServiciosValidos();
+//		boolean losServiciosSonValidos = true;
+//		int i = 0;
+//		while (serviciosValidos.size() > i) {
+//			losServiciosSonValidos &= this.getServicios().contains(serviciosValidos.get(i));
+//			i++;
+//		}
+//		return losServiciosSonValidos;
+//	}	  
 }

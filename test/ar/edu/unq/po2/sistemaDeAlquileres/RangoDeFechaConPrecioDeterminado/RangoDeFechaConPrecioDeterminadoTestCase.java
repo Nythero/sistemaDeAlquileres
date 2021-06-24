@@ -1,6 +1,6 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

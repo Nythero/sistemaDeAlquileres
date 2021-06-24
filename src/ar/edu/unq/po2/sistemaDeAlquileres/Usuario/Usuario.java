@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Sitio.Sitio;
-import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
 import junit.framework.AssertionFailedError;
 
 public class Usuario {
@@ -101,7 +102,7 @@ public class Usuario {
 	public Ranking getRankingComoInquilino() {
 		return this.rankingComoInquilino;
 	}
-	
+	 
 	public Date getFechaDeCreacion() {
 		return (this.fechaDeCreacion);
 	}
@@ -116,20 +117,31 @@ public class Usuario {
 	
 	
 	public void setComentarioAReserva(Reserva reserva, String comentario) {
-		reserva.setComentario(comentario);
+		if(this.getReservasRealizadas().contains(reserva)) {
+			reserva.setComentario(comentario);
+		}
 	}
 	
 	
 	public void setPuntajeADuenho (Reserva reserva,String categoria, Integer puntaje) {
-		reserva.setPuntajeADuenho(categoria,puntaje);
+		if(this.getReservasRealizadas().contains(reserva)) {
+			reserva.setPuntajeADuenho(categoria,puntaje);
+		}
+		
 	}
 	
 	public void setPuntajeAInquilino (Reserva reserva,String categoria, Integer puntaje) {
-		reserva.setPuntajeAInquilino(categoria,puntaje);
+		if(this.getReservasRealizadas().contains(reserva)) {
+			reserva.setPuntajeAInquilino(categoria,puntaje);
+		}
+		
 	}
 	
 	public void setPuntajeCategoriaAInmueble (Reserva reserva, String servicio, Integer puntaje) {
-		reserva.setPuntajeCategoriaAInmueble(servicio,puntaje);
+		if(this.getReservasRealizadas().contains(reserva)) {
+			reserva.setPuntajeCategoriaAInmueble(servicio,puntaje);
+		}
+		
 	}
 	
 	 

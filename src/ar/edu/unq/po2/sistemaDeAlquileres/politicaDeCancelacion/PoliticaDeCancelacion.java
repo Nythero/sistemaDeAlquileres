@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.PoliticaDeCancelacion;
+package ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion;
 
 
 import java.time.LocalDate;
@@ -19,19 +19,5 @@ public abstract class PoliticaDeCancelacion {
 	 * @param reserva
 	 * @return
 	 */
-	public int darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(LocalDate diaActual, Reserva reserva) {
-		LocalDate fecha= diaActual;
-		if(fecha.isEqual(reserva.getFechaInicial()) || diaActual.isAfter(reserva.getFechaInicial())){
-			throw new AssertionFailedError("Ya paso la etapa de cancelacion");
-		}
-		else {
-			int result= 0;
-			while (!fecha.isEqual(reserva.getFechaInicial())) {
-				result+= 1;
-				fecha= diaActual.plusDays(1);
-			}
-			return result;
-		}
-	}
 }
 

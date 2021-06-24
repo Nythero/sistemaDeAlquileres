@@ -1,6 +1,11 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+
+import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
+import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
+import junit.framework.AssertionFailedError;
 
 public class RangoDeFechas {
 	private LocalDate fechaInicial;
@@ -50,5 +55,36 @@ public class RangoDeFechas {
 		}
 		return result;
 	}
+	
+	public int darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(LocalDate diaActual, Reserva reserva) {
+		LocalDate fecha= diaActual;
+		if(fecha.isEqual(reserva.getFechaInicial()) || diaActual.isAfter(reserva.getFechaInicial())){
+			throw new AssertionFailedError("Ya paso la etapa de cancelacion");
+		}
+		else {
+			int result= 0;
+			while (!fecha.isEqual(reserva.getFechaInicial())) {
+				result+= 1;
+				fecha= diaActual.plusDays(1);
+			}
+			return result;
+		}
+	}
+	
+	public boolean lasFechasEstanEnElRango(LocalDate fechaEntrada, LocalDate fechaSalida) {
+        return ((this.getFechaInicial().isEqual(fechaEntrada)|| this.getFechaInicial().isBefore(fechaEntrada)) &&
+                (this.getFechaFinal().isEqual(fechaSalida) ||this.getFechaFinal().isAfter(fechaSalida)));
+    }
+	
+	public boolean contains(ArrayList<RangoDeFechaConPrecioDeterminado> rangos) {
+		boolean result= false;
+		int i=0;
+		while(!rangos.isEmpty() && i < rangos.size()) {
+			result|= this.lasFechasEstanEnElRango(rangos.get(i).getFechaInicial(), rangos.get(i).getFechaFinal());
+			i++;
+		}
+		return result;
+	}
+	
 
 }

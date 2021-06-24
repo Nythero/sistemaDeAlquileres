@@ -2,12 +2,12 @@ package ar.edu.unq.po2.sistemaDeAlquileres.Reserva;
 
 import java.time.LocalDate;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Estado.CambioDeEstadoError;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Estado.EstadoEquivocadoError;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
-import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
 
 public class Reserva {
 	
@@ -141,6 +141,14 @@ public class Reserva {
 
 	public float obtenerMontoSegunDias(int cantidadDeDias) {
 		return this.getRangoDeFechas().obtenerMontoPorCantidadDeDias(cantidadDeDias);
+	}
+
+	public Usuario getInquilino() {
+		return this.solicitante;
+	}
+
+	public Usuario getDueño() {
+		return this.getInmueble().getDueño();
 	}
 	
 }
