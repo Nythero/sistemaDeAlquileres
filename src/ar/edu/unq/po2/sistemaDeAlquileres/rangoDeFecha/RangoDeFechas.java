@@ -28,16 +28,16 @@ public class RangoDeFechas {
 	}
 	
 	public boolean intersectanLosRangos(RangoDeFechas rango) {
-		return this.estaElDiaEntre(rango.getFechaInicial()) || this.estaElDiaEntre(rango.getFechaFinal()) ||
-			   rango.estaElDiaEntre(fechaInicial) || rango.estaElDiaEntre(fechaFinal);
+		return this.estaIncluidaLaFecha(rango.getFechaInicial()) || this.estaIncluidaLaFecha(rango.getFechaFinal()) ||
+			   rango.estaIncluidaLaFecha(fechaInicial) || rango.estaIncluidaLaFecha(fechaFinal);
 	}
 	
-	private boolean estaElDiaEntre(LocalDate dia) {
+	public boolean estaIncluidaLaFecha(LocalDate dia) {
 		return this.getFechaInicial().isBefore(dia) && this.getFechaFinal().isAfter(dia) ||
 			   this.getFechaInicial().isEqual(dia) || this.getFechaFinal().isEqual(dia); 
 	}
 	
 	public boolean estaIncluidoElRango(RangoDeFechas rango) {
-        return this.estaElDiaEntre(rango.getFechaInicial()) && this.estaElDiaEntre(rango.getFechaFinal());
+        return this.estaIncluidaLaFecha(rango.getFechaInicial()) && this.estaIncluidaLaFecha(rango.getFechaFinal());
     }
 }

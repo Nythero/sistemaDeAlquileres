@@ -13,12 +13,13 @@ import ar.edu.unq.po2.sistemaDeAlquileres.ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.temporada.Temporada;
 import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
+import ar.edu.unq.po2.sistemaDeAlquileres.observable.Observable;
 import ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion.PoliticaDeCancelacion;
 import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFechas.RangosDeFechas;
 
-public class Inmueble {
+public class Inmueble extends Observable{
 	private Usuario duenho;
 	private String tipoDeInmueble;
 	private Integer superficie;
@@ -37,7 +38,6 @@ public class Inmueble {
 	private final ArrayList<String> comentarios;
 	private final ArrayList<RangoDeFechas> rangosDeFechas;
 	private final ArrayList<Reserva> reservas;
-	 
 	
 	public Inmueble(Usuario duenho, String tipoDeInmueble, int superficie, String pais, String ciudad, String direccion,
 			int capacidad, LocalTime horaDeCheckIn, LocalTime horaDeCheckOut, Temporada precio,
@@ -178,7 +178,7 @@ public class Inmueble {
 		this.getServicios().add(servicio);
 	}
 	
-	public void agregarFotos(String foto) throws Exception {
+	public void agregarFoto(String foto) throws Exception {
 		if (this.getFotos().size() < 5) {
 			this.getFotos().add(foto);
 		}
@@ -204,25 +204,23 @@ public class Inmueble {
 		this.reservas.add(reserva);
 	}
 	
-	public void agregarCategoria(String categoria) {
+	public void agregarCategoria(String categoria) throws Exception {
 		this.getRanking().addCategoria(categoria);
 	}
-	
-	//
 	
 	public Integer getCantidadDeVecesAlquilado() {
 		int cantidad = 0;
 		for (Reserva reserva : this.getReservas()) {
-			cantidad += (reserva.estaFinalizada())? 1 : 0;
+			cantidad += (reserva.estaEnEstado("Finalizado"))? 1 : 0;
 		}
 		return cantidad;
 	}
 	
 	//indica si las fechas dadas, estan dentro del rango
-	public boolean hayAlgunRangoDeFechasQuePoseaLasFecha(LocalDate fechaEntrada, LocalDate fechaSalida) {
-		boolean elRangoEstaEntreLaFecha = true;//!(this.getRangos().isEmpty()) ;
-		for(RangoDeFechaConPrecioDeterminado rango : this.getRangos()) {
-			elRangoEstaEntreLaFecha |= rango.lasFechasEstanEnElRango(fechaEntrada,fechaSalida);
+	public boolean hayAlgunRangoDeFechasQuePoseaElRango(RangoDeFechas rangoP) {
+		boolean elRangoEstaEntreLaFecha = false;
+		for(RangoDeFechas rango : this.getRangos()) {
+			elRangoEstaEntreLaFecha |= rango.estaIncluidoElRango(rangoP);
 		}
 		return elRangoEstaEntreLaFecha;
 	}
@@ -230,10 +228,10 @@ public class Inmueble {
 	//devuelve el precio maximo del rango de fechas dadas
 	public float precioMaximoDelRangoDeFechasEntre(LocalDate fechaEntrada, LocalDate fechaSalida) {
 		float precioMaximoDelRango = 0;
-		for (RangoDeFechaConPrecioDeterminado rango : this.getRangos()) {
-			if (rango.lasFechasEstanEnElRango(fechaEntrada, fechaSalida)) {
-				precioMaximoDelRango = rango.precioMaximoEntreElRangoDeFechas(fechaEntrada,fechaSalida);
-			    break;
+		RangoDeFechas rangoP = new RangoDeFechas(fechaEntrada, fechaSalida);
+		for (RangoDeFechas rango : this.getRangos()) {
+			if (rango.estaIncluidoElRango(rangoP)) {
+				precioMaximoDelRango = this.getPrecio().precioMaximoEntreElRangoDeFechas(rango);
 			} 
 		}
 		return precioMaximoDelRango;
@@ -241,14 +239,9 @@ public class Inmueble {
 	
 	public boolean estaAlquiladoActualmente() {
 		boolean estaAlquilado = false;
-		int i = 0;
 		for(Reserva reserva : this.getReservas()) {
-			estaAlquilado |= reserva.estaEnCurso();
+			estaAlquilado |= reserva.estaEnEstado("EnCurso");
 		}
-//		while (!this.getReservas().isEmpty() && i < this.getReservas().size()) {
-//			estaAlquilado = this.getReservas().get(i).laFechaActualEstaDentroDelRango();
-//			i++;
-//		}
 		return estaAlquilado;
 	}
 
@@ -282,14 +275,14 @@ public class Inmueble {
 	}
 
 	public void cancelarReserva(Reserva reserva) throws Exception {
-		//this.getPoliticaDeCancelacion().cancelarReserva(reserva));
+		this.getPoliticaDeCancelacion().cancelarReserva(LocalDate.now(), reserva);
 		this.notify("Cancelado", this, null);
 		for(Reserva reservaN : this.getReservas()) {
-			if(reservaN.getRangoDeFechas().intersectanLosRangos(reserva.getRangoDeFechas()))){
+			if(reservaN.getRangoDeFechas().intersectanLosRangos(reserva.getRangoDeFechas())){
 				try {
 					reservaN.aceptar();
 				}
-				catch(Exception e) {}
+				finally {}
 			}
 		}
 	}

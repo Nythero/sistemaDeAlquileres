@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.temporada.Temporada;
 import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
+import ar.edu.unq.po2.sistemaDeAlquileres.IObsevers.IObserver;
 import ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion.PoliticaDeCancelacion;
 import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFechas;
 
@@ -40,18 +42,22 @@ class InmuebleTestCase {
 				3, horaDeCheckIn, horaDeCheckOut, precio, politica);
 		inmueble.agregarRangoDeFechas(rango);
 		when(rango.estaIncluidoElRango(rango)).thenReturn(true);
+		
+		inmueble.agregarFormaDePago("Efectivo");
+	}
+	
+	private void validarReserva(Reserva reserva) {
+		when(reserva.getInmueble()).thenReturn(inmueble);
+		when(reserva.getRangoDeFechas()).thenReturn(rango);
+		when(reserva.getFormaDePago()).thenReturn("Efectivo");
+		when(reserva.estaEnEstado("PendienteDeAprobacion")).thenReturn(true);
 	}
 	
 	@Test
 	void Inmueble_AgregarReserva_Success() {
 		Reserva reserva = mock(Reserva.class);
 		
-		inmueble.agregarFormaDePago("Efectivo");
-		
-		when(reserva.getInmueble()).thenReturn(inmueble);
-		when(reserva.getRangoDeFechas()).thenReturn(rango);
-		when(reserva.getFormaDePago()).thenReturn("Efectivo");
-		when(reserva.estaEnEstado("PendienteDeAprobacion")).thenReturn(true);
+		this.validarReserva(reserva);
 		
 		assertDoesNotThrow(() -> inmueble.agregarReserva(reserva));
 		
@@ -67,7 +73,7 @@ class InmuebleTestCase {
 		
 		when(reserva.getRangoDeFechas()).thenReturn(rango);
 		when(reserva.getInmueble()).thenReturn(inmueble);
-		when(reserva.getFormaDePago()).thenReturn("Efectivo");
+		when(reserva.getFormaDePago()).thenReturn("Tarjeta");
 		when(reserva.estaEnEstado("PendienteDeAprobacion")).thenReturn(true);
 		
 		assertThrows(Exception.class, () -> inmueble.agregarReserva(reserva));
@@ -76,14 +82,10 @@ class InmuebleTestCase {
 	@Test
 	void Inmueble_YaEstaReservado_True() throws Exception {
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
-		inmueble.agregarFormaDePago("Efectivo");
 		
 		for (int i = 0; i < 3; i++) {
 			reservas.add(mock(Reserva.class));
-			when(reservas.get(i).getInmueble()).thenReturn(inmueble);
-			when(reservas.get(i).getRangoDeFechas()).thenReturn(rango);
-			when(reservas.get(i).getFormaDePago()).thenReturn("Efectivo");
-			when(reservas.get(i).estaEnEstado("PendienteDeAprobacion")).thenReturn(true);
+			this.validarReserva(reservas.get(i));
 			inmueble.agregarReserva(reservas.get(i));
 		}
 		
@@ -99,14 +101,10 @@ class InmuebleTestCase {
 	@Test
 	void Inmueble_YaEstaReservado_False() throws Exception {
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
-		inmueble.agregarFormaDePago("Efectivo");
 		
 		for (int i = 0; i < 3; i++) {
 			reservas.add(mock(Reserva.class));
-			when(reservas.get(i).getInmueble()).thenReturn(inmueble);
-			when(reservas.get(i).getRangoDeFechas()).thenReturn(rango);
-			when(reservas.get(i).getFormaDePago()).thenReturn("Efectivo");
-			when(reservas.get(i).estaEnEstado("PendienteDeAprobacion")).thenReturn(true);
+			this.validarReserva(reservas.get(i));
 			inmueble.agregarReserva(reservas.get(i));
 		}
 		
@@ -120,5 +118,95 @@ class InmuebleTestCase {
 	@Test
 	void Inmueble_AgregarComentario_Success() {
 		assertDoesNotThrow(() -> inmueble.agregarComentario("Comentario"));
+	}
+	
+	@Test
+	void Inmueble_CancelarReserva_Success() throws Exception {
+		Reserva reservaConcretada = mock(Reserva.class);
+		this.validarReserva(reservaConcretada);
+		
+		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
+		for(int i = 0; i < 3; i++) {
+			reservas.add(mock(Reserva.class));
+			this.validarReserva(reservas.get(i));
+			inmueble.agregarReserva(reservas.get(i));
+		}
+
+		when(rango.intersectanLosRangos(rango)).thenReturn(true).thenReturn(true).thenReturn(false);
+		
+		IObserver observador1 = mock(IObserver.class);
+		IObserver observador2 = mock(IObserver.class);
+		inmueble.agregarReserva(reservaConcretada);
+		inmueble.add("Cancelado", observador1);
+		inmueble.add("Cancelado", observador2);
+		
+		inmueble.cancelarReserva(reservaConcretada);
+		
+		verify(politica).cancelarReserva(LocalDate.now(), reservaConcretada);
+		verify(observador1).update(inmueble, null);
+		verify(observador2).update(inmueble, null);
+		verify(reservas.get(0)).aceptar();
+		verify(reservas.get(1)).aceptar();
+	}
+	
+	@Test
+	void Inmueble_AgregarFoto_Success() {
+		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
+		assertThrows(Exception.class, () -> inmueble.agregarFoto(""));
+	}
+	
+	@Test
+	void Inmueble_AgregarCategoria_Success() {
+		assertDoesNotThrow(() -> inmueble.agregarCategoria("1"));
+		assertDoesNotThrow(() -> inmueble.agregarCategoria("2"));
+		assertDoesNotThrow(() -> inmueble.agregarCategoria("3"));
+	}
+	
+	@Test
+	void Inmueble_AgregarServicio_Success() {
+		assertDoesNotThrow(() -> inmueble.agregarServicio("1"));
+		assertDoesNotThrow(() -> inmueble.agregarServicio("2"));
+		assertDoesNotThrow(() -> inmueble.agregarServicio("3"));
+	}
+	
+	@Test
+	void Inmueble_CantidadDeVecesAlquilado_Success() throws Exception {
+		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
+		
+		for (int i = 0; i < 3; i++) {
+			reservas.add(mock(Reserva.class));
+			this.validarReserva(reservas.get(i));
+			inmueble.agregarReserva(reservas.get(i));
+			when(reservas.get(i).estaEnEstado("Finalizado")).thenReturn(true);
+		}
+		
+		assertEquals(3, inmueble.getCantidadDeVecesAlquilado());
+	}
+	
+	@Test
+	void Inmueble_HayAlgunRangoDeFechasQuePoseaElRango_Succes() {
+		when(rango.estaIncluidoElRango(rango)).thenReturn(false).thenReturn(false).thenReturn(true).thenReturn(false).thenReturn(false);
+		for(int i = 1; i < 5; i++) {
+			inmueble.agregarRangoDeFechas(rango);
+		}
+		
+		assertTrue(inmueble.hayAlgunRangoDeFechasQuePoseaElRango(rango));
+	}
+	
+	@Test void Inmueble_EstaAlquiladoActualmente_Success() throws Exception{
+		Reserva reserva1 = mock(Reserva.class);
+		Reserva reserva2 = mock(Reserva.class);
+		this.validarReserva(reserva1);
+		this.validarReserva(reserva2);
+		when(reserva1.estaEnEstado("EnCurso")).thenReturn(false);
+		when(reserva2.estaEnEstado("EnCurso")).thenReturn(true);
+		inmueble.agregarReserva(reserva1);
+		inmueble.agregarReserva(reserva2);
+		
+		assertTrue(inmueble.estaAlquiladoActualmente());
 	}
 }

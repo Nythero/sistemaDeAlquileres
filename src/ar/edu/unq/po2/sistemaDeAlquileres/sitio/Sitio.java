@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.Comparator;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.usuario.Usuario;
 
 public class Sitio {
@@ -20,7 +21,6 @@ public class Sitio {
 		this.inmuebles = new ArrayList<Inmueble>();
 		this.tiposDeServicios = new HashSet<String>();
 		this.tiposDeInmueblesValidos = new HashSet<String>();
-		
 	}
 	
 	private ArrayList<Usuario> getUsuarios() {
@@ -57,7 +57,6 @@ public class Sitio {
 		else {
 			throw new Exception();
 		}
-		
 	}
 	
 	private boolean esInmuebleValido(Inmueble inmueble) {
@@ -99,8 +98,8 @@ public class Sitio {
 		for (Inmueble inmueble : this.filtrarInmueblesQuePertenezcanALasFechas(fechaEntrada, fechaSalida)) {
 			if (inmueble.getCiudad() == ciudad 
 				&& (null == inmueble.getCapacidad()  || inmueble.getCapacidad() >= huespedes)
-				&& (null == new Float (precioMaximo) || inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) > precioMinimo )
-				&& (null == new Float (precioMaximo) || inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) < precioMaximo)) {
+				&& (null == (Float) precioMaximo || inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) > precioMinimo )
+				&& (null == (Float) precioMaximo || inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) < precioMaximo)) {
 				
 				inmuebles.add(inmueble);
 			} 
@@ -111,8 +110,9 @@ public class Sitio {
 	//devuelve los inmuebles que al menos uno de sus rangos este entre las fechas dadas 
 	public ArrayList<Inmueble> filtrarInmueblesQuePertenezcanALasFechas(LocalDate fechaEntrada, LocalDate fechaSalida){												
 		ArrayList<Inmueble>inmueblesFiltrados = new ArrayList<Inmueble>();
+		RangoDeFechas rango = new RangoDeFechas(fechaEntrada,fechaSalida);
 		for (Inmueble inmueble : this.getInmuebles()) {
-			if (inmueble.hayAlgunRangoDeFechasQuePoseaLasFecha(fechaEntrada,fechaSalida)) {
+			if (inmueble.hayAlgunRangoDeFechasQuePoseaElRango(rango)) {
 				inmueblesFiltrados.add(inmueble);
 			}		
 		}
