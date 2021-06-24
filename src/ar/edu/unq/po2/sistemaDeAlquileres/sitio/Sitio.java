@@ -65,16 +65,24 @@ public class Sitio {
 				&& this.getTiposDeServicios().containsAll(inmueble.getServicios()));
 	}
 	
-	public void addCategoriaAInquilino(String categoria) {
-		this.usuarios.forEach(usuario -> usuario.getRankingComoInquilino().addCategoria(categoria));
+	public void addCategoriaAInquilino(String categoria) throws Exception {
+		for (int i = 0; i < this.getUsuarios().size(); i++) {
+			this.getUsuarios().get(i).getRankingComoInquilino().addCategoria(categoria);
+		}
 	}
 	
-	public void addCategoriaAInmueble(String categoria) {
-		this.inmuebles.forEach(inmueble -> inmueble.getRanking().addCategoria(categoria));
+	public void addCategoriaAInmueble(String categoria) throws Exception {
+		for (int i = 0; i < this.getInmuebles().size(); i++) {
+			this.getInmuebles().get(i).getRanking().addCategoria(categoria);
+		}
+		//this.inmuebles.forEach(inmueble -> inmueble.getRanking().addCategoria(categoria));
 	}
 	
-	public void addCategoriaADuenho(String categoria) {
-		this.usuarios.forEach(usuario -> usuario.getRankingComoDuenho().addCategoria(categoria));
+	public void addCategoriaADuenho(String categoria) throws Exception {
+		for (int i = 0; i < this.getUsuarios().size(); i++) {
+			this.getUsuarios().get(i).getRankingComoDuenho().addCategoria(categoria);
+		}
+//		this.usuarios.forEach(usuario -> usuario.getRankingComoDuenho().addCategoria(categoria))
 	}
 	
 	public void agregarServicioValido(String servicio) {

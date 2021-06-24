@@ -20,15 +20,15 @@ public abstract class EstadoReserva {
 		throw new EstadoEquivocadoError(this.codigo(),  "comentar el inmueble");
 	};
     
-	public void puntuarDuenho(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
+	public void puntuarDuenho(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError, Exception {
 		throw new EstadoEquivocadoError(this.codigo(),  "puntuar al dueño");
 	};
     
-	public void puntuarInquilino(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
+	public void puntuarInquilino(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError, Exception {
 		throw new EstadoEquivocadoError(this.codigo(),  "puntuar al inquilino");
 	};
     
-	public void puntuarInmueble(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
+	public void puntuarInmueble(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError, Exception {
 		throw new EstadoEquivocadoError(this.codigo(),  "puntuar al inmueble");
 	};
 	

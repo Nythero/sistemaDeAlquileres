@@ -66,21 +66,21 @@ class ReservaTestCase {
     }
 	
 	@Test
-	void Reserva_PuntuarDuenho_Success() throws EstadoEquivocadoError {
+	void Reserva_PuntuarDuenho_Success() throws Exception {
 		String categoria = "";
 		reserva.puntuarDuenho(categoria, 10);
 		verify(estado).puntuarDuenho(reserva, categoria, 10);
     }
 	
 	@Test
-	void Reserva_PuntuarInquilino_Success() throws EstadoEquivocadoError {
+	void Reserva_PuntuarInquilino_Success() throws Exception {
 		String categoria = "";
 		reserva.puntuarInquilino(categoria, 10);
 		verify(estado).puntuarInquilino(reserva, categoria, 10);
     }
 	
 	@Test
-	void Reserva_PuntuarInmueble_Success() throws EstadoEquivocadoError {
+	void Reserva_PuntuarInmueble_Success() throws Exception {
 		String categoria = "";
 		reserva.puntuarInmueble(categoria, 10);
 		verify(estado).puntuarInmueble(reserva, categoria, 10);

@@ -80,15 +80,15 @@ public class Reserva {
 		this.getEstado().comentarInmueble(this, comentario);
     }
     
-    public void puntuarDuenho(String categoria, Integer puntaje) throws EstadoEquivocadoError {
+    public void puntuarDuenho(String categoria, Integer puntaje) throws EstadoEquivocadoError, Exception {
 		this.getEstado().puntuarDuenho(this, categoria, puntaje);
     }
     
-    public void puntuarInquilino(String categoria, Integer puntaje) throws EstadoEquivocadoError {
+    public void puntuarInquilino(String categoria, Integer puntaje) throws EstadoEquivocadoError, Exception {
     	this.getEstado().puntuarInquilino(this, categoria, puntaje);
     }
 
-    public void puntuarInmueble(String categoria, Integer puntaje) throws EstadoEquivocadoError {
+    public void puntuarInmueble(String categoria, Integer puntaje) throws EstadoEquivocadoError, Exception {
     	this.getEstado().puntuarInmueble(this, categoria, puntaje);
     }
     

@@ -52,7 +52,7 @@ class EstadoReservaFinalizadoTestCase {
 	}
 
 	@Test
-	void EstadoReservaFinalizado_PuntuarDuenho_Success() throws EstadoEquivocadoError {
+	void EstadoReservaFinalizado_PuntuarDuenho_Success() throws Exception {
 		Inmueble inmueble = mock(Inmueble.class);
 		Usuario duenho = mock(Usuario.class);
 		Ranking ranking = mock(Ranking.class);
@@ -66,7 +66,7 @@ class EstadoReservaFinalizadoTestCase {
 	}
 
 	@Test
-	void EstadoReservaFinalizado_PuntuarInquilino_Success() throws EstadoEquivocadoError {
+	void EstadoReservaFinalizado_PuntuarInquilino_Success() throws Exception {
 		Usuario inquilino = mock(Usuario.class);
 		Ranking ranking = mock(Ranking.class);
 		when(reserva.getSolicitante()).thenReturn(inquilino);
@@ -78,7 +78,7 @@ class EstadoReservaFinalizadoTestCase {
 	}
 
 	@Test
-	void EstadoReservaFinalizado_PuntuarInmueble_Success() throws EstadoEquivocadoError{
+	void EstadoReservaFinalizado_PuntuarInmueble_Success() throws Exception{
 		Inmueble inmueble = mock(Inmueble.class);
 		Ranking ranking = mock(Ranking.class);
 		when(reserva.getInmueble()).thenReturn(inmueble);

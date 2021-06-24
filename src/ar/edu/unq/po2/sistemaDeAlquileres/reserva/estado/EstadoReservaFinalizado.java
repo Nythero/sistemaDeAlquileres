@@ -10,17 +10,17 @@ public class EstadoReservaFinalizado extends EstadoReserva {
 	}
 
 	@Override
-	public void puntuarDuenho(Reserva reserva, String categoria, Integer puntaje) {
+	public void puntuarDuenho(Reserva reserva, String categoria, Integer puntaje) throws Exception {
 		reserva.getInmueble().getDuenho().getRankingComoDuenho().addPuntajePorCategoria(categoria, puntaje);
 	}
 
 	@Override
-	public void puntuarInquilino(Reserva reserva, String categoria, Integer puntaje) {
+	public void puntuarInquilino(Reserva reserva, String categoria, Integer puntaje) throws Exception {
 		reserva.getSolicitante().getRankingComoInquilino().addPuntajePorCategoria(categoria, puntaje);
 	}
 	
 	@Override
-	public void puntuarInmueble(Reserva reserva, String categoria, Integer puntaje) {
+	public void puntuarInmueble(Reserva reserva, String categoria, Integer puntaje) throws Exception {
 		reserva.getInmueble().getRanking().addPuntajePorCategoria(categoria, puntaje);
 	}
 
