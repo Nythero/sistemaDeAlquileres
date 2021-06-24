@@ -4,7 +4,6 @@ package ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion;
 import java.time.LocalDate;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
-import junit.framework.AssertionFailedError;
 
 public abstract class PoliticaDeCancelacion {
 	/**

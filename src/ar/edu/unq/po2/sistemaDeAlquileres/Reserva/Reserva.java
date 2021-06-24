@@ -11,7 +11,7 @@ import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 
 public class Reserva {
 	
-	private RangoDeFechaConPrecioDeterminado rangoDeFechas;
+	private RangoDeFechas rangoDeFechas;
 	private Inmueble inmueble;
 	private EstadoReserva estado;
 	private Usuario solicitante;
@@ -26,7 +26,7 @@ public class Reserva {
 		this.setFormaDePago(formaDePago);
 	}
 
-	public RangoDeFechaConPrecioDeterminado getRangoDeFechas() {
+	public RangoDeFechas getRangoDeFechas() {
 		return this.rangoDeFechas;
 	}
 	

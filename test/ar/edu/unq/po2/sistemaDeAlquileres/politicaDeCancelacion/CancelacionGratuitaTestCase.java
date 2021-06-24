@@ -12,25 +12,31 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
+import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 import junit.framework.AssertionFailedError;
 
 class CancelacionGratuitaTestCase {
 	private CancelacionGratuita cancelacion;
 	@Mock private LocalDate fechaActual;
+	@Mock private Inmueble inmueble;
 	@Mock private Reserva reserva;
-	@Mock private RangoDeFechaConPrecioDeterminado rango;
+	@Mock private RangoDeFechas rango;
 	@Mock private Usuario usuario;
+	@Mock private Temporada precio;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		this.cancelacion= new CancelacionGratuita();
 		this.fechaActual= mock(LocalDate.class);
+		this.inmueble= mock(Inmueble.class);
 		this.reserva= mock(Reserva.class);		
-		this.rango= mock(RangoDeFechaConPrecioDeterminado.class);
+		this.rango= mock(RangoDeFechas.class);
 		this.usuario= mock(Usuario.class);
+		this.precio= mock(Temporada.class);
 	}
 	
 	@Test
@@ -50,12 +56,14 @@ class CancelacionGratuitaTestCase {
 	
 	@Test
 	void testCuandoSeCancelaUnaReservaDeUnDiaSiendoNoGratuita() {
+		when(reserva.getInmueble()).thenReturn(inmueble);
+		when(inmueble.getPrecio()).thenReturn(precio);
 		when(reserva.getRangoDeFechas()).thenReturn(rango);
 		when(rango.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(fechaActual,reserva))
 		.thenReturn(9);
 		when(reserva.getFechaInicial()).thenReturn(fechaActual);
 		when(reserva.cantidadDeDias()).thenReturn(1);
-		when(rango.darPrecioSegunLaTemporada(reserva.getFechaInicial().plusDays(1))).thenReturn(500f);
+		when(precio.getPrecio(reserva.getFechaInicial().plusDays(1))).thenReturn(500f);
 		when(reserva.getInquilino()).thenReturn(usuario);
 		when(reserva.getDueño()).thenReturn(usuario);
 		cancelacion.cancelarReserva(fechaActual, reserva);
@@ -65,13 +73,15 @@ class CancelacionGratuitaTestCase {
 	
 	@Test
 	void testCuandoSeCancelaUnaReservaDeMasDeUnDiaSiendoNoGratuita() {
+		when(reserva.getInmueble()).thenReturn(inmueble);
+		when(inmueble.getPrecio()).thenReturn(precio);
 		when(reserva.getRangoDeFechas()).thenReturn(rango);
 		when(rango.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(fechaActual,reserva))
 		.thenReturn(9);
 		when(reserva.getFechaInicial()).thenReturn(fechaActual);
 		when(reserva.cantidadDeDias()).thenReturn(3);
 		when(reserva.getMontoTotal()).thenReturn(500f);
-		when(rango.obtenerMontoPorCantidadDeDias(2)).thenReturn(200f);
+		when(rango.obtenerMontoPorCantidadDeDias(precio,2)).thenReturn(200f);
 		when(reserva.getInquilino()).thenReturn(usuario);
 		when(reserva.getDueño()).thenReturn(usuario);
 		cancelacion.cancelarReserva(fechaActual, reserva);
