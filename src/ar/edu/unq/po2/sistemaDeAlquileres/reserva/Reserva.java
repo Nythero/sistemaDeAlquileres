@@ -93,6 +93,6 @@ public class Reserva {
     }
     
 	public boolean estaEnEstado(String codigoEstado) {
-		return this.getEstado().esEstado("codigoEstado");
+		return this.getEstado().esEstado(codigoEstado);
 	}
 }
