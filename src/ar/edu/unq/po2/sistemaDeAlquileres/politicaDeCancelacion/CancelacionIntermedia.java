@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 
 public class CancelacionIntermedia extends PoliticaDeCancelacion {
-
+//
 	public CancelacionIntermedia(){
 	}
 
