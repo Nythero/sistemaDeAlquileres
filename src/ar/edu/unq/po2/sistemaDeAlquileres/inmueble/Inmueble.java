@@ -62,7 +62,7 @@ public class Inmueble {
 	
 	//Setters y Getters de atributos no finales
 	
-	public Usuario getDuenhoo() {
+	public Usuario getDuenho() {
 		return this.duenho;
 	}
 	
@@ -244,7 +244,7 @@ public class Inmueble {
 		if (reserva.getInmueble() != this ||
 				!this.getRangos().contains(reserva.getRangoDeFechas()) ||
 				!this.getFormasDePago().contains(reserva.getFormaDePago()) ||
-				!reserva.estaPendienteDeAprobacion()) {
+				!reserva.estaEnEstado("PendienteDeAprobacion")) {
 			throw new Exception("Reserva Invalida");
 		}
 	}
@@ -252,10 +252,23 @@ public class Inmueble {
 	public boolean yaEstaReservado(RangoDeFechas rangoDeFechas) {
 		boolean yaEstaReservado = false;
 		for(Reserva reserva : reservas) {
-			if (reserva.estaConcretada()) {
+			if (reserva.estaEnEstado("Concretada")) {
 				yaEstaReservado = yaEstaReservado || rangoDeFechas.intersectanLosRangos(reserva.getRangoDeFechas());
 			}
 		}
 		return yaEstaReservado;
+	}
+
+	public void cancelarReserva(Reserva reserva) throws Exception {
+		this.getPoliticaDeCancelacion().cancelarReserva(LocalDate.now(), reserva));
+		this.notify("Cancelado", this, null);
+		for(Reserva reservaN : this.getReservas()) {
+			if(reservaN.getRangoDeFechas().intersectanLosRangos(reserva.getRangoDeFechas()))){
+				try {
+					reservaN.aceptar();
+				}
+				catch(Exception e) {}
+			}
+		}
 	}
 }

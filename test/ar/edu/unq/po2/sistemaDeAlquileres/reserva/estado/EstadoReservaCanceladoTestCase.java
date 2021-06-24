@@ -57,7 +57,7 @@ class EstadoReservaCanceladoTestCase {
 
 	@Test
 	void EstadoReservaCancelado_Esta_Success() {
-		assertFalse(estado.esta("PendienteDeAprobacion"));
-		assertTrue(estado.esta("Cancelado"));
+		assertFalse(estado.esEstado("PendienteDeAprobacion"));
+		assertTrue(estado.esEstado("Cancelado"));
 	}
 }

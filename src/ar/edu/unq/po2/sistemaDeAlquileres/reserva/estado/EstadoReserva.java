@@ -4,7 +4,7 @@ import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
 
 public abstract class EstadoReserva {
 	
-	public EstadoReserva cancelar(Reserva reserva) throws CambioDeEstadoError {
+	public EstadoReserva cancelar(Reserva reserva) throws CambioDeEstadoError, Exception {
 		throw new CambioDeEstadoError(this.codigo(), "cancelar");
 	};
     

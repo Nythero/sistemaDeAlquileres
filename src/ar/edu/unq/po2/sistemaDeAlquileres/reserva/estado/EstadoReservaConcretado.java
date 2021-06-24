@@ -6,8 +6,9 @@ import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
 public class EstadoReservaConcretado extends EstadoReserva {
 
 	@Override
-	public EstadoReserva cancelar(Reserva reserva) throws CambioDeEstadoError {
+	public EstadoReserva cancelar(Reserva reserva) throws CambioDeEstadoError, Exception {
 		MailSender.mandarMailDeCancelacion(reserva);
+		reserva.getInmueble().cancelarReserva(reserva);
 		return new EstadoReservaCancelado();
 	}
 

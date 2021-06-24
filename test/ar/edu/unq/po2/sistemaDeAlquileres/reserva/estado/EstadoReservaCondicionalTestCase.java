@@ -47,7 +47,7 @@ class EstadoReservaCondicionalTestCase {
 	}
 	
 	@Test
-	void EstadoReservaCondicional_Cancelar_Success() throws CambioDeEstadoError {
+	void EstadoReservaCondicional_Cancelar_Success() throws Exception {
 		EstadoReserva estadoDevuelto = estado.cancelar(reserva);
 		
 		assertTrue(estadoDevuelto.getClass().equals(EstadoReservaCancelado.class));
@@ -81,8 +81,8 @@ class EstadoReservaCondicionalTestCase {
 
 	@Test
 	void EstadoReservaCondicional_Esta_Success() {
-		assertFalse(estado.esta("Concretado"));
-		assertTrue(estado.esta("Condicional"));
+		assertFalse(estado.esEstado("Concretado"));
+		assertTrue(estado.esEstado("Condicional"));
 	}
 	
 	@AfterAll

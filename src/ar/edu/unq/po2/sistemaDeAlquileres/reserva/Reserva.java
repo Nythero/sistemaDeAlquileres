@@ -64,27 +64,16 @@ public class Reserva {
 		this.formaDePago = formaDePago;
 	}
 	
-	public void cancelar() {
-		try {
-			this.setEstado(this.getEstado().cancelar(this));
-		}
-		catch (CambioDeEstadoError error) {
-			
-		}
+	public void cancelar() throws CambioDeEstadoError, Exception {
+		this.setEstado(this.getEstado().cancelar(this));
 	}
 	
-	public void aceptar() {
-		try {
-			this.setEstado(this.getEstado().aceptar(this));
-		}
-		catch (CambioDeEstadoError error) {}
+	public void aceptar() throws CambioDeEstadoError {
+		this.setEstado(this.getEstado().aceptar(this));
 	}
 	
-	public void finalizar() {
-		try {
-			this.setEstado(this.getEstado().finalizar(this));
-		}
-		catch (CambioDeEstadoError error) {}
+	public void finalizar() throws CambioDeEstadoError {
+		this.setEstado(this.getEstado().finalizar(this));
 	}
 	
 	public void comentarInmueble(String comentario) throws EstadoEquivocadoError {

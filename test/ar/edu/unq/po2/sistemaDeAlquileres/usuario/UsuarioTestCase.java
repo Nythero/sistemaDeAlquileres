@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado.CambioDeEstadoError;
 import ar.edu.unq.po2.sistemaDeAlquileres.sitio.Sitio;
 
 public class UsuarioTestCase {
@@ -34,38 +35,51 @@ public class UsuarioTestCase {
 		inmueble1 = mock(Inmueble.class);
 		inmueble2 = mock(Inmueble.class);
 		reserva1 = mock(Reserva.class);
-		reserva2 = mock(Reserva.class); 
+		reserva2 = mock(Reserva.class);
 		rankingComoDuenho = mock(Ranking.class);
 		rankingComoInquilino = mock(Ranking.class);
 		sitio = mock(Sitio.class);
 		usuario1 = new Usuario("Miguel", "mail@gmail.com","12345",rankingComoDuenho,
 							    rankingComoInquilino);
+
+		when(reserva1.getInmueble()).thenReturn(inmueble1);
+		when(reserva2.getInmueble()).thenReturn(inmueble2);
+	}
+	
+	@Test
+	void testRealizarReserva() throws Exception {
+		when(reserva1.getInmueble()).thenReturn(inmueble1);
+		
+		usuario1.realizarReserva(reserva1);
+		
+		verify(reserva1).getInmueble();
+		verify(inmueble1).agregarReserva(reserva1);
 	}
 	
 	@Test
 	void testSetComentarioAReserva() throws Exception {
-		usuario1.agregarReserva(reserva1);
+		usuario1.realizarReserva(reserva1);
 		usuario1.comentarInmueble(reserva1,"Comentario");
 		verify(reserva1).comentarInmueble("Comentario");
 	}
 	
 	@Test
 	void testSetPuntajeADuenho() throws Exception {
-		usuario1.agregarReserva(reserva1);
+		usuario1.realizarReserva(reserva1);
 		usuario1.puntuarDuenho(reserva1,"amabilidad", 5);
 		verify(reserva1).puntuarDuenho("amabilidad",5);
 	}
 	
 	@Test
 	void testSetPuntajeAInquilino() throws Exception {
-		usuario1.agregarReserva(reserva1);
+		usuario1.realizarReserva(reserva1);
 		usuario1.puntuarInquilino(reserva1,"honestidad", 5);
 		verify(reserva1).puntuarInquilino("honestidad",5);
 	}
 	
 	@Test
 	void testSetPuntajeCategoriaAInmueble() throws Exception {
-		usuario1.agregarReserva(reserva1);
+		usuario1.realizarReserva(reserva1);
 		usuario1.puntuarInmueble(reserva1,"seguridad", 5);
 		verify(reserva1).puntuarInmueble("seguridad",5);
 	}
@@ -134,15 +148,15 @@ public class UsuarioTestCase {
 	}
 	
 	@Test
-	void testAgregarReserva(){
-		usuario1.agregarReserva(reserva1);
+	void testAgregarReserva() throws Exception{
+		usuario1.realizarReserva(reserva1);
 		assertEquals(1,usuario1.cantidadReservas());
 	}
 	
 	@Test
-	void testGetReservasFuturas(){
-		usuario1.agregarReserva(reserva1);
-		usuario1.agregarReserva(reserva2);
+	void testGetReservasFuturas() throws Exception{
+		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva2);
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 		reservas.add(reserva1);
 		reservas.add(reserva2);
@@ -153,16 +167,12 @@ public class UsuarioTestCase {
 	}
 	
 	@Test
-	void testGetReservasEnCiudadEnParticular(){
-		usuario1.agregarReserva(reserva1);
-		usuario1.agregarReserva(reserva2);
+	void testGetReservasEnCiudadEnParticular() throws Exception{
+		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva2);
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 		reservas.add(reserva1);
-		Inmueble inmueble1 = mock(Inmueble.class);
-		Inmueble inmueble2 = mock(Inmueble.class);
 		
-		when(reserva1.getInmueble()).thenReturn(inmueble1);
-		when(reserva2.getInmueble()).thenReturn(inmueble2);
 		when(inmueble1.getCiudad()).thenReturn("Quilmes");
 		when(inmueble2.getCiudad()).thenReturn("La Plata");
 		assertEquals(reservas,usuario1.getReservasEnCiudadParticular("Quilmes"));
@@ -170,14 +180,12 @@ public class UsuarioTestCase {
 	
 	
 	@Test
-	void testGetCiudadesEnLasQueTieneReserva(){
-		usuario1.agregarReserva(reserva1);
-		usuario1.agregarReserva(reserva2);
+	void testGetCiudadesEnLasQueTieneReserva() throws Exception{
+		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva2);
 		Set<String> ciudades = new HashSet<String>();
 		ciudades.add("La Plata");
 		ciudades.add("Quilmes");		
-		when(reserva1.getInmueble()).thenReturn(inmueble1);
-		when(reserva2.getInmueble()).thenReturn(inmueble2);
 		when(inmueble1.getCiudad()).thenReturn("Quilmes");
 		when(inmueble2.getCiudad()).thenReturn("La Plata");
 		
@@ -185,13 +193,11 @@ public class UsuarioTestCase {
 	}
 	
 	@Test
-	void testGetCiudadesEnLasQueTieneReservaSinCiudadesRepetidas(){
-		usuario1.agregarReserva(reserva1);
-		usuario1.agregarReserva(reserva2);
+	void testGetCiudadesEnLasQueTieneReservaSinCiudadesRepetidas() throws Exception{
+		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva2);
 		Set<String> ciudades = new HashSet<String>();
 		ciudades.add("Quilmes");		
-		when(reserva1.getInmueble()).thenReturn(inmueble1);
-		when(reserva2.getInmueble()).thenReturn(inmueble2);
 		when(inmueble1.getCiudad()).thenReturn("Quilmes");
 		when(inmueble2.getCiudad()).thenReturn("Quilmes");
 		
@@ -199,11 +205,19 @@ public class UsuarioTestCase {
 	}
 	
 	@Test
-	void cuantasVecesAlquiloElInmuebleDadoSinTenerloEnInmuebles(){	
+	void testCuantasVecesAlquiloElInmuebleDadoSinTenerloEnInmuebles(){	
 		assertThrows(Exception.class, () -> {
 			usuario1.cuantasVecesAlquiloElInmueble(inmueble1);
 		});
 	} 
+	
+	@Test
+    void cuantasVecesAlquiloElInmuebleDado() throws Exception{
+        usuario1.publicarInmueble(inmueble1, sitio);
+        when(inmueble1.getCantidadDeVecesAlquilado()).thenReturn(5);
+
+        assertEquals(5,usuario1.cuantasVecesAlquiloElInmueble(inmueble1));
+    }
 	
 	@Test
 	void testCantidadDeVecesQueAlquilo() throws Exception{
@@ -227,5 +241,19 @@ public class UsuarioTestCase {
 	    	
 		assertEquals(inmueblesQueHanSidoAlquilados,usuario1.getInmueblesQueHanSidoAlquilados());
 	}
+	
+	@Test
+	void testCancelarReservaTiraError() throws CambioDeEstadoError, Exception {
+		assertThrows(Exception.class, () -> usuario1.cancelarReserva(reserva1));
+	}
+	
+	@Test
+	void testCancelarReservaSucces() throws CambioDeEstadoError, Exception {
+		usuario1.realizarReserva(reserva1);
+		usuario1.cancelarReserva(reserva1);
+		
+		verify(reserva1).cancelar();
+	}
+	
 
 }

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.AfterAll;
@@ -44,11 +45,13 @@ class EstadoReservaConcretadoTestCase {
 	}
 	
 	@Test
-	void EstadoReservaConcretado_Cancelar_Success() throws CambioDeEstadoError {
+	void EstadoReservaConcretado_Cancelar_Success() throws CambioDeEstadoError, Exception {
 		EstadoReserva estadoDevuelto = estado.cancelar(reserva);
 		
 		assertTrue(estadoDevuelto.getClass().equals(EstadoReservaCancelado.class));
 		email.verify(() -> MailSender.mandarMailDeCancelacion(reserva));
+		verify(reserva).getInmueble();
+		verify(inmueble).cancelarReserva(reserva);
 	}
 	
 	@Test
@@ -80,8 +83,8 @@ class EstadoReservaConcretadoTestCase {
 	
 	@Test
 	void EstadoReservaConcretado_Esta_Success() {
-		assertTrue(estado.esta("Concretado"));
-		assertFalse(estado.esta("Condicional"));
+		assertTrue(estado.esEstado("Concretado"));
+		assertFalse(estado.esEstado("Condicional"));
 	}
 	
 	@AfterAll

@@ -11,6 +11,7 @@ import ar.edu.unq.po2.sistemaDeAlquileres.inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.rangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado.CambioDeEstadoError;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado.EstadoEquivocadoError;
 import ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado.EstadoReservaPendienteDeAprobacion;
 import ar.edu.unq.po2.sistemaDeAlquileres.sitio.Sitio;
@@ -25,7 +26,6 @@ public class Usuario {
 	private final Ranking rankingComoInquilino;
 	private final ArrayList<Inmueble> inmuebles;
 	private final ArrayList<Reserva> reservas;  
-	private final ArrayList<String> comentarios;
 	
 	
 	public Usuario (String nombreCompleto, String direccionDeEmail,
@@ -130,11 +130,8 @@ public class Usuario {
 		return (sitio.buscarInmuebles(ciudad, fechaEntrada,fechaSalida, huespedes,precioMinimo,precioMaximo));
 	}
 	
-	public void registrarseEnSitio(Sitio sitio) {
-		try {
-			sitio.registrarUsuario(this);
-		}
-		catch (Exception e) {}
+	public void registrarseEnSitio(Sitio sitio) throws Exception {
+		sitio.registrarUsuario(this);
 	}
 
 	public Inmueble visualizarDatosDelInmueble(ArrayList<Inmueble> inmuebles, Integer posicionInmueble) throws Exception {
@@ -161,7 +158,7 @@ public class Usuario {
 	}
 	
 	public void recibirPago(float monto){
-		this.saldo += monto;
+		this.setSaldo(this.getSaldo() + monto);
 	}
 
 	public void extraerMonto(float monto) throws Exception{
@@ -169,24 +166,22 @@ public class Usuario {
 			throw new Exception("No hay dinero suficiente para extraer");
 		}
 		else {
-			this.saldo-= monto;
+			this.setSaldo(this.getSaldo() - monto);
 		}	
 	}
 	
-	public void agregarReserva(Reserva reserva) {
+	public void realizarReserva(Reserva reserva) throws Exception {
+		reserva.getInmueble().agregarReserva(reserva);
 		this.getReservas().add(reserva);
 	}
 	
-	public void realizarReserva(Inmueble inmueble, Sitio sitio, LocalDate fechaInicio, 
-								 LocalDate fechaFinal, String formaDePago) throws Exception {
-		RangoDeFechas rango = new RangoDeFechas(fechaInicio, fechaFinal);
-		Reserva reserva = new Reserva(inmueble, rango, this, formaDePago, new EstadoReservaPendienteDeAprobacion());
-		inmueble.agregarReserva(reserva);
-		this.agregarReserva(reserva);
-	}
-	
-	public void cancelarReserva(Reserva reserva,Sitio sitio) {
-		reserva.cancelar();
+	public void cancelarReserva(Reserva reserva) throws CambioDeEstadoError, Exception {
+		if (this.getReservas().contains(reserva)) {
+			reserva.cancelar();
+		}
+		else {
+			throw new Exception("La reserva no pertenece al usuario");
+		}
 	}
 	
 	public ArrayList<Reserva> getTodasLasReservasFuturas(){
@@ -224,10 +219,6 @@ public class Usuario {
 		}
 		return cantidadDeVecesAlquilado;
 	}
-
-	public Integer obtenerLaPosicionDelInmueble(Inmueble inmueble) {
-		return (this.getInmuebles().indexOf(inmueble));
-	}
 	
 	public Integer cuantasVecesAlquiloElInmueble(Inmueble inmueble) throws Exception {
 		if (this.getInmuebles().contains(inmueble)) {
@@ -252,9 +243,3 @@ public class Usuario {
 		return this.getReservas().size();
 	}
 }
-
-
-
-
-    
-

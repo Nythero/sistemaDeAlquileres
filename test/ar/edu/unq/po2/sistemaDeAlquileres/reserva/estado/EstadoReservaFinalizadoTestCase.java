@@ -27,17 +27,17 @@ class EstadoReservaFinalizadoTestCase {
 	}
 	
 	@Test
-	void EstadoReservaFinalizado_Aceptar_CambioDeEstadoError() throws CambioDeEstadoError {
+	void EstadoReservaFinalizado_Aceptar_CambioDeEstadoError() {
 		assertThrows(CambioDeEstadoError.class, () -> estado.aceptar(reserva));
 	}
 	
 	@Test
-	void EstadoReservaFinalizado_Cancelar_CambioDeEstadoError() throws CambioDeEstadoError {
+	void EstadoReservaFinalizado_Cancelar_CambioDeEstadoError() {
 		assertThrows(CambioDeEstadoError.class, () -> estado.cancelar(reserva));
 	}
 	
 	@Test
-	void EstadoReservaFinalizado_Finalizar_CambioDeEstadoError() throws CambioDeEstadoError {
+	void EstadoReservaFinalizado_Finalizar_CambioDeEstadoError() {
 		assertThrows(CambioDeEstadoError.class, () -> estado.finalizar(reserva));
 	}
 	
@@ -57,7 +57,7 @@ class EstadoReservaFinalizadoTestCase {
 		Usuario duenho = mock(Usuario.class);
 		Ranking ranking = mock(Ranking.class);
 		when(reserva.getInmueble()).thenReturn(inmueble);
-		when(inmueble.getDueño()).thenReturn(duenho);
+		when(inmueble.getDuenho()).thenReturn(duenho);
 		when(duenho.getRankingComoDuenho()).thenReturn(ranking);
 		
 		estado.puntuarDuenho(reserva, "Facherocidad", 10);
@@ -90,8 +90,8 @@ class EstadoReservaFinalizadoTestCase {
 	}
 
 	@Test
-	void EstadoReservaFinalizado_Esta_Success() {
-		assertFalse(estado.esta("PendienteDeAprobacion"));
-		assertTrue(estado.esta("Finalizado"));
+	void EstadoReservaFinalizado_EsEstado_Success() {
+		assertFalse(estado.esEstado("PendienteDeAprobacion"));
+		assertTrue(estado.esEstado("Finalizado"));
 	}
 }

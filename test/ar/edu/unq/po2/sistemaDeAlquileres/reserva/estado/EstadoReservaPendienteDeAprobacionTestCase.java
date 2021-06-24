@@ -1,7 +1,6 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.reserva.estado;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -94,9 +93,9 @@ class EstadoReservaPendienteDeAprobacionTestCase {
 	}
 
 	@Test
-	void EstadoReservaPendienteDeAprobacion_Esta_Success() {
-		assertTrue(estado.esta("PendienteDeAprobacion"));
-		assertFalse(estado.esta("Finalizado"));
+	void EstadoReservaPendienteDeAprobacion_EsEstado_Success() {
+		assertTrue(estado.esEstado("PendienteDeAprobacion"));
+		assertFalse(estado.esEstado("Finalizado"));
 	}
 	
 	@AfterAll

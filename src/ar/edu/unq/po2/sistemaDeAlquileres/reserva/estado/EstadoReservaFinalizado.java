@@ -11,7 +11,7 @@ public class EstadoReservaFinalizado extends EstadoReserva {
 
 	@Override
 	public void puntuarDuenho(Reserva reserva, String categoria, Integer puntaje) {
-		reserva.getInmueble().getDueño().getRankingComoDuenho().addPuntajePorCategoria(categoria, puntaje);
+		reserva.getInmueble().getDuenho().getRankingComoDuenho().addPuntajePorCategoria(categoria, puntaje);
 	}
 
 	@Override

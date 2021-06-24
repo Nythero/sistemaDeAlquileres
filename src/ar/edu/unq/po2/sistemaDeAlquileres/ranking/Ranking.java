@@ -7,12 +7,14 @@ import java.util.Map;
 import junit.framework.AssertionFailedError;
 
 public class Ranking {
-	private Map<String,ArrayList<Integer>> registroPorCategorias;
-	private ArrayList<Integer> puntajeGeneral;
+	private final Map<String,ArrayList<Integer>> registroPorCategorias;
+	private final ArrayList<Integer> puntajeGeneral;
+	private final ArrayList<String> comentarios;
 	
 	public Ranking() {
-		this.registroPorCategorias= new HashMap<>(); //cada categoria 
+		this.registroPorCategorias= new HashMap<>();
 		this.puntajeGeneral= new ArrayList<Integer>();
+		this.comentarios = new ArrayList<String>();
 	}
 	
 	/**
@@ -27,24 +29,6 @@ public class Ranking {
 		}
 		else {
 			this.agregarComoCorresponde(categoria,puntaje);
-		}
-	}
-
-	/**
-	 * Agrega el puntaje a los registros dependiendo si ya se encuentra la clave o no
-	 * @param categoria
-	 * @param puntaje
-	 */
-	private void agregarComoCorresponde(String categoria, int puntaje) {
-		if(this.registroPorCategorias.containsKey(categoria)) {
-			ArrayList<Integer> puntajes = this.registroPorCategorias.get(categoria);
-			puntajes.add(puntaje);
-			this.registroPorCategorias.put(categoria, puntajes);
-		}
-		else {
-			ArrayList<Integer> puntajes = new ArrayList<>();
-			puntajes.add(puntaje);
-			this.registroPorCategorias.put(categoria, puntajes);
 		}
 	}
 	
