@@ -40,7 +40,6 @@ public class Usuario {
 		this.rankingComoInquilino = new Ranking();
 		this.inmuebles = new ArrayList<Inmueble>();
 		this.reservas = new ArrayList<Reserva>();  
-		this.comentarios = new ArrayList<String>(); 
 	}
 
 	public String getNombreCompleto() {
@@ -93,10 +92,6 @@ public class Usuario {
 
 	private ArrayList<Reserva> getReservas() {
 		return reservas;
-	}
-
-	private ArrayList<String> getComentarios() {
-		return comentarios;
 	}
 	
 	public void comentarInmueble(Reserva reserva, String comentario) throws Exception {

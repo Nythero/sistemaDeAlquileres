@@ -8,42 +8,43 @@ import junit.framework.AssertionFailedError;
 
 public class Ranking {
 	private final Map<String,ArrayList<Integer>> registroPorCategorias;
-	private final ArrayList<Integer> puntajeGeneral;
 	private final ArrayList<String> comentarios;
 	
 	public Ranking() {
-		this.registroPorCategorias= new HashMap<>();
-		this.puntajeGeneral= new ArrayList<Integer>();
+		this.registroPorCategorias = new HashMap<>();
 		this.comentarios = new ArrayList<String>();
+	}
+	
+	private ArrayList<String> getComentarios() {
+		return this.comentarios;
+	}
+	
+	public void addCategoria(String categoria) {
+		if(!this.registroPorCategorias.containsKey(categoria)) {
+			this.registroPorCategorias.put(categoria, new ArrayList<Integer>());
+		}
 	}
 	
 	/**
 	 * Dada una categoria y un puntaje la agrega a los registros
-	 * Si el puntaje no se encuentra entre 1 y 5 inluidos ambos devuelve error
+	 * Si el puntaje no se encuentra entre 1 y 5 inluidos o no se encuentra la categoria
+	 * ambos casos devuelve error
 	 * @param categoria
 	 * @param puntaje
 	 */
 	public void addPuntajePorCategoria(String categoria, int puntaje) {
-		if (puntaje < 1 || puntaje > 5) {
-			throw new AssertionFailedError("El puntaje no es valido");
+		if (!esPuntajeValido(puntaje) || !this.registroPorCategorias.containsKey(categoria)) {
+			throw new AssertionFailedError("El puntaje no es valido o no esta la categoria a puntuar");
 		}
 		else {
-			this.agregarComoCorresponde(categoria,puntaje);
+			ArrayList<Integer> puntajes = this.registroPorCategorias.get(categoria);
+			puntajes.add(puntaje);
+			this.registroPorCategorias.put(categoria, puntajes);
 		}
 	}
 	
-	/**
-	 * Añade un puntaje general a la lista de puntajes generales
-	 * Si el puntaje no se encuentra entre 1 y 5 inluidos ambos devuelve error
-	 * @param puntaje
-	 */
-	public void addPuntajeGeneral(int puntaje) {
-		if (puntaje < 1 || puntaje > 5) {
-			throw new AssertionFailedError();
-		}
-		else {
-			this.puntajeGeneral.add(puntaje);
-		}
+	private boolean esPuntajeValido (int puntaje) {
+		return puntaje >= 1 && puntaje <= 5;
 	}
 
 	/**
@@ -72,7 +73,7 @@ public class Ranking {
 	 * @return
 	 */
 	public int puntajeTotalPromedio() {
-		if (this.registroPorCategorias.size()==0 && this.puntajeGeneral.size()==0){
+		if (this.registroPorCategorias.size()==0){
 			return 0;
 		}
 		else {
@@ -82,10 +83,6 @@ public class Ranking {
 			for(String categoria:elementos) {
 				result+= this.registroPorCategorias.get(categoria).stream().reduce(0, (a,b)-> a + b);
 				contador+=this.cantidadDePuntajesSegunCategoria(categoria);
-			}
-			for (Integer puntaje: this.puntajeGeneral) {
-				result+= puntaje;
-				contador+=1; 
 			}
 			return result/ contador;
 		}
@@ -105,12 +102,8 @@ public class Ranking {
 			return this.registroPorCategorias.get(categoria).size();
 		}
 	}
-
-	/**
-	 * Devuelve la cantidad de puntos generales.
-	 * @return
-	 */
-	public int cantidadDePuntajesGeneral() {
-		return this.puntajeGeneral.size();
+	
+	public void agregarComentario(String comentario) {
+		this.getComentarios().add(comentario);
 	}
 }
