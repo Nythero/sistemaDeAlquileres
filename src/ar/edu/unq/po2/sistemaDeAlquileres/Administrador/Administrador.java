@@ -24,14 +24,6 @@ public class Administrador {
 		sitio.addCategoriaAInmueble(categoria);
 	}
 	
-//	public void addTipoDeInmueble(String tipoDeInmueble) {
-//		Inmueble.darDeAltaAlTipoDeInmueble(tipoDeInmueble);
-//	}
-//
-//	public void addAltaServicio(String servicio) {
-//		Inmueble.darDeAltaElServicio(servicio);
-//	}
-	 
 	
 	//obtiene el topten de los inquilinos, es decir los usuarios que mas veces alquilaron
 	public ArrayList<Usuario> getTopTen(Sitio sitio) {
