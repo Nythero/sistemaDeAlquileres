@@ -9,8 +9,9 @@ public abstract class PoliticaDeCancelacion {
 	/**
 	 * Dada una reserva la cancela
 	 * @param reserva
+	 * @throws Exception 
 	 */
-	abstract void cancelarReserva(LocalDate diaActual, Reserva reserva);
+	public abstract void cancelarReserva(LocalDate diaActual, Reserva reserva) throws Exception;
 	
 	/**
 	 * Dada una reserva devuelve la cantidad de dias entre la fecha actual

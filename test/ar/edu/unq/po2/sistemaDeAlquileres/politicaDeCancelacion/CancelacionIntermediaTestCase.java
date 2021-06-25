@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
+import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 import junit.framework.AssertionFailedError;
@@ -22,7 +22,7 @@ class CancelacionIntermediaTestCase {
 	private CancelacionIntermedia cancelacionIntermedia;
 	@Mock private LocalDate fechaActual;
 	@Mock private Reserva reserva;
-	@Mock private RangoDeFechaConPrecioDeterminado rango;
+	@Mock private RangoDeFechas rango;
 	@Mock private Usuario usuario;
 	
 	@BeforeEach
@@ -30,34 +30,34 @@ class CancelacionIntermediaTestCase {
 		this.cancelacionIntermedia= new CancelacionIntermedia();
 		this.fechaActual= mock(LocalDate.class);
 		this.reserva= mock(Reserva.class);		
-		this.rango= mock(RangoDeFechaConPrecioDeterminado.class);
+		this.rango= mock(RangoDeFechas.class);
 		this.usuario= mock(Usuario.class);
 	}
 
 	
 	@Test
-	void testSeCancelaConMasDe20Dias() {
+	void testSeCancelaConMasDe20Dias() throws Exception {
 		when(reserva.getRangoDeFechas()).thenReturn(rango);
 		when(rango.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(fechaActual,reserva))
 		.thenReturn(22);
 		when(reserva.getFechaInicial()).thenReturn(fechaActual);
 		when(reserva.getMontoTotal()).thenReturn(500f);
-		when(reserva.getInquilino()).thenReturn(usuario);
-		when(reserva.getDueño()).thenReturn(usuario);
+		when(reserva.getSolicitante()).thenReturn(usuario);
+		when(reserva.getDuenho()).thenReturn(usuario);
 		cancelacionIntermedia.cancelarReserva(fechaActual, reserva);
 		
 		verify(usuario).recibirPago(500f);
 		verify(usuario).extraerMonto(500f);
 	}
 	@Test
-	void testSeCancelaEntre19Y10Dias() {
+	void testSeCancelaEntre19Y10Dias() throws Exception {
 		when(reserva.getRangoDeFechas()).thenReturn(rango);
 		when(rango.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(fechaActual,reserva))
 		.thenReturn(15);
 		when(reserva.getFechaInicial()).thenReturn(fechaActual);
 		when(reserva.getMontoTotal()).thenReturn(500f);
-		when(reserva.getInquilino()).thenReturn(usuario);
-		when(reserva.getDueño()).thenReturn(usuario);
+		when(reserva.getSolicitante()).thenReturn(usuario);
+		when(reserva.getDuenho()).thenReturn(usuario);
 		cancelacionIntermedia.cancelarReserva(fechaActual, reserva);
 		
 		verify(usuario).recibirPago(250f);
@@ -65,14 +65,14 @@ class CancelacionIntermediaTestCase {
 	}
 	
 	@Test
-	void testSeCancelaConMenosDe10Dias() {
+	void testSeCancelaConMenosDe10Dias() throws Exception {
 		when(reserva.getRangoDeFechas()).thenReturn(rango);
 		when(rango.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(fechaActual,reserva))
 		.thenReturn(8);
 		when(reserva.getFechaInicial()).thenReturn(fechaActual);
 		when(reserva.getMontoTotal()).thenReturn(500f);
-		when(reserva.getInquilino()).thenReturn(usuario);
-		when(reserva.getDueño()).thenReturn(usuario);
+		when(reserva.getSolicitante()).thenReturn(usuario);
+		when(reserva.getDuenho()).thenReturn(usuario);
 		cancelacionIntermedia.cancelarReserva(fechaActual, reserva);
 		
 		verifyZeroInteractions(usuario);

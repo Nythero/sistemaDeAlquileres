@@ -9,7 +9,7 @@ public class FeriadosInamovibles extends Temporada {
 	private float precioEnFeriado;
 	private Feriado feriados;
 
-	public FeriadosInamovibles(float precioEnDiaCotidiano, float precioEnFeriado) {
+	public FeriadosInamovibles(float precioEnDiaCotidiano, float precioEnFeriado) throws Exception {
 		super(precioEnDiaCotidiano);
 		this.precioEnFeriado= precioEnFeriado;
 		this.feriados= new Feriado();

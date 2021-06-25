@@ -29,7 +29,7 @@ class SinCancelacionTestCase {
 	}
 
 	@Test
-	void testSeCancelaLaReserva() {
+	void testSeCancelaLaReserva() throws Exception {
 		sinCancelacion.cancelarReserva(fechaActual,reserva);
 		
 		verifyZeroInteractions(reserva);

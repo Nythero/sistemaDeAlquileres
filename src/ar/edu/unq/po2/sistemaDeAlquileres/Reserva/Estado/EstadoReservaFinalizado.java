@@ -2,50 +2,30 @@ package ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Estado;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 
-public class EstadoReservaFinalizado implements EstadoReserva {
+public class EstadoReservaFinalizado extends EstadoReserva {
 
 	@Override
-	public EstadoReserva cancelar(Reserva reserva) throws CambioDeEstadoError {
-		throw new CambioDeEstadoError("Finalizado", "cancelar");
-	}
-
-	@Override
-	public EstadoReserva aceptar(Reserva reserva) throws CambioDeEstadoError {
-		throw new CambioDeEstadoError("Finalizado", "aceptar");
-	}
-
-	@Override
-	public EstadoReserva finalizar(Reserva reserva) throws CambioDeEstadoError {
-		throw new CambioDeEstadoError("Finalizado", "finalizar");
-	}
-
-	@Override
-	public void setComentario(Reserva reserva, String comentario) {
+	public void comentarInmueble(Reserva reserva, String comentario) {
 		reserva.getInmueble().agregarComentario(comentario);
 	}
 
 	@Override
-	public void setPuntajeADuenho(Reserva reserva, String categoria, Integer puntaje) {
-		reserva.getInmueble().getDueño().getRankingComoDuenho().addPuntajePorCategoria(categoria, puntaje);
+	public void puntuarDuenho(Reserva reserva, String categoria, Integer puntaje) throws Exception {
+		reserva.getInmueble().getDuenho().getRankingComoDuenho().addPuntajePorCategoria(categoria, puntaje);
 	}
 
 	@Override
-	public void setPuntajeAInquilino(Reserva reserva, String categoria, Integer puntaje) {
+	public void puntuarInquilino(Reserva reserva, String categoria, Integer puntaje) throws Exception {
 		reserva.getSolicitante().getRankingComoInquilino().addPuntajePorCategoria(categoria, puntaje);
 	}
 	
 	@Override
-	public void setPuntajeAInmueble(Reserva reserva, String categoria, Integer puntaje) {
+	public void puntuarInmueble(Reserva reserva, String categoria, Integer puntaje) throws Exception {
 		reserva.getInmueble().getRanking().addPuntajePorCategoria(categoria, puntaje);
 	}
 
 	@Override
-	public boolean estaPendienteDeAprobacion() {
-		return false;
-	}
-
-	@Override
-	public boolean estaConcretada() {
-		return false;
+	String codigo() {
+		return "Finalizado";
 	}
 }

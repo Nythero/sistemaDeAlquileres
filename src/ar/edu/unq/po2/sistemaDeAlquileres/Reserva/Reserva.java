@@ -1,117 +1,103 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.Reserva;
 
 import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
-import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Estado.CambioDeEstadoError;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Estado.EstadoEquivocadoError;
+import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Estado.EstadoReserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 
 public class Reserva {
-	
-	private RangoDeFechas rangoDeFechas;
-	private Inmueble inmueble;
-	private EstadoReserva estado;
-	private Usuario solicitante;
-	private String formaDePago;
-	private float total;
+    
+    private RangoDeFechas rangoDeFechas;
+    private Inmueble inmueble;
+    private EstadoReserva estado;
+    private Usuario solicitante;
+    private String formaDePago;
+    private Float total;
 
-	public Reserva(Inmueble inmueble, RangoDeFechaConPrecioDeterminado rangoDeFechas, Usuario solicitante, String formaDePago, EstadoReserva estado) {
-		this.setRangoDeFechas(rangoDeFechas);
-		this.setSolicitante(solicitante);
-		this.setInmueble(inmueble);
-		this.setEstado(estado);
-		this.setFormaDePago(formaDePago);
-	}
+    public Reserva(Inmueble inmueble, RangoDeFechas rangoDeFechas, Usuario solicitante, String formaDePago, EstadoReserva estado) {
+        this.setRangoDeFechas(rangoDeFechas);
+        this.setSolicitante(solicitante);
+        this.setInmueble(inmueble);
+        this.setEstado(estado);
+        this.setFormaDePago(formaDePago);
+    }
 
-	public RangoDeFechas getRangoDeFechas() {
-		return this.rangoDeFechas;
-	}
-	
-	private void setRangoDeFechas(RangoDeFechaConPrecioDeterminado rangoDeFechas) {
-		this.rangoDeFechas = rangoDeFechas;
-	}
-
-	public EstadoReserva getEstado() {
-		return estado;
-	}
-	
-	private void setEstado(EstadoReserva estado) {
-		this.estado = estado;
-	}
-	
-	public Inmueble getInmueble() {
-		return this.inmueble;
-	}
-	
-	private void setInmueble(Inmueble inmueble) {
-		this.inmueble = inmueble;
-	}
-	
-	public Usuario getSolicitante() {
-		return this.solicitante;
-	}
-	
-	private void setSolicitante(Usuario solicitante) {
-		this.solicitante = solicitante;
-	}
-
-	public String getFormaDePago() {
-		return this.formaDePago;
-	}
-
-	private void setFormaDePago(String formaDePago) {
-		this.formaDePago = formaDePago;
-	}
-	
-	public void cancelar() {
-		try {
-			this.setEstado(this.getEstado().cancelar(this));
-		}
-		catch (CambioDeEstadoError error) {
-			
-		}
-	}
-	
-	public void aceptar() {
-		try {
-			this.setEstado(this.getEstado().aceptar(this));
-		}
-		catch (CambioDeEstadoError error) {}
-	}
-	
-	public void finalizar() {
-		try {
-			this.setEstado(this.getEstado().finalizar(this));
-		}
-		catch (CambioDeEstadoError error) {}
-	}
-	
-	public void setComentario(String comentario) throws EstadoEquivocadoError {
-		this.getEstado().setComentario(this, comentario);
+    public RangoDeFechas getRangoDeFechas() {
+        return this.rangoDeFechas;
     }
     
-    public void setPuntajeADuenho (String categoria, Integer puntaje) throws EstadoEquivocadoError {
-		this.getEstado().setPuntajeADuenho(this, categoria, puntaje);
+    private void setRangoDeFechas(RangoDeFechas rangoDeFechas) {
+        this.rangoDeFechas = rangoDeFechas;
+    }
+
+    public EstadoReserva getEstado() {
+        return estado;
     }
     
-    public void setPuntajeAInquilino (String categoria, Integer puntaje) throws EstadoEquivocadoError {
-    	this.getEstado().setPuntajeAInquilino(this, categoria, puntaje);
+    private void setEstado(EstadoReserva estado) {
+        this.estado = estado;
+    }
+    
+    public Inmueble getInmueble() {
+        return this.inmueble;
+    }
+    
+    private void setInmueble(Inmueble inmueble) {
+        this.inmueble = inmueble;
+    }
+    
+    public Usuario getSolicitante() {
+        return this.solicitante;
+    }
+    
+    private void setSolicitante(Usuario solicitante) {
+        this.solicitante = solicitante;
     }
 
-	public boolean estaPendienteDeAprobacion() {
-		return this.getEstado().estaPendienteDeAprobacion();
-	}
+    public String getFormaDePago() {
+        return this.formaDePago;
+    }
 
-	public boolean estaConcretada() {
-		return this.getEstado().estaConcretada();
-	}
+    private void setFormaDePago(String formaDePago) {
+        this.formaDePago = formaDePago;
+    }
+    
+    public void cancelar() throws CambioDeEstadoError, Exception {
+        this.setEstado(this.getEstado().cancelar(this));
+    }
+    
+    public void aceptar() throws CambioDeEstadoError {
+        this.setEstado(this.getEstado().aceptar(this));
+    }
+    
+    public void finalizar() throws CambioDeEstadoError {
+        this.setEstado(this.getEstado().finalizar(this));
+    }
+    
+    public void comentarInmueble(String comentario) throws EstadoEquivocadoError {
+        this.getEstado().comentarInmueble(this, comentario);
+    }
+    
+    public void puntuarDuenho(String categoria, Integer puntaje) throws EstadoEquivocadoError, Exception {
+        this.getEstado().puntuarDuenho(this, categoria, puntaje);
+    }
+    
+    public void puntuarInquilino(String categoria, Integer puntaje) throws EstadoEquivocadoError, Exception {
+        this.getEstado().puntuarInquilino(this, categoria, puntaje);
+    }
 
-	public float getMontoTotal() {
-		return this.total;
-	}
+    public void puntuarInmueble(String categoria, Integer puntaje) throws EstadoEquivocadoError, Exception {
+        this.getEstado().puntuarInmueble(this, categoria, puntaje);
+    }
+    
+    public boolean estaEnEstado(String codigoEstado) {
+        return this.getEstado().esEstado(codigoEstado);
+    }
 
 	public LocalDate getFechaInicial() {
 		return this.getRangoDeFechas().getFechaInicial();
@@ -121,34 +107,12 @@ public class Reserva {
 		return this.getRangoDeFechas().getFechaFinal();
 	}
 
-	public void devolverMontoAInquilinoSegunCancelacion(float monto){
-		this.getSolicitante().recibirPago(monto);
+	public Usuario getDuenho() {
+		return this.getInmueble().getDuenho();
 	}
 
-	public void extraerMontoADueñoSegunCancelacion(float monto){
-		this.getInmueble().getDueño().extraerMonto(monto);
+	public float getMontoTotal() {
+		return this.total;
 	}
 
-	public int cantidadDeDias() {
-		return this.getRangoDeFechas().cantidadDeDias();
-	}
-
-	public void exigirMontoFaltanteAInquilino() {
-		LocalDate diaInicial = this.getFechaInicial().plusDays(1);
-		float monto= this.getRangoDeFechas().darPrecioSegunLaTemporada(diaInicial);
-			this.getInmueble().getDueño().recibirPago(monto);
-		}
-
-	public float obtenerMontoSegunDias(int cantidadDeDias) {
-		return this.getRangoDeFechas().obtenerMontoPorCantidadDeDias(cantidadDeDias);
-	}
-
-	public Usuario getInquilino() {
-		return this.solicitante;
-	}
-
-	public Usuario getDueño() {
-		return this.getInmueble().getDueño();
-	}
-	
 }

@@ -35,20 +35,20 @@ public class AdministradorTestCase {
 	}
 
 	@Test
-	void testAddCategoriaAInquilinos() {
+	void testAddCategoriaAInquilinos() throws Exception {
 		administrador.addCategoriaAInquilinos(sitio,"Amabilidad");
 		verify(sitio).addCategoriaAInquilino("Amabilidad");
 		
 	}
 	
 	@Test
-	void testAddCategoriaADuenho() {
+	void testAddCategoriaADuenho() throws Exception {
 		administrador.addCategoriaADuenho(sitio,"Puntualidad");
 		verify(sitio).addCategoriaADuenho("Puntualidad");
 	}
 	
 	@Test
-	void testAddCategoriaAInmueble() {
+	void testAddCategoriaAInmueble() throws Exception {
 		administrador.addCategoriaAInmueble(sitio,"Seguridad");
 		verify(sitio).addCategoriaAInmueble("Seguridad");
 	}

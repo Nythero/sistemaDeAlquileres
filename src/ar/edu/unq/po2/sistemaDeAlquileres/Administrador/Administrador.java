@@ -11,16 +11,16 @@ public class Administrador {
 	private ArrayList<String> tiposDeInmueble;
 	private ArrayList<String> tiposDeServicios;
 	
-	public void addCategoriaAInquilinos (Sitio sitio,String categoria) {
+	public void addCategoriaAInquilinos (Sitio sitio,String categoria) throws Exception {
 		sitio.addCategoriaAInquilino(categoria);
 	}
 	
-	public void addCategoriaADuenho (Sitio sitio, String categoria) {
+	public void addCategoriaADuenho (Sitio sitio, String categoria) throws Exception {
 		sitio.addCategoriaADuenho(categoria);
 	} 
 	
 	
-	public void addCategoriaAInmueble (Sitio sitio, String categoria) {
+	public void addCategoriaAInmueble (Sitio sitio, String categoria) throws Exception {
 		sitio.addCategoriaAInmueble(categoria);
 	}
 	

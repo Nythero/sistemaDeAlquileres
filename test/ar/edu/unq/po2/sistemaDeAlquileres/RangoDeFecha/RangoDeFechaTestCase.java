@@ -16,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
 
@@ -24,14 +23,13 @@ import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
 class RangoDeFechaTestCase {
 	private RangoDeFechas rangoDeFechas;
 	private RangoDeFechas rangoAComparar;
-	private RangoDeFechaConPrecioDeterminado rangoConPrecio;
 	@Mock private LocalDate fechaInicial;
 	@Mock private LocalDate fechaFinal;
 	@Mock private LocalDate fechaInicialAComparar;
 	@Mock private LocalDate fechaFinalAComparar;
 	@Mock private Reserva reserva;
 	@Mock private Temporada precio;
-	private ArrayList<RangoDeFechaConPrecioDeterminado> rangos;
+	private ArrayList<RangoDeFechas> rangos;
 	
 	
 	@BeforeEach
@@ -44,8 +42,7 @@ class RangoDeFechaTestCase {
 		precio= mock(Temporada.class);
 		rangoDeFechas= new RangoDeFechas(fechaInicial,fechaFinal);
 		rangoAComparar= new RangoDeFechas(fechaInicialAComparar, fechaFinalAComparar);
-		rangoConPrecio = new RangoDeFechaConPrecioDeterminado(fechaInicialAComparar, fechaFinalAComparar,precio);
-		this.rangos= new ArrayList<RangoDeFechaConPrecioDeterminado>();
+		this.rangos= new ArrayList<RangoDeFechas>();
 	}
 	
 	@Test
@@ -120,7 +117,7 @@ class RangoDeFechaTestCase {
 	
 	@Test
 	void testHayHayUnRangoCompatible() {
-		rangos.add(rangoConPrecio);
+		rangos.add(rangoAComparar);
 		when(fechaInicial.isEqual(fechaInicialAComparar)).thenReturn(true);
 		when(fechaInicial.isBefore(fechaInicialAComparar)).thenReturn(false);
 		when(fechaFinal.isEqual(fechaFinalAComparar)).thenReturn(true);

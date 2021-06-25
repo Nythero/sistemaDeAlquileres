@@ -5,22 +5,21 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
+import org.mockito.Mock;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Administrador.Administrador;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
-import junit.framework.AssertionFailedError;
+
 
 class SitioTestCase {
 
@@ -38,6 +37,7 @@ class SitioTestCase {
 	private Reserva reserva3;
 	private Reserva reserva4;
 	private Reserva reserva5;
+	@Mock private RangoDeFechas rango;
 	private Reserva reserva6;
 	
 	@BeforeEach
@@ -57,35 +57,25 @@ class SitioTestCase {
 		reserva4 = mock (Reserva.class);
 		reserva5 = mock (Reserva.class);
 		reserva6 = mock (Reserva.class);
+		rango= mock(RangoDeFechas.class);
 	}
 
 	
 	@Test
-	void testRegistrarUsuario() {
+	void testRegistrarUsuario() throws Exception {
 		sitio.registrarUsuario(usuario1);
 		assertTrue(sitio.esUsuario(usuario1));
 	}
 	
-	
 	@Test
-	void testDesdeCuandoElPerfilFueCreadoLanzaUnaExcepcionAlNoTenerElUsuario() {
-		Assertions.assertThrows(AssertionFailedError.class, () -> {
-			sitio.desdeCuandoElPerfilFueCreado(usuario1);
-		}); 
-	}
-	
-	@Test
-	void testDesdeCuandoElPerfilFueCreado() {
-		Date fechaEntrada = new Date(2020, 5,10);
+	void testRegistrarUsuarioLanzaUnaExcepcion() throws Exception {
 		sitio.registrarUsuario(usuario1);
-		when(usuario1.getFechaDeCreacion()).thenReturn(fechaEntrada);
-		assertEquals(fechaEntrada, sitio.desdeCuandoElPerfilFueCreado(usuario1));
+		assertThrows(Exception.class, () -> sitio.registrarUsuario(usuario1));
 	}
 	
 	@Test
 	void testAgregarInmuebleLanzaUnaExcepcionYaQueElInmuebleEsInvalido() {
-		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(false);
-		Assertions.assertThrows(AssertionFailedError.class, () -> {
+		Assertions.assertThrows(Exception.class, () -> {
 			sitio.agregarInmueble(inmueble1);
 		});
 	}
@@ -97,13 +87,11 @@ class SitioTestCase {
 		when(inmueble1.getTipoDeInmueble()).thenReturn("choza");
 		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		
-		sitio.agregarInmueble(inmueble1);
-		
-		assertTrue(sitio.getInmuebles().contains(inmueble1));
+		assertDoesNotThrow(() -> sitio.agregarInmueble(inmueble1));
 	} 
 	
 	@Test
-	void testAddCategoriaAInquilino() {
+	void testAddCategoriaAInquilino() throws Exception {
 		sitio.registrarUsuario(usuario1);
 		sitio.registrarUsuario(usuario2);
 		when(usuario1.getRankingComoInquilino()).thenReturn(ranking1);
@@ -119,7 +107,7 @@ class SitioTestCase {
 	
 	
 	@Test
-	void testAddCategoriaADuenho() {
+	void testAddCategoriaADuenho() throws Exception {
 		sitio.registrarUsuario(usuario1);
 		sitio.registrarUsuario(usuario2);
 		when(usuario1.getRankingComoDuenho()).thenReturn(ranking1);
@@ -133,7 +121,7 @@ class SitioTestCase {
 	}
 	
 	@Test
-	void testAddCategoriaAInmueble() {
+	void testAddCategoriaAInmueble() throws Exception {
 		sitio.agregarTipoDeInmuebleValido("choza");
 		sitio.agregarServicioValido("gas");
 		when(inmueble1.getTipoDeInmueble()).thenReturn("choza");
@@ -151,37 +139,30 @@ class SitioTestCase {
 		verify(inmueble1).getRanking();
 		verify(inmueble2).getRanking();	
 	}
-	
-	@Test
-	void testCuantosInmueblesAlquilo() {
-		
-		when(usuario1.cantidadDeVecesQueAlquilo()).thenReturn(2);
-		assertEquals(2, sitio.cuantosInmueblesAlquilo(usuario1));
-	}
 
-	@Test
-	void testFiltrarInmueblesQuePertenezcanALasFechasDadas() {
-		sitio.agregarTipoDeInmuebleValido("casa");
-		when(inmueble1.getTipoDeInmueble()).thenReturn("casa");
-		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
-		when(inmueble2.getTipoDeInmueble()).thenReturn("casa");
-		//when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
-		sitio.agregarInmueble(inmueble1);
-		sitio.agregarInmueble(inmueble2);
-		LocalDate fecha1 = LocalDate.of(2020, 5,10);
-		LocalDate fecha2 = LocalDate.of(2020, 5,10);
-		when(inmueble1.hayAlgunRangoDeFechasQuePoseaLasFecha(fecha1,fecha2)).thenReturn(true);
-		when(inmueble2.hayAlgunRangoDeFechasQuePoseaLasFecha(fecha1,fecha2)).thenReturn(false);
-		
-		ArrayList<Inmueble>inmueblesFiltados = sitio.filtrarInmueblesQuePertenezcanALasFechas(fecha1, fecha2);
-		 
-		assertTrue(inmueblesFiltados.contains(inmueble1));
-		assertFalse(inmueblesFiltados.contains(inmueble2));
-	}
+	   @Test
+	    void testFiltrarInmueblesQuePertenezcanALasFechasDadas() throws Exception {
+	        sitio.agregarTipoDeInmuebleValido("casa");
+	        when(inmueble1.getTipoDeInmueble()).thenReturn("casa");
+	        //when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+	        when(inmueble2.getTipoDeInmueble()).thenReturn("casa");
+	        //when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
+	        sitio.agregarInmueble(inmueble1);
+	        sitio.agregarInmueble(inmueble2);
+	        LocalDate fecha1 = LocalDate.of(2020, 5,10);
+	        LocalDate fecha2 = LocalDate.of(2020, 5,10);
+	        when(inmueble1.hayAlgunRangoDeFechasQuePoseaLasFecha(fecha1,fecha2)).thenReturn(true);
+	        when(inmueble2.hayAlgunRangoDeFechasQuePoseaLasFecha(fecha1,fecha2)).thenReturn(false);
+	        
+	        ArrayList<Inmueble>inmueblesFiltados = sitio.filtrarInmueblesQuePertenezcanALasFechas(fecha1, fecha2);
+	         
+	        assertTrue(inmueblesFiltados.contains(inmueble1));
+	        assertFalse(inmueblesFiltados.contains(inmueble2));
+	    }
 //	
 //	
 	@Test 
-	void testBuscarInmuebles() {
+	void testBuscarInmuebles() throws Exception {
 		sitio.agregarTipoDeInmuebleValido("casa");
 		when(inmueble1.getTipoDeInmueble()).thenReturn("casa");
 		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
@@ -206,54 +187,29 @@ class SitioTestCase {
 		assertFalse(inmuebles.contains(inmueble2));
 
 	}
-	
-	
-	@Test
-	void testUsuariosOrdenadosPorReservasRealizadas() {
-		sitio.registrarUsuario(usuario1);
-		sitio.registrarUsuario(usuario2);
-		sitio.registrarUsuario(usuario3);
-		ArrayList <Reserva> reservas1 = new ArrayList<Reserva>();
-		ArrayList <Reserva> reservas2 = new ArrayList<Reserva>();
-		ArrayList <Reserva> reservas3 = new ArrayList<Reserva>();
-		reservas1.add(reserva1);
-		reservas1.add(reserva2);
-		reservas1.add(reserva3);
-		reservas2.add(reserva4);
-		reservas2.add(reserva5);
-		reservas3.add(reserva6);
-		when(usuario1.getReservasRealizadas()).thenReturn(reservas1);
- 		when(usuario2.getReservasRealizadas()).thenReturn(reservas3);
-		when(usuario3.getReservasRealizadas()).thenReturn(reservas2);
-		
-		assertEquals(usuario3,sitio.usuariosOrdenadosPorReservasRealizadas().get(1));
-		assertEquals(usuario2,sitio.usuariosOrdenadosPorReservasRealizadas().get(2));
-		assertEquals(usuario1,sitio.usuariosOrdenadosPorReservasRealizadas().get(0));
-	}
 //	
 	@Test
-	void obtenerElTopTenDeInquilinos () {
+	void obtenerElTopTenDeInquilinos () throws Exception {
 		sitio.registrarUsuario(usuario1);
 		sitio.registrarUsuario(usuario2);
 		sitio.registrarUsuario(usuario3);
-		ArrayList <Reserva> reservas1 = new ArrayList<Reserva>();
-		ArrayList <Reserva> reservas2 = new ArrayList<Reserva>();
-		ArrayList <Reserva> reservas3 = new ArrayList<Reserva>();
-		reservas1.add(reserva1);
-		reservas1.add(reserva2);
-		reservas1.add(reserva3);
-		reservas2.add(reserva4);
-		reservas2.add(reserva5);
-		reservas3.add(reserva6);
-		when(usuario1.getReservasRealizadas()).thenReturn(reservas1);
- 		when(usuario2.getReservasRealizadas()).thenReturn(reservas3);
-		when(usuario3.getReservasRealizadas()).thenReturn(reservas2);
+
+		when(usuario1.cantidadReservas()).thenReturn(3);
+ 		when(usuario2.cantidadReservas()).thenReturn(5);
+		when(usuario3.cantidadReservas()).thenReturn(7);
+		
+		ArrayList<Usuario>usuariosTopEsperados = new ArrayList<Usuario>();
+		usuariosTopEsperados.add(usuario3);//3
+		usuariosTopEsperados.add(usuario2);//3,2
+		usuariosTopEsperados.add(usuario1);//3,2,1
 		
 		ArrayList<Usuario>usuariosTop = sitio.obtenerElTopTenDeInquilinos();
+		
+		assertEquals(usuariosTopEsperados, usuariosTop);
 	}
-//	
+
 	@Test
-	void testGetCantidadDeInmueblesLibres() {
+	void testGetCantidadDeInmueblesLibres() throws Exception {
 		sitio.agregarTipoDeInmuebleValido("casa");
 		when(inmueble1.getTipoDeInmueble()).thenReturn("casa");
 		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
@@ -268,7 +224,7 @@ class SitioTestCase {
 	} 
 	
 	@Test
-	void testGetCantidadDeInmueblesAlquilados() {
+	void testGetCantidadDeInmueblesAlquilados() throws Exception {
 		sitio.agregarTipoDeInmuebleValido("casa");
 		when(inmueble1.getTipoDeInmueble()).thenReturn("casa");
 		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
@@ -283,7 +239,7 @@ class SitioTestCase {
 	} 
 	
 	@Test
-	void testGetTasaOcupacional() {
+	void testGetTasaOcupacional() throws Exception {
 		sitio.agregarTipoDeInmuebleValido("casa");
 		when(inmueble1.getTipoDeInmueble()).thenReturn("casa");
 		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);

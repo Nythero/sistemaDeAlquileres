@@ -1,97 +1,92 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.Usuario;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ar.edu.unq.po2.sistemaDeAlquileres.*;
+
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
-import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
-import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.EstadoReserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Estado.CambioDeEstadoError;
 import ar.edu.unq.po2.sistemaDeAlquileres.Sitio.Sitio;
-import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
-import junit.framework.AssertionFailedError;
+
 
 public class UsuarioTestCase {
- 
-//	private String nombre;
-//	private String mail;
-//	private String telefono; no se usan 
 	private Ranking rankingComoDuenho;
-	private Ranking rankingComoInquilino; 
-//	private Date fechaDeCreacion;  
+	private Ranking rankingComoInquilino;  
 	private Sitio sitio;
 	private Usuario usuario1;
 	private Reserva reserva1; 
 	private Reserva reserva2; 
 	private Inmueble inmueble1;
 	private Inmueble inmueble2;
-//	private RangoDeFechaConPrecioDeterminado rango1;
-//	private RangoDeFechaConPrecioDeterminado rango2;
-	
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		inmueble1 = mock(Inmueble.class);
 		inmueble2 = mock(Inmueble.class);
 		reserva1 = mock(Reserva.class);
-		reserva2 = mock(Reserva.class); 
+		reserva2 = mock(Reserva.class);
 		rankingComoDuenho = mock(Ranking.class);
 		rankingComoInquilino = mock(Ranking.class);
 		sitio = mock(Sitio.class);
 		usuario1 = new Usuario("Miguel", "mail@gmail.com","12345",rankingComoDuenho,
 							    rankingComoInquilino);
-//		rango1 = mock(RangoDeFechaConPrecioDeterminado.class);
-//		rango2 = mock(RangoDeFechaConPrecioDeterminado.class);
+
+		when(reserva1.getInmueble()).thenReturn(inmueble1);
+		when(reserva2.getInmueble()).thenReturn(inmueble2);
 	}
 	
 	@Test
-	void testGetSaldo() {
-		usuario1.setSaldo(200);
-		assertEquals(200, usuario1.getSaldo());
+	void testRealizarReserva() throws Exception {
+		when(reserva1.getInmueble()).thenReturn(inmueble1);
+		
+		usuario1.realizarReserva(reserva1);
+		
+		verify(reserva1).getInmueble();
+		verify(inmueble1).agregarReserva(reserva1);
 	}
 	
 	@Test
-	void testSetComentarioAReserva() {
-		usuario1.agregarReserva(reserva1);
-		usuario1.setComentarioAReserva(reserva1,"Comentario");
-		verify(reserva1).setComentario("Comentario");
+	void testSetComentarioAReserva() throws Exception {
+		usuario1.realizarReserva(reserva1);
+		usuario1.comentarInmueble(reserva1,"Comentario");
+		verify(reserva1).comentarInmueble("Comentario");
 	}
 	
 	@Test
-	void testSetPuntajeADuenho() {
-		usuario1.agregarReserva(reserva1);
-		usuario1.setPuntajeADuenho(reserva1,"amabilidad", 5);
-		verify(reserva1).setPuntajeADuenho("amabilidad",5);
+	void testSetPuntajeADuenho() throws Exception {
+		usuario1.realizarReserva(reserva1);
+		usuario1.puntuarDuenho(reserva1,"amabilidad", 5);
+		verify(reserva1).puntuarDuenho("amabilidad",5);
 	}
 	
 	@Test
-	void testSetPuntajeAInquilino() {
-		usuario1.agregarReserva(reserva1);
-		usuario1.setPuntajeAInquilino(reserva1,"honestidad", 5);
-		verify(reserva1).setPuntajeAInquilino("honestidad",5);
+	void testSetPuntajeAInquilino() throws Exception {
+		usuario1.realizarReserva(reserva1);
+		usuario1.puntuarInquilino(reserva1,"honestidad", 5);
+		verify(reserva1).puntuarInquilino("honestidad",5);
 	}
 	
 	@Test
-	void testSetPuntajeCategoriaAInmueble() {
-		usuario1.agregarReserva(reserva1);
-		usuario1.setPuntajeCategoriaAInmueble(reserva1,"seguridad", 5);
-		verify(reserva1).setPuntajeCategoriaAInmueble("seguridad",5);
+	void testSetPuntajeCategoriaAInmueble() throws Exception {
+		usuario1.realizarReserva(reserva1);
+		usuario1.puntuarInmueble(reserva1,"seguridad", 5);
+		verify(reserva1).puntuarInmueble("seguridad",5);
 	}
 	
-	
+	@Test
 	void testBuscarInmuebles() {
 		LocalDate fechaEntrada = LocalDate.of(2020, 5,10);
 		LocalDate fechaSalida = LocalDate.of(2020, 5,20);
@@ -100,7 +95,7 @@ public class UsuarioTestCase {
 	}
 	
 	@Test
-	void testRegistrarseEnSitio() {
+	void testRegistrarseEnSitio() throws Exception {
 		usuario1.registrarseEnSitio(sitio);
 		verify(sitio).registrarUsuario(usuario1);
 	}
@@ -120,138 +115,116 @@ public class UsuarioTestCase {
 		listaDeInmuebles.add(inmueble1);
 		listaDeInmuebles.add(inmueble2);
 
-		Assertions.assertThrows(AssertionFailedError.class, () -> {
+		Assertions.assertThrows(Exception.class, () -> {
 			usuario1.visualizarDatosDelInmueble(listaDeInmuebles, 3);
 		});
 	}
 	
 	@Test
-	void testPublicarInmueble() {
+	void testPublicarInmueble() throws Exception {
 		usuario1.publicarInmueble(inmueble1,sitio);
 		verify(sitio).agregarInmueble(inmueble1);
-		assertEquals(1,usuario1.getInmuebles().size());
 	}
 	
 	@Test
-	void testExtraerMonto() {
+	void testExtraerMonto() throws Exception {
 		usuario1.recibirPago(200);
 		usuario1.extraerMonto(100);
 		assertEquals(100,usuario1.getSaldo());
 	}
 	
-	
 	@Test
-	void testAgregarInmueble() {
-		usuario1.agregarInmueble(inmueble1);
-		assertEquals(1,usuario1.getInmuebles().size());
-	}
-	
-	@Test
-	void testAgregarInmuebleRepetido() {
-		usuario1.agregarInmueble(inmueble1);
-		usuario1.agregarInmueble(inmueble1);
-		assertEquals(1,usuario1.getInmuebles().size());
+	void testPublicarInmuebleRepetido() throws Exception {
+		usuario1.publicarInmueble(inmueble1, sitio);
+		assertThrows(Exception.class,() -> usuario1.publicarInmueble(inmueble1, sitio));
 	}
 	
 	
 	@Test
 	void testExtraerMontoMayorAlDisponible() {
 		usuario1.recibirPago(200);
-		Assertions.assertThrows(AssertionFailedError.class, () -> {
+		assertThrows(Exception.class, () -> {
 			usuario1.extraerMonto(300);
 		});
 		assertEquals(200,usuario1.getSaldo());
 	}
 	
 	@Test
-	void testAgregarReserva(){
-		usuario1.agregarReserva(reserva1);
-		assertEquals(1,usuario1.getReservas().size());
+	void testAgregarReserva() throws Exception{
+		usuario1.realizarReserva(reserva1);
+		assertEquals(1,usuario1.cantidadReservas());
 	}
 	
 	@Test
-	void testGetReservasFuturas(){
-		usuario1.agregarReserva(reserva1);
-		usuario1.agregarReserva(reserva2);
+	void testGetReservasFuturas() throws Exception{
+		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva2);
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 		reservas.add(reserva1);
 		reservas.add(reserva2);
-		when(reserva1.laFechaInicialDelRangoEstaDespuesDelDiaActual()).thenReturn(true);
-		when(reserva2.laFechaInicialDelRangoEstaDespuesDelDiaActual()).thenReturn(true);
+		when(reserva1.estaEnEstado("Condicional")).thenReturn(true);
+		when(reserva2.estaEnEstado("Condicional")).thenReturn(true);
 		
 		assertEquals(reservas,usuario1.getTodasLasReservasFuturas());
 	}
 	
 	@Test
-	void testGetReservasEnCiudadEnParticular(){
-		usuario1.agregarReserva(reserva1);
-		usuario1.agregarReserva(reserva2);
+	void testGetReservasEnCiudadEnParticular() throws Exception{
+		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva2);
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 		reservas.add(reserva1);
-		when(reserva1.getCiudad()).thenReturn("Quilmes");
-		when(reserva2.getCiudad()).thenReturn("La Plata");
 		
+		when(inmueble1.getCiudad()).thenReturn("Quilmes");
+		when(inmueble2.getCiudad()).thenReturn("La Plata");
 		assertEquals(reservas,usuario1.getReservasEnCiudadParticular("Quilmes"));
 	}
 	
 	
 	@Test
-	void testGetCiudadesEnLasQueTieneReserva(){
-		usuario1.agregarReserva(reserva1);
-		usuario1.agregarReserva(reserva2);
+	void testGetCiudadesEnLasQueTieneReserva() throws Exception{
+		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva2);
 		Set<String> ciudades = new HashSet<String>();
 		ciudades.add("La Plata");
 		ciudades.add("Quilmes");		
-		when(reserva1.getCiudad()).thenReturn("Quilmes");
-		when(reserva2.getCiudad()).thenReturn("La Plata");
+		when(inmueble1.getCiudad()).thenReturn("Quilmes");
+		when(inmueble2.getCiudad()).thenReturn("La Plata");
 		
 		assertEquals(ciudades,usuario1.getCiudadesEnLasQueTieneReservas());
 	}
 	
 	@Test
-	void testGetCiudadesEnLasQueTieneReservaSinCiudadesRepetidas(){
-		usuario1.agregarReserva(reserva1);
-		usuario1.agregarReserva(reserva2);
+	void testGetCiudadesEnLasQueTieneReservaSinCiudadesRepetidas() throws Exception{
+		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva2);
 		Set<String> ciudades = new HashSet<String>();
 		ciudades.add("Quilmes");		
-		when(reserva1.getCiudad()).thenReturn("Quilmes");
-		when(reserva2.getCiudad()).thenReturn("Quilmes");
+		when(inmueble1.getCiudad()).thenReturn("Quilmes");
+		when(inmueble2.getCiudad()).thenReturn("Quilmes");
 		
 		assertEquals(ciudades,usuario1.getCiudadesEnLasQueTieneReservas());
 	}
 	
-	
-	@Test 
-	void testObtenerLaPosicionDelInmuebleEnListaDeInmuebles(){
-		usuario1.agregarInmueble(inmueble1);	
-		assertEquals(0,usuario1.obtenerLaPosicionDelInmueble(inmueble1));
-	}
-	
-	@Test 
-	void testObtenerLaPosicionDelInmuebleUnInmuebleQueNoEstaEnLaListaDevuelveMenosUno(){
-		usuario1.agregarInmueble(inmueble2);	
-		assertEquals(-1,usuario1.obtenerLaPosicionDelInmueble(inmueble1));
-	}
-	
 	@Test
-	void cuantasVecesAlquiloElInmuebleDado(){
-		usuario1.agregarInmueble(inmueble1);	
-		when(inmueble1.getCantidadDeVecesAlquilado()).thenReturn(5);
-		
-		assertEquals(5,usuario1.cantidadDeVecesQueAlquilo());
-	}
-	
-	@Test
-	void cuantasVecesAlquiloElInmuebleDadoSinTenerloEnInmuebles(){	
-		Assertions.assertThrows(AssertionFailedError.class, () -> {
+	void testCuantasVecesAlquiloElInmuebleDadoSinTenerloEnInmuebles(){	
+		assertThrows(Exception.class, () -> {
 			usuario1.cuantasVecesAlquiloElInmueble(inmueble1);
 		});
 	} 
 	
 	@Test
-	void testCantidadDeVecesQueAlquilo(){
-		usuario1.agregarInmueble(inmueble1);
-		usuario1.agregarInmueble(inmueble2);		
+    void cuantasVecesAlquiloElInmuebleDado() throws Exception{
+        usuario1.publicarInmueble(inmueble1, sitio);
+        when(inmueble1.getCantidadDeVecesAlquilado()).thenReturn(5);
+
+        assertEquals(5,usuario1.cuantasVecesAlquiloElInmueble(inmueble1));
+    }
+	
+	@Test
+	void testCantidadDeVecesQueAlquilo() throws Exception{
+		usuario1.publicarInmueble(inmueble1, sitio);
+		usuario1.publicarInmueble(inmueble2, sitio);		
 		when(inmueble1.getCantidadDeVecesAlquilado()).thenReturn(5);
 		when(inmueble2.getCantidadDeVecesAlquilado()).thenReturn(15);
 		
@@ -259,9 +232,9 @@ public class UsuarioTestCase {
 	}
 	
 	@Test
-	void testGetInmueblesQueHanSidoAlquilados(){
-		usuario1.agregarInmueble(inmueble1);
-		usuario1.agregarInmueble(inmueble2);
+	void testGetInmueblesQueHanSidoAlquilados() throws Exception{
+		usuario1.publicarInmueble(inmueble1, sitio);
+		usuario1.publicarInmueble(inmueble2, sitio);
 		ArrayList<Inmueble> inmueblesQueHanSidoAlquilados = new ArrayList<Inmueble>();
 		inmueblesQueHanSidoAlquilados.add(inmueble1);
 		
@@ -270,10 +243,19 @@ public class UsuarioTestCase {
 	    	
 		assertEquals(inmueblesQueHanSidoAlquilados,usuario1.getInmueblesQueHanSidoAlquilados());
 	}
+	
+	@Test
+	void testCancelarReservaTiraError() throws CambioDeEstadoError, Exception {
+		assertThrows(Exception.class, () -> usuario1.cancelarReserva(reserva1));
+	}
+	
+	@Test
+	void testCancelarReservaSucces() throws CambioDeEstadoError, Exception {
+		usuario1.realizarReserva(reserva1);
+		usuario1.cancelarReserva(reserva1);
+		
+		verify(reserva1).cancelar();
+	}
+	
 
 }
-
-
-
-
-

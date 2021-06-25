@@ -3,7 +3,6 @@ package ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
 import junit.framework.AssertionFailedError;
@@ -77,7 +76,7 @@ public class RangoDeFechas {
                 (this.getFechaFinal().isEqual(fechaSalida) ||this.getFechaFinal().isAfter(fechaSalida)));
     }
 	
-	public boolean contains(ArrayList<RangoDeFechaConPrecioDeterminado> rangos) {
+	public boolean contains(ArrayList<RangoDeFechas> rangos) {
 		boolean result= false;
 		int i=0;
 		while(!rangos.isEmpty() && i < rangos.size()) {
@@ -125,6 +124,15 @@ public class RangoDeFechas {
 		}
 		return result;
 	}
+	
+	public boolean estaIncluidaLaFecha(LocalDate dia) {
+        return this.getFechaInicial().isBefore(dia) && this.getFechaFinal().isAfter(dia) ||
+               this.getFechaInicial().isEqual(dia) || this.getFechaFinal().isEqual(dia); 
+    }
+	
+	 public boolean estaIncluidoElRango(RangoDeFechas rango) {
+	        return this.estaIncluidaLaFecha(rango.getFechaInicial()) && this.estaIncluidaLaFecha(rango.getFechaFinal());
+	    }
 	
 
 }

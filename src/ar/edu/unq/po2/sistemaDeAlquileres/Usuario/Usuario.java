@@ -10,89 +10,71 @@ import java.util.stream.Collectors;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Estado.CambioDeEstadoError;
 import ar.edu.unq.po2.sistemaDeAlquileres.Sitio.Sitio;
-import junit.framework.AssertionFailedError;
+
+
 
 public class Usuario {
-	private ArrayList<Inmueble> inmuebles;
 	private String nombreCompleto;
 	private String direccionDeEmail;
 	private String telefono;
-	private ArrayList<Reserva> reservasRealizadas;
-	private ArrayList<Reserva> reservasCondicionales; //preguntar si es necesario
-	private Ranking rankingComoDuenho;
-	private Ranking rankingComoInquilino;
-	private Date fechaDeCreacion;  
-	private ArrayList<String> comentarios;
 	private float saldo;
+	private final LocalDate fechaDeCreacion;
+	private final Ranking rankingComoDuenho;
+	private final Ranking rankingComoInquilino;
+	private final ArrayList<Inmueble> inmuebles;
+	private final ArrayList<Reserva> reservas;  
 	
 	
 	public Usuario (String nombreCompleto, String direccionDeEmail,
 					String telefono,
 					Ranking rankingComoDuenho, Ranking rankingComoInquilino) {
-		
-		this.inmuebles = new ArrayList<Inmueble>();
 		this.setNombreCompleto(nombreCompleto);
 		this.setDireccionDeEmail(direccionDeEmail);
 		this.setTelefono(telefono);
-		this.reservasRealizadas = new ArrayList<Reserva>();  
-		this.reservasCondicionales = new ArrayList<Reserva>(); 
+		this.saldo = 0;
+		this.fechaDeCreacion = LocalDate.now();
 		this.rankingComoDuenho = new Ranking();
 		this.rankingComoInquilino = new Ranking();
-		this.fechaDeCreacion = new Date();
-		this.comentarios = new ArrayList<String>();
-		this.saldo = 0;
-	}
-	
-	public ArrayList<Inmueble> getInmuebles() {
-		return inmuebles;
+		this.inmuebles = new ArrayList<Inmueble>();
+		this.reservas = new ArrayList<Reserva>();  
 	}
 
 	public String getNombreCompleto() {
-		return nombreCompleto;
+		return this.nombreCompleto;
 	}
 
-	public void setNombreCompleto(String nombreCompleto) {
+	private void setNombreCompleto(String nombreCompleto) {
 		this.nombreCompleto = nombreCompleto;
 	}
 
 	public String getDireccionDeEmail() {
-		return direccionDeEmail;
+		return this.direccionDeEmail;
 	}
 
-	public void setDireccionDeEmail(String direccionDeEmail) {
+	private void setDireccionDeEmail(String direccionDeEmail) {
 		this.direccionDeEmail = direccionDeEmail;
 	}
 
 	public String getTelefono() {
-		return telefono;
+		return this.telefono;
 	}
 
-	public void setTelefono(String telefono) {
+	private void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-
-	public ArrayList<Reserva> getReservasRealizadas() {
-		return reservasRealizadas;
-	}
-
-
-	public ArrayList<Reserva> getReservasCondicionales() {
-		return reservasCondicionales;
-	}
-
-
-	public ArrayList<String> getComentarios() {
-		return comentarios;
-	}
-
-	public void setComentarios(ArrayList<String> comentarios) {
-		this.comentarios = comentarios;
-	}
-
 	
-	public ArrayList<Reserva> getReservas() {
-		return this.reservasRealizadas;
+	public float getSaldo() {
+		return this.saldo;
+	}
+	
+	private void setSaldo(Float saldo) {
+		this.saldo = saldo;
+	}
+	
+	public LocalDate getFechaDeCreacion() {
+		return this.fechaDeCreacion;
 	}
 	
 	public Ranking getRankingComoDuenho() {
@@ -102,145 +84,127 @@ public class Usuario {
 	public Ranking getRankingComoInquilino() {
 		return this.rankingComoInquilino;
 	}
-	 
-	public Date getFechaDeCreacion() {
-		return (this.fechaDeCreacion);
+	
+	private ArrayList<Inmueble> getInmuebles() {
+		return inmuebles;
+	}
+
+	private ArrayList<Reserva> getReservas() {
+		return reservas;
 	}
 	
-	public float getSaldo() {
-		return this.saldo;
-	}
-	
-	public void setSaldo (Integer cantidad) {
-		this.saldo = this.saldo + cantidad;
-	}
-	
-	
-	public void setComentarioAReserva(Reserva reserva, String comentario) {
-		if(this.getReservasRealizadas().contains(reserva)) {
-			reserva.setComentario(comentario);
+	public void comentarInmueble(Reserva reserva, String comentario) throws Exception {
+		if(this.getReservas().contains(reserva)) {
+			reserva.comentarInmueble(comentario);
 		}
 	}
 	
-	
-	public void setPuntajeADuenho (Reserva reserva,String categoria, Integer puntaje) {
-		if(this.getReservasRealizadas().contains(reserva)) {
-			reserva.setPuntajeADuenho(categoria,puntaje);
-		}
-		
+	public void puntuarDuenho(Reserva reserva,String categoria, Integer puntaje) throws Exception {
+		if(this.getReservas().contains(reserva)) {
+			reserva.puntuarDuenho(categoria,puntaje);
+		}	
 	}
 	
-	public void setPuntajeAInquilino (Reserva reserva,String categoria, Integer puntaje) {
-		if(this.getReservasRealizadas().contains(reserva)) {
-			reserva.setPuntajeAInquilino(categoria,puntaje);
+	public void puntuarInquilino(Reserva reserva,String categoria, Integer puntaje) throws Exception {
+		if(this.getReservas().contains(reserva)) {
+			reserva.puntuarInquilino(categoria,puntaje);
 		}
 		
 	}
 	
-	public void setPuntajeCategoriaAInmueble (Reserva reserva, String servicio, Integer puntaje) {
-		if(this.getReservasRealizadas().contains(reserva)) {
-			reserva.setPuntajeCategoriaAInmueble(servicio,puntaje);
-		}
-		
+	public void puntuarInmueble(Reserva reserva, String servicio, Integer puntaje) throws Exception {
+		if(this.getReservas().contains(reserva)) {
+			reserva.puntuarInmueble(servicio,puntaje);
+		}	
 	}
 	
-	 
 	public ArrayList<Inmueble> buscarInmuebles(Sitio sitio,String ciudad,LocalDate fechaEntrada,
 												LocalDate fechaSalida,Integer huespedes,float precioMinimo,
-												float precioMaximo){
-
+												float precioMaximo) {
 		return (sitio.buscarInmuebles(ciudad, fechaEntrada,fechaSalida, huespedes,precioMinimo,precioMaximo));
 	}
 	
-	
-	public void registrarseEnSitio(Sitio sitio) {
+	public void registrarseEnSitio(Sitio sitio) throws Exception {
 		sitio.registrarUsuario(this);
 	}
-	
 
-	
-	public Inmueble visualizarDatosDelInmueble(ArrayList<Inmueble> inmuebles, Integer posicionInmueble){
+	public Inmueble visualizarDatosDelInmueble(ArrayList<Inmueble> inmuebles, Integer posicionInmueble) throws Exception {
 		if (posicionInmueble > inmuebles.size()) {
-			throw new AssertionFailedError(); //"No hay tantos inmuebles"
+			throw new Exception("No hay tantos inmuebles");
 		}
 		else {
 			return (inmuebles.get(posicionInmueble));
 		}
 	}
 	
-	public void agregarInmueble(Inmueble inmueble) {
+	private void agregarInmueble(Inmueble inmueble) throws Exception {
 		if (!this.getInmuebles().contains(inmueble)) {
 			this.getInmuebles().add(inmueble);
 		}
+		else {
+			throw new Exception("El inmueble ya esta agregado en el usuario");
+		}
 	}
 	
-	public void publicarInmueble(Inmueble inmueble,Sitio sitio) {
+	public void publicarInmueble(Inmueble inmueble, Sitio sitio) throws Exception {
 		sitio.agregarInmueble(inmueble);
 		this.agregarInmueble(inmueble);
 	}
 	
 	public void recibirPago(float monto){
-		this.saldo += monto;
+		this.setSaldo(this.getSaldo() + monto);
 	}
 
-	public void extraerMonto(float monto){
+	public void extraerMonto(float monto) throws Exception{
 		if (monto > this.getSaldo()) {
-			throw new AssertionFailedError(); //"No hay dinero suficiente para extraer"
+			throw new Exception("No hay dinero suficiente para extraer");
 		}
 		else {
-			this.saldo-= monto;
+			this.setSaldo(this.getSaldo() - monto);
 		}	
 	}
 	
-	public void agregarReserva(Reserva reserva) {
+	public void realizarReserva(Reserva reserva) throws Exception {
+		reserva.getInmueble().agregarReserva(reserva);
 		this.getReservas().add(reserva);
 	}
 	
-//	public void realizarReserva (Inmueble inmueble, Sitio sitio, Date fechaInicio, 
-//								 Date fechaFinal, String formaDePago) {
-//
-//		throw new Exception("TO DO");
-//	}
-//	
-//	//terminar aca 
-//	public void cancelarReserva(Reserva reserva,Sitio sitio) {
-//		throw new Exception("TO DO");
-//	}
-//	
-	
-	
+	public void cancelarReserva(Reserva reserva) throws CambioDeEstadoError, Exception {
+		if (this.getReservas().contains(reserva)) {
+			reserva.cancelar();
+		}
+		else {
+			throw new Exception("La reserva no pertenece al usuario");
+		}
+	}
 	
 	public ArrayList<Reserva> getTodasLasReservasFuturas(){
 		ArrayList<Reserva> reservasFuturas = new ArrayList<Reserva>();
-		for (Reserva reserva : this.getReservasRealizadas()) {
-			if (reserva.laFechaInicialDelRangoEstaDespuesDelDiaActual()){
+		for (Reserva reserva : this.getReservas()) {
+			if (reserva.estaEnEstado("Condicional") || reserva.estaEnEstado("Concretado")){
 				reservasFuturas.add(reserva);
 			}
 		}
 		return reservasFuturas;
 	}
 	
-	
 	public ArrayList<Reserva> getReservasEnCiudadParticular(String ciudad) {
 		ArrayList<Reserva> reservasEnCiudadDada = new ArrayList<Reserva>();
-		for (Reserva reserva : this.getReservasRealizadas()) {
-			if (ciudad == reserva.getCiudad()) {
+		for (Reserva reserva : this.getReservas()) {
+			if (ciudad == reserva.getInmueble().getCiudad()) {
 				reservasEnCiudadDada.add(reserva);
 			}
 		}
 		return reservasEnCiudadDada;
 	}
-
 	
 	public Set<String> getCiudadesEnLasQueTieneReservas(){
 		Set<String> ciudadesConReserva = new HashSet<String>();	
-		for (Reserva reserva : this.getReservasRealizadas()) {
-			ciudadesConReserva.add(reserva.getCiudad());
+		for (Reserva reserva : this.getReservas()) {
+			ciudadesConReserva.add(reserva.getInmueble().getCiudad());
 		}
-		
 		return ciudadesConReserva;
 	}
-
 	
 	public Integer cantidadDeVecesQueAlquilo() { //devuelve la cantidad de veces que fueron alquilados todos los inmuebles
 		Integer cantidadDeVecesAlquilado = 0;
@@ -249,23 +213,15 @@ public class Usuario {
 		}
 		return cantidadDeVecesAlquilado;
 	}
-
-	public Integer obtenerLaPosicionDelInmueble(Inmueble inmueble) {
-		return (this.getInmuebles().indexOf(inmueble));
-	}
 	
-	public Integer cuantasVecesAlquiloElInmueble(Inmueble inmueble) {
-		Integer posicionDelInmueble = 0;
+	public Integer cuantasVecesAlquiloElInmueble(Inmueble inmueble) throws Exception {
 		if (this.getInmuebles().contains(inmueble)) {
-			posicionDelInmueble = this.obtenerLaPosicionDelInmueble(inmueble);
-			return this.getInmuebles().get(posicionDelInmueble).getCantidadDeVecesAlquilado();
+			return inmueble.getCantidadDeVecesAlquilado();
 		} 
 		else { 
-			throw new AssertionFailedError();
+			throw new Exception("El inmueble no le pertenece al usuario");
 		}
-		
 	}
-	 
 	
 	public ArrayList<Inmueble> getInmueblesQueHanSidoAlquilados(){
 		ArrayList<Inmueble> inmueblesAlquilados = new ArrayList<Inmueble>();
@@ -277,10 +233,7 @@ public class Usuario {
 		return inmueblesAlquilados;
 	}
 	
+	public int cantidadReservas() {
+		return this.getReservas().size();
+	}
 }
-
-
-
-
-    
-

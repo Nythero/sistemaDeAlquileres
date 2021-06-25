@@ -9,17 +9,17 @@ public class CancelacionIntermedia extends PoliticaDeCancelacion {
 	public CancelacionIntermedia(){
 	}
 
-	public void cancelarReserva(LocalDate diaActual, Reserva reserva) {
+	public void cancelarReserva(LocalDate diaActual, Reserva reserva) throws Exception {
 		if (this.tieneFechaEntre19Y10(diaActual,reserva)){
-			reserva.getInquilino().recibirPago(this.montoEntreDias19Y10(reserva));
-			reserva.getDueño().extraerMonto(this.montoEntreDias19Y10(reserva));
+			reserva.getSolicitante().recibirPago(this.montoEntreDias19Y10(reserva));
+			reserva.getDuenho().extraerMonto(this.montoEntreDias19Y10(reserva));
 		}
 		else if (this.tieneFechaMenorA10Dias(diaActual,reserva)) {
 			
 		}
 		else {
-			reserva.getInquilino().recibirPago((reserva.getMontoTotal()));
-			reserva.getDueño().extraerMonto(reserva.getMontoTotal());
+			reserva.getSolicitante().recibirPago((reserva.getMontoTotal()));
+			reserva.getDuenho().extraerMonto(reserva.getMontoTotal());
 		}
 	}
 	

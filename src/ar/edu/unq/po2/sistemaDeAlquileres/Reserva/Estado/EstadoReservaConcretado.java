@@ -1,17 +1,16 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Estado;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.Mail.MailSender;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 
-public class EstadoReservaConcretado implements EstadoReserva {
+
+public class EstadoReservaConcretado extends EstadoReserva {
 
 	@Override
-	public EstadoReserva cancelar(Reserva reserva) throws CambioDeEstadoError {
+	public EstadoReserva cancelar(Reserva reserva) throws CambioDeEstadoError, Exception {
+		MailSender.mandarMailDeCancelacion(reserva);
+		reserva.getInmueble().cancelarReserva(reserva);
 		return new EstadoReservaCancelado();
-	}
-
-	@Override
-	public EstadoReserva aceptar(Reserva reserva) throws CambioDeEstadoError {
-		throw new CambioDeEstadoError("Concretado", "aceptar");
 	}
 
 	@Override
@@ -20,33 +19,8 @@ public class EstadoReservaConcretado implements EstadoReserva {
 	}
 
 	@Override
-	public void setComentario(Reserva reserva, String comentario) throws EstadoEquivocadoError {
-		throw new EstadoEquivocadoError("Concretado", " comentar el inmueble");
-	}
-
-	@Override
-	public void setPuntajeADuenho(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
-		throw new EstadoEquivocadoError("Concretado", " puntuar al dueño");
-	}
-
-	@Override
-	public void setPuntajeAInquilino(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
-		throw new EstadoEquivocadoError("Concretado", " puntuar al inquilino");
-	}
-
-	@Override
-	public void setPuntajeAInmueble(Reserva reserva, String categoria, Integer puntaje) throws EstadoEquivocadoError {
-		throw new EstadoEquivocadoError("Concretado", " puntuar al inmueble");
-	}
-
-	@Override
-	public boolean estaPendienteDeAprobacion() {
-		return false;
-	}
-
-	@Override
-	public boolean estaConcretada() {
-		return true;
+	public String codigo() {
+		return "Concretado";
 	}
 
 }

@@ -40,12 +40,12 @@ class CancelacionGratuitaTestCase {
 	}
 	
 	@Test
-	void testCuandoSeCancelaUnaReservaSiendoGratuita() {
+	void testCuandoSeCancelaUnaReservaSiendoGratuita() throws Exception {
 		when(reserva.getRangoDeFechas()).thenReturn(rango);
 		when(rango.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(fechaActual,reserva))
 		.thenReturn(11);
-		when(reserva.getInquilino()).thenReturn(usuario);
-		when(reserva.getDueño()).thenReturn(usuario);
+		when(reserva.getSolicitante()).thenReturn(usuario);
+		when(reserva.getDuenho()).thenReturn(usuario);
 		when(reserva.getMontoTotal()).thenReturn(500f);
 		cancelacion.cancelarReserva(fechaActual, reserva);
 		
@@ -55,35 +55,35 @@ class CancelacionGratuitaTestCase {
 	}
 	
 	@Test
-	void testCuandoSeCancelaUnaReservaDeUnDiaSiendoNoGratuita() {
+	void testCuandoSeCancelaUnaReservaDeUnDiaSiendoNoGratuita() throws Exception {
 		when(reserva.getInmueble()).thenReturn(inmueble);
 		when(inmueble.getPrecio()).thenReturn(precio);
 		when(reserva.getRangoDeFechas()).thenReturn(rango);
 		when(rango.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(fechaActual,reserva))
 		.thenReturn(9);
 		when(reserva.getFechaInicial()).thenReturn(fechaActual);
-		when(reserva.cantidadDeDias()).thenReturn(1);
+		when(rango.cantidadDeDias()).thenReturn(1);
 		when(precio.getPrecio(reserva.getFechaInicial().plusDays(1))).thenReturn(500f);
-		when(reserva.getInquilino()).thenReturn(usuario);
-		when(reserva.getDueño()).thenReturn(usuario);
+		when(reserva.getSolicitante()).thenReturn(usuario);
+		when(reserva.getDuenho()).thenReturn(usuario);
 		cancelacion.cancelarReserva(fechaActual, reserva);
 		
 		verify(usuario).extraerMonto(500f);
 	}
 	
 	@Test
-	void testCuandoSeCancelaUnaReservaDeMasDeUnDiaSiendoNoGratuita() {
+	void testCuandoSeCancelaUnaReservaDeMasDeUnDiaSiendoNoGratuita() throws Exception {
 		when(reserva.getInmueble()).thenReturn(inmueble);
 		when(inmueble.getPrecio()).thenReturn(precio);
 		when(reserva.getRangoDeFechas()).thenReturn(rango);
 		when(rango.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(fechaActual,reserva))
 		.thenReturn(9);
 		when(reserva.getFechaInicial()).thenReturn(fechaActual);
-		when(reserva.cantidadDeDias()).thenReturn(3);
+		when(rango.cantidadDeDias()).thenReturn(3);
 		when(reserva.getMontoTotal()).thenReturn(500f);
 		when(rango.obtenerMontoPorCantidadDeDias(precio,2)).thenReturn(200f);
-		when(reserva.getInquilino()).thenReturn(usuario);
-		when(reserva.getDueño()).thenReturn(usuario);
+		when(reserva.getSolicitante()).thenReturn(usuario);
+		when(reserva.getDuenho()).thenReturn(usuario);
 		cancelacion.cancelarReserva(fechaActual, reserva);
 		
 		verify(usuario).recibirPago(300f);
