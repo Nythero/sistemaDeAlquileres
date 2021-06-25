@@ -76,14 +76,13 @@ public class Sitio {
 		for (int i = 0; i < this.getInmuebles().size(); i++) {
 			this.getInmuebles().get(i).getRanking().addCategoria(categoria);
 		}
-		//this.inmuebles.forEach(inmueble -> inmueble.getRanking().addCategoria(categoria));
+		
 	}
 	
 	public void addCategoriaADuenho(String categoria) throws Exception {
 		for (int i = 0; i < this.getUsuarios().size(); i++) {
 			this.getUsuarios().get(i).getRankingComoDuenho().addCategoria(categoria);
 		}
-//		this.usuarios.forEach(usuario -> usuario.getRankingComoDuenho().addCategoria(categoria))
 	}
 	
 	public void agregarServicioValido(String servicio) {
