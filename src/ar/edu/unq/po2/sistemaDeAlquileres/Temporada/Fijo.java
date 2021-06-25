@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Fijo extends Temporada {
 
-	public Fijo(float precio) {
+	public Fijo(float precio) throws Exception {
 		super(precio);
 	}
 	@Override

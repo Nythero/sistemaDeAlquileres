@@ -4,18 +4,35 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.AssertionFailedError;
-
 public class Ranking {
-	private Map<String,ArrayList<Integer>> registroPorCategorias;
+	private final Map<String,ArrayList<Integer>> registroPorCategorias;
+	private final ArrayList<String> comentarios;
 	
 	public Ranking() {
-		this.registroPorCategorias= new HashMap<>();
+		this.registroPorCategorias = new HashMap<>();
+		this.comentarios = new ArrayList<String>();
 	}
 	
-	public void addCategoria(String categoria) {
-		if(!this.registroPorCategorias.containsKey(categoria)) {
-			this.registroPorCategorias.put(categoria, new ArrayList<Integer>());
+	private Map<String,ArrayList<Integer>> getRegistroPorCategorias() {
+		return this.registroPorCategorias;
+	}
+	
+	private ArrayList<String> getComentarios() {
+		return this.comentarios;
+	}
+	
+	public void addCategoria(String categoria) throws Exception {
+		try {
+			this.verificarCategoria(categoria);
+			throw new Exception("La categoria ya existe");
+		}
+		catch(Exception error) {
+			if (error.getMessage() == "La categoria no existe") {
+				this.registroPorCategorias.put(categoria, new ArrayList<Integer>());
+			}
+			else {
+				throw error;
+			}
 		}
 	}
 	
@@ -25,10 +42,12 @@ public class Ranking {
 	 * ambos casos devuelve error
 	 * @param categoria
 	 * @param puntaje
+	 * @throws Exception 
 	 */
-	public void addPuntajePorCategoria(String categoria, int puntaje) {
-		if (!esPuntajeValido(puntaje) || !this.registroPorCategorias.containsKey(categoria)) {
-			throw new AssertionFailedError("El puntaje no es valido o no esta la categoria a puntuar");
+	public void addPuntajePorCategoria(String categoria, int puntaje) throws Exception {
+		this.verificarCategoria(categoria);
+		if (!esPuntajeValido(puntaje)) {
+			throw new Exception("El puntaje no es valido");
 		}
 		else {
 			ArrayList<Integer> puntajes = this.registroPorCategorias.get(categoria);
@@ -40,33 +59,39 @@ public class Ranking {
 	private boolean esPuntajeValido (int puntaje) {
 		return puntaje >= 1 && puntaje <= 5;
 	}
+	
+	private void verificarCategoria(String categoria) throws Exception {
+		if(!this.getRegistroPorCategorias().containsKey(categoria)) {
+			throw new Exception("La categoria no existe");
+		}
+	}
 
 	/**
 	 * Dada una categoria devuelve su puntaje promedio.
 	 * En caso de estar vacia la lista o no encontrar la clave devuelve 0
 	 * @param categoria
 	 * @return
+	 * @throws Exception 
 	 */
-	public int puntajePromedioPorCategoria(String categoria) {
-		ArrayList<Integer> puntajePorCategoria = this.registroPorCategorias.get(categoria);
-		if(!this.registroPorCategorias.containsKey(categoria) || puntajePorCategoria.size()==0) {
-			return 0;
+	public int puntajePromedioPorCategoria(String categoria) throws Exception {
+		this.verificarCategoria(categoria);
+		ArrayList<Integer> puntajePorCategoria = this.getRegistroPorCategorias().get(categoria);
+		
+		int result = 0;
+		for(int puntaje : puntajePorCategoria) {
+			result += puntaje;
 		}
-		else {
-			int result= 0;
-			for(int puntaje :puntajePorCategoria) {
-				result+= puntaje;
-			}
-		return result/puntajePorCategoria.size();
-		}
+		
+		return result / ((puntajePorCategoria.size() == 0)? 1 : puntajePorCategoria.size());
 	}
 	
 	/**
 	 * Devuelve el puntaje total del promedio (incluyendo los puntajes por categorias y los generales)
 	 * Si ambas listas estan vacias retornan 0.
 	 * @return
+	 * @throws Exception 
 	 */
-	public int puntajeTotalPromedio() {
+	public int puntajeTotalPromedio() throws Exception {
 		if (this.registroPorCategorias.size()==0){
 			return 0;
 		}
@@ -87,13 +112,19 @@ public class Ranking {
 	 * En caso de no encontrar la clave devuelve un error
 	 * @param categoria
 	 * @return
+	 * @throws Exception 
 	 */
-	public int cantidadDePuntajesSegunCategoria(String categoria) {
+	public int cantidadDePuntajesSegunCategoria(String categoria) throws Exception {
 		if(!this.registroPorCategorias.containsKey(categoria)) {
-			throw new AssertionFailedError();
+			throw new Exception("La categoria no existe");
 		}
 		else {
 			return this.registroPorCategorias.get(categoria).size();
 		}
 	}
+	
+	public void agregarComentario(String comentario) {
+		this.getComentarios().add(comentario);
+	}
 }
+

@@ -7,7 +7,7 @@ import junit.framework.AssertionFailedError;
 public class TemporadaAlta extends Temporada {
 	private float precioEnTemporada;
 	
-	public TemporadaAlta(float precioCotidiano, float precioEnTemporada ) {
+	public TemporadaAlta(float precioCotidiano, float precioEnTemporada ) throws Exception {
 		super(precioCotidiano);
 		this.precioEnTemporada= precioEnTemporada;
 	}

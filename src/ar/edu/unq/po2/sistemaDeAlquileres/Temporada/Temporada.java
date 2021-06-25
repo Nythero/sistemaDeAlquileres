@@ -7,8 +7,8 @@ import junit.framework.AssertionFailedError;
 public abstract class Temporada {
 	private float precioCotidiano;
 	
-	public Temporada(float precioCotidiano) {
-		this.precioCotidiano= precioCotidiano;
+	public Temporada(float precioCotidiano) throws Exception {
+		this.setPrecioCotidiano(precioCotidiano);
 	}
 
 	public abstract float getPrecio(LocalDate fecha);
@@ -21,8 +21,13 @@ public abstract class Temporada {
 		return this.precioCotidiano;
 	}
 
-	public void setPrecioCotidiano(float precioCotidiano) {
-		this.precioCotidiano = precioCotidiano;
+	public void setPrecioCotidiano(float precioCotidiano) throws Exception {
+		if(precioCotidiano <0) {
+			throw new Exception("El precio no puede ser negativo");
+		}
+		else {
+			this.precioCotidiano = precioCotidiano;
+		}
 	}
 	
 	public void bajarAlPrecioCotidiano(float precioNuevo){

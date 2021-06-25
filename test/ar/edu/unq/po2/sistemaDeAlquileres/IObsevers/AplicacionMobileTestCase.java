@@ -10,6 +10,8 @@ import org.mockito.Mock;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 
+
+
 class AplicacionMobileTestCase {
 	private AplicacionMobile aplicacionMobile;
 	@Mock private Inmueble inmueble;

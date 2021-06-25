@@ -10,6 +10,8 @@ import org.mockito.Mock;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 
+
+
 class TrivagoTestCase {
 	private Trivago trivago;
 	@Mock private Inmueble inmueble;
@@ -23,7 +25,7 @@ class TrivagoTestCase {
 	@Test
 	void testSeActualizaLaPaginaPrincipal() {
 		when(inmueble.getTipoDeInmueble()).thenReturn("Apartamento");
-		trivago.update(inmueble, 300);
+		trivago.update(inmueble, 300f);
 		
 		verify(inmueble).getTipoDeInmueble();
 	}
