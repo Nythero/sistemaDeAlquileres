@@ -29,7 +29,7 @@ public class Administrador {
 	public ArrayList<Usuario> getTopTen(Sitio sitio) {
 		return (sitio.obtenerElTopTenDeInquilinos());
 	}		 
-		 
+	
 	public Integer getCantidadDeInmueblesLibres(Sitio sitio) {
 		return (sitio.getCantidadDeInmueblesLibres());
 	}
