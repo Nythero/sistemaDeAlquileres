@@ -120,7 +120,7 @@ public class Usuario {
 	
 	public ArrayList<Inmueble> buscarInmuebles(Sitio sitio,String ciudad,LocalDate fechaEntrada,
 												LocalDate fechaSalida,Integer huespedes,float precioMinimo,
-												float precioMaximo) {
+												float precioMaximo) throws Exception {
 		return (sitio.buscarInmuebles(ciudad, fechaEntrada,fechaSalida, huespedes,precioMinimo,precioMaximo));
 	}
 	

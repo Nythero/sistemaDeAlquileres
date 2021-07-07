@@ -45,7 +45,6 @@ class FiltroCompositeTestCase {
 	void testCumpleElFiltro() {
 		filtroComposite.agregarFiltro(filtroCiudad);
 		filtroComposite.agregarFiltro(filtroCapacidadDeHuespedes);
-		filtroComposite.removerFiltro(filtroCiudad);
 		when(filtroCiudad.cumpleConElFiltro(inmueble)).thenReturn(true);
 		when(filtroCapacidadDeHuespedes.cumpleConElFiltro(inmueble)).thenReturn(true);
 		boolean result = filtroComposite.cumpleConElFiltro(inmueble);
@@ -57,7 +56,6 @@ class FiltroCompositeTestCase {
 	void testNoCumpleElFiltro() {
 		filtroComposite.agregarFiltro(filtroCiudad);
 		filtroComposite.agregarFiltro(filtroCapacidadDeHuespedes);
-		filtroComposite.removerFiltro(filtroCiudad);
 		when(filtroCiudad.cumpleConElFiltro(inmueble)).thenReturn(true);
 		when(filtroCapacidadDeHuespedes.cumpleConElFiltro(inmueble)).thenReturn(false);
 		boolean result = filtroComposite.cumpleConElFiltro(inmueble);

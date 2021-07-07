@@ -87,7 +87,7 @@ public class UsuarioTestCase {
 	}
 	
 	@Test
-	void testBuscarInmuebles() {
+	void testBuscarInmuebles() throws Exception {
 		LocalDate fechaEntrada = LocalDate.of(2020, 5,10);
 		LocalDate fechaSalida = LocalDate.of(2020, 5,20);
 		usuario1.buscarInmuebles(sitio,"Quilmes", fechaEntrada,fechaSalida, 4, 400f,600f);

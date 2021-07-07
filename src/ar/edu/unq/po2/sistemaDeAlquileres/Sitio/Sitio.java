@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroCapacidadDeHuespedes;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroCiudad;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroComposite;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroFechaEntradaYSalida;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroPrecioMinimoYMaximo;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
@@ -95,8 +100,9 @@ public class Sitio {
 	} 
 
 	public ArrayList<Inmueble> buscarInmuebles(String ciudad, LocalDate fechaEntrada, LocalDate fechaSalida, Integer huespedes,
-												float precioMinimo, float precioMaximo) {
+												float precioMinimo, float precioMaximo) throws Exception {
 		ArrayList<Inmueble> inmuebles = new ArrayList<Inmueble>();
+		/*filtroComposite
 		for (Inmueble inmueble : this.filtrarInmueblesQuePertenezcanALasFechas(fechaEntrada, fechaSalida)) {
 			if (inmueble.getCiudad() == ciudad 
 				&& (null == inmueble.getCapacidad()  || inmueble.getCapacidad() >= huespedes)
@@ -106,6 +112,18 @@ public class Sitio {
 				inmuebles.add(inmueble);
 			} 
 		} 
+		return(inmuebles);*/
+		FiltroComposite filtroComposite = new FiltroComposite();
+		filtroComposite.agregarFiltro(new FiltroCiudad(ciudad));
+		filtroComposite.agregarFiltro(new FiltroFechaEntradaYSalida(fechaEntrada,fechaSalida));
+		filtroComposite.agregarFiltro(new FiltroCapacidadDeHuespedes(huespedes));
+		filtroComposite.agregarFiltro(new FiltroPrecioMinimoYMaximo(precioMinimo,precioMaximo,fechaEntrada,fechaSalida));
+		for (Inmueble inmueble : this.getInmuebles()) {  
+			if (filtroComposite.cumpleConElFiltro(inmueble)) {
+				inmuebles.add(inmueble);
+				System.out.print(inmuebles.size());
+			}
+		}
 		return(inmuebles);
 	}
 	
