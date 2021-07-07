@@ -4,6 +4,7 @@ package ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,6 +19,7 @@ import org.mockito.Mock;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
+import junit.framework.AssertionFailedError;
 
 
 class RangoDeFechaTestCase {
@@ -89,6 +91,15 @@ class RangoDeFechaTestCase {
 		
 		verify(reserva,times(8)).getFechaInicial();
 		assertEquals(3,result);
+	}
+	
+	@Test
+	void testNoSePuedeDarLosDiasFaltantesEntreFechaActualYFechaInicialDeReserva() {
+		when(reserva.getFechaInicial()).thenReturn(fechaInicialAComparar);
+		when(fechaInicial.isAfter(reserva.getFechaInicial())).thenReturn(false);
+		when(fechaInicial.isEqual(reserva.getFechaInicial())).thenReturn(true);
+		when(fechaInicial.plusDays(1)).thenReturn(fechaInicial);
+		assertThrows(AssertionFailedError.class,()-> rangoDeFechas.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(fechaInicial, reserva));
 	}
 	
 	@Test
@@ -172,4 +183,54 @@ class RangoDeFechaTestCase {
 		assertEquals(1100f, result);
 	}
 	
+	@Test
+	void testEstaIncluidaLaFecha() {
+		when(fechaInicial.isBefore(fechaInicialAComparar)).thenReturn(true);
+		when(fechaFinal.isAfter(fechaInicialAComparar)).thenReturn(true);
+		when(fechaInicial.isEqual(fechaInicialAComparar)).thenReturn(false);
+		when(fechaFinal.isEqual(fechaInicialAComparar)).thenReturn(false);
+		boolean result = rangoDeFechas.estaIncluidaLaFecha(fechaInicialAComparar);
+		
+		assertTrue(result);
+	}
+	
+	@Test
+	void testNoEstaIncluidaLaFecha() {
+		when(fechaInicial.isBefore(fechaInicialAComparar)).thenReturn(false);
+		when(fechaFinal.isAfter(fechaInicialAComparar)).thenReturn(false);
+		when(fechaInicial.isEqual(fechaInicialAComparar)).thenReturn(false);
+		when(fechaFinal.isEqual(fechaInicialAComparar)).thenReturn(false);
+		boolean result = rangoDeFechas.estaIncluidaLaFecha(fechaInicialAComparar);
+		
+		assertFalse(result);
+	}
+	
+	@Test
+	void testEstaIncluidoElRango() {
+		when(fechaInicial.isBefore(fechaInicialAComparar)).thenReturn(true);
+		when(fechaFinal.isAfter(fechaInicialAComparar)).thenReturn(true);
+		when(fechaInicial.isEqual(fechaInicialAComparar)).thenReturn(false);
+		when(fechaFinal.isEqual(fechaInicialAComparar)).thenReturn(false);
+		when(fechaInicial.isBefore(fechaFinalAComparar)).thenReturn(true);
+		when(fechaFinal.isAfter(fechaFinalAComparar)).thenReturn(false);
+		when(fechaInicial.isEqual(fechaFinalAComparar)).thenReturn(false);
+		when(fechaFinal.isEqual(fechaFinalAComparar)).thenReturn(true);
+		boolean result = rangoDeFechas.estaIncluidoElRango(rangoAComparar);
+		
+		assertTrue(result);
+	}
+
+	@Test
+	void testNoEstaIncluidoElRango() {
+		when(fechaInicial.isBefore(fechaInicialAComparar)).thenReturn(false);
+		when(fechaFinal.isAfter(fechaInicialAComparar)).thenReturn(false);
+		when(fechaInicial.isEqual(fechaInicialAComparar)).thenReturn(false);
+		when(fechaFinal.isEqual(fechaInicialAComparar)).thenReturn(false);
+		boolean result = rangoDeFechas.estaIncluidoElRango(rangoAComparar);
+		
+		assertFalse(result);
+	}
+
+	
+	// return this.estaIncluidaLaFecha(rango.getFechaInicial()) && this.estaIncluidaLaFecha(rango.getFechaFinal());
 }

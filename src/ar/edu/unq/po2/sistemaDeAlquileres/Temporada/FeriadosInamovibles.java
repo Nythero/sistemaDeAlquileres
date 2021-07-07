@@ -11,8 +11,17 @@ public class FeriadosInamovibles extends Temporada {
 
 	public FeriadosInamovibles(float precioEnDiaCotidiano, float precioEnFeriado) throws Exception {
 		super(precioEnDiaCotidiano);
-		this.precioEnFeriado= precioEnFeriado;
+		this.setPrecioEnFeriado(precioEnFeriado);
 		this.feriados= new Feriado();
+	}
+	
+	public void setPrecioEnFeriado(float precio) throws Exception {
+		if (precio <0) {
+			throw new Exception("El precio no puede ser negativo");
+		}
+		else {
+			this.precioEnFeriado= precio;
+		}
 	}
 	
 	@Override

@@ -26,6 +26,16 @@ class FinesDeSemanaLargoTestCase {
 	}
 
 	@Test
+	void testElPrecioCotidianoNoEsCorrecto() {
+		assertThrows(Exception.class, ()-> new FinesDeSemanaLargo(-200f,500f));
+	}
+	
+	@Test
+	void testElPrecioEspecialNoEsCorrecto() {
+		assertThrows(Exception.class, ()-> new FinesDeSemanaLargo(200f,-500f));
+	}
+	
+	@Test
 	void testGetPrecioSiendoDiaDeSemana() {
 		when(fecha.getDayOfWeek()).thenReturn(DayOfWeek.TUESDAY);
 		float result= findeLargo.getPrecio(fecha);

@@ -25,6 +25,7 @@ public class Reserva {
         this.setInmueble(inmueble);
         this.setEstado(estado);
         this.setFormaDePago(formaDePago);
+        this.total= rangoDeFechas.getMontoTotal(inmueble.getPrecio());
     }
 
     public RangoDeFechas getRangoDeFechas() {

@@ -9,7 +9,16 @@ public class TemporadaAlta extends Temporada {
 	
 	public TemporadaAlta(float precioCotidiano, float precioEnTemporada ) throws Exception {
 		super(precioCotidiano);
-		this.precioEnTemporada= precioEnTemporada;
+		this.setPrecioEnTemporada(precioEnTemporada);
+	}
+	
+	public void setPrecioEnTemporada(float precio) throws Exception {
+		if (precio <0) {
+			throw new Exception("El precio no puede ser negativo");
+		}
+		else {
+			this.precioEnTemporada= precio;
+		}
 	}
 	
 	@Override

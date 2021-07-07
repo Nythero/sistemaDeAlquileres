@@ -22,7 +22,17 @@ class FeriadosInamoviblesTestCase {
 		fecha= mock(LocalDate.class);
 	}
 	
+	@Test
+	void testElPrecioCotidianoNoEsCorrecto() {
+		assertThrows(Exception.class, ()-> new FeriadosInamovibles(-200f,500f));
+	}
+	
+	@Test
+	void testElPrecioEspecialNoEsCorrecto() {
+		assertThrows(Exception.class, ()-> new FeriadosInamovibles(200f,-500f));
+	}
 
+	
 	@Test
 	void testGetPrecioSiendoFeriado() {
 		when(fecha.getMonthValue()).thenReturn(12);
