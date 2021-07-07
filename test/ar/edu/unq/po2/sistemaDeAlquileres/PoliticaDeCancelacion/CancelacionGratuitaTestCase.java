@@ -7,58 +7,100 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFechaConPrecioDeterminado.RangoDeFechaConPrecioDeterminado;
+import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
+import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
+import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
+import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
+import junit.framework.AssertionFailedError;
 
 class CancelacionGratuitaTestCase {
 	private CancelacionGratuita cancelacion;
+	@Mock private LocalDate fechaActual;
+	@Mock private Inmueble inmueble;
 	@Mock private Reserva reserva;
-	@Mock private RangoDeFechaConPrecioDeterminado rangoDeFechas;
+	@Mock private RangoDeFechas rango;
+	@Mock private Usuario usuario;
+	@Mock private Temporada precio;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		this.cancelacion= new CancelacionGratuita();
-		this.reserva= mock(Reserva.class);
-		this.rangoDeFechas= mock(RangoDeFechaConPrecioDeterminado.class);		
+		this.fechaActual= mock(LocalDate.class);
+		this.inmueble= mock(Inmueble.class);
+		this.reserva= mock(Reserva.class);		
+		this.rango= mock(RangoDeFechas.class);
+		this.usuario= mock(Usuario.class);
+		this.precio= mock(Temporada.class);
 	}
 	
 	@Test
-	void testCuandoSeCancelaUnaReservaSiendoGratuita() {
-		when(reserva.getFechaInicial()).thenReturn(LocalDate.of(2021, 6, 30));
+	void testCuandoSeCancelaUnaReservaSiendoGratuita() throws Exception {
+		when(reserva.getRangoDeFechas()).thenReturn(rango);
+		when(rango.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(fechaActual,reserva))
+		.thenReturn(11);
+		when(reserva.getSolicitante()).thenReturn(usuario);
+		when(reserva.getDuenho()).thenReturn(usuario);
 		when(reserva.getMontoTotal()).thenReturn(500f);
-		cancelacion.cancelarReserva(reserva);
+		cancelacion.cancelarReserva(fechaActual, reserva);
 		
 		verify(reserva,times(2)).getMontoTotal();
-		verify(reserva,times(11)).getFechaInicial();
-		verify(reserva).devolverMontoAInquilinoSegunCancelacion(500f);
-		verify(reserva).extraerMontoADueñoSegunCancelacion(500f);
+		verify(usuario).recibirPago(500f);
+		verify(usuario).extraerMonto(500f);
 	}
 	
 	@Test
-	void testCuandoSeCancelaUnaReservaDeUnDiaSiendoNoGratuita() {
-		when(reserva.getFechaInicial()).thenReturn(LocalDate.of(2021, 6, 25));
-		when(reserva.cantidadDeDias()).thenReturn(1);
-		cancelacion.cancelarReserva(reserva);
+	void testCuandoSeCancelaUnaReservaDeUnDiaSiendoNoGratuita() throws Exception {
+		when(reserva.getInmueble()).thenReturn(inmueble);
+		when(inmueble.getPrecio()).thenReturn(precio);
+		when(reserva.getRangoDeFechas()).thenReturn(rango);
+		when(rango.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(fechaActual,reserva))
+		.thenReturn(9);
+		when(reserva.getFechaInicial()).thenReturn(fechaActual);
+		when(rango.cantidadDeDias()).thenReturn(1);
+		when(precio.getPrecio(reserva.getFechaInicial().plusDays(1))).thenReturn(500f);
+		when(reserva.getSolicitante()).thenReturn(usuario);
+		when(reserva.getDuenho()).thenReturn(usuario);
+		cancelacion.cancelarReserva(fechaActual, reserva);
 		
-		verify(reserva,times(6)).getFechaInicial();
-		verify(reserva).exigirMontoFaltanteAInquilino();
+		verify(usuario).extraerMonto(500f);
 	}
 	
 	@Test
-	void testCuandoSeCancelaUnaReservaDeMasDeUnDiaSiendoNoGratuita() {
-		when(reserva.getFechaInicial()).thenReturn(LocalDate.of(2021, 6, 25));
-		when(reserva.cantidadDeDias()).thenReturn(3);
-		when(reserva.getMontoTotal()).thenReturn(900f);
-		when(reserva.obtenerMontoSegunDias(2)).thenReturn(600f);
-		cancelacion.cancelarReserva(reserva);
+	void testCuandoSeCancelaUnaReservaDeMasDeUnDiaSiendoNoGratuita() throws Exception {
+		when(reserva.getInmueble()).thenReturn(inmueble);
+		when(inmueble.getPrecio()).thenReturn(precio);
+		when(reserva.getRangoDeFechas()).thenReturn(rango);
+		when(rango.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(fechaActual,reserva))
+		.thenReturn(9);
+		when(reserva.getFechaInicial()).thenReturn(fechaActual);
+		when(rango.cantidadDeDias()).thenReturn(3);
+		when(reserva.getMontoTotal()).thenReturn(500f);
+		when(rango.obtenerMontoPorCantidadDeDias(precio,2)).thenReturn(200f);
+		when(reserva.getSolicitante()).thenReturn(usuario);
+		when(reserva.getDuenho()).thenReturn(usuario);
+		cancelacion.cancelarReserva(fechaActual, reserva);
 		
-		verify(reserva).getMontoTotal();
-		verify(reserva,times(6)).getFechaInicial();
-	 	verify(reserva).devolverMontoAInquilinoSegunCancelacion(300f);
-		verify(reserva).extraerMontoADueñoSegunCancelacion(600f);
+		verify(usuario).recibirPago(300f);
+		verify(usuario).extraerMonto(200f);
+	}
+	
+	
+	@Test
+	void testCuandoNoSePuedeCancelarLaReseva() {
+		when(reserva.getRangoDeFechas()).thenReturn(rango);
+		when(reserva.getFechaInicial()).thenReturn(fechaActual);
+		when(fechaActual.isEqual(reserva.getFechaInicial())).thenReturn(true);
+		when(rango.darDiasFaltantesEntreFechaActualYFechaInicialDeReserva(fechaActual,reserva))
+		.thenThrow(new AssertionFailedError("Ya paso la etapa de cancelacion"));
+				
+				Assertions.assertThrows(AssertionFailedError.class, () -> {
+			cancelacion.cancelarReserva(fechaActual,reserva);
+		  });
 	}
 }

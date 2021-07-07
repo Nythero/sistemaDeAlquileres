@@ -16,7 +16,7 @@ import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
-import ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion.PoliticaDeCancelacion;
+import ar.edu.unq.po2.sistemaDeAlquileres.PoliticaDeCancelacion.PoliticaDeCancelacion;
 
 
 public class Inmueble extends Observable{
