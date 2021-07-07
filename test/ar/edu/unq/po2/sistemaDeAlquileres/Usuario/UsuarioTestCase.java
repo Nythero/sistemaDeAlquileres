@@ -41,8 +41,7 @@ public class UsuarioTestCase {
 		rankingComoDuenho = mock(Ranking.class);
 		rankingComoInquilino = mock(Ranking.class);
 		sitio = mock(Sitio.class);
-		usuario1 = new Usuario("Miguel", "mail@gmail.com","12345",rankingComoDuenho,
-							    rankingComoInquilino);
+		usuario1 = new Usuario("Miguel", "mail@gmail.com","12345");
 
 		when(reserva1.getInmueble()).thenReturn(inmueble1);
 		when(reserva2.getInmueble()).thenReturn(inmueble2);

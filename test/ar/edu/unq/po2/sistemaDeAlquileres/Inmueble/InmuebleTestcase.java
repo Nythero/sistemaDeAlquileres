@@ -11,7 +11,9 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.Foto.Foto;
 import ar.edu.unq.po2.sistemaDeAlquileres.IObsevers.IObserver;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
@@ -28,6 +30,7 @@ class InmuebleTestCase {
 	private Usuario usuario;
 	private RangoDeFechas rango;
 	private PoliticaDeCancelacion politica;
+	@Mock private Foto foto;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -44,6 +47,7 @@ class InmuebleTestCase {
 		when(rango.estaIncluidoElRango(rango)).thenReturn(true);
 		
 		inmueble.agregarFormaDePago("Efectivo");
+		foto= mock(Foto.class);
 	}
 	
 	private void validarReserva(Reserva reserva) {
@@ -151,12 +155,12 @@ class InmuebleTestCase {
 	
 	@Test
 	void Inmueble_AgregarFoto_Success() {
-		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
-		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
-		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
-		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
-		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
-		assertThrows(Exception.class, () -> inmueble.agregarFoto(""));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(foto));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(foto));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(foto));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(foto));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(foto));
+		assertThrows(Exception.class, () -> inmueble.agregarFoto(foto));
 	}
 	
 	@Test
@@ -207,5 +211,19 @@ class InmuebleTestCase {
 		inmueble.agregarReserva(reserva2);
 		
 		assertTrue(inmueble.estaAlquiladoActualmente());
+	}
+	
+	@Test
+	void testBajarPrecioCotidiano() {
+		inmueble.bajarPrecioCotidiano(200f);
+		
+		verify(precio).bajarAlPrecioCotidiano(200f);
+	}
+	
+	@Test
+	void testBajarPrecioEspecial() {
+		inmueble.bajarPrecioEspecial(200f);
+		
+		verify(precio).bajarPrecioEspecial(200f);
 	}
 }

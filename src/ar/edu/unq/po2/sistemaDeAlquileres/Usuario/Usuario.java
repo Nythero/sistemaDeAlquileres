@@ -26,12 +26,11 @@ public class Usuario {
 	
 	
 	public Usuario (String nombreCompleto, String direccionDeEmail,
-					String telefono,
-					Ranking rankingComoDuenho, Ranking rankingComoInquilino) {
+					String telefono) {
 		this.setNombreCompleto(nombreCompleto);
 		this.setDireccionDeEmail(direccionDeEmail);
 		this.setTelefono(telefono);
-		this.saldo = 0;
+		this.saldo = 0f;
 		this.fechaDeCreacion = LocalDate.now();
 		this.rankingComoDuenho = new Ranking();
 		this.rankingComoInquilino = new Ranking();

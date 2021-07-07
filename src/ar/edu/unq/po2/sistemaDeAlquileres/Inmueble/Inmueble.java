@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.Foto.Foto;
 import ar.edu.unq.po2.sistemaDeAlquileres.Observable.Observable;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
@@ -33,7 +34,7 @@ public class Inmueble extends Observable{
 	private final String ciudad;
 	private final String direccion;
 	private final ArrayList<String> servicios;
-	private final ArrayList<String> fotos;
+	private final ArrayList<Foto> fotos;
 	private final ArrayList<String> formasDePago;
 	private final ArrayList<String> comentarios;
 	private final ArrayList<RangoDeFechas> rangosDeFechas;
@@ -57,7 +58,7 @@ public class Inmueble extends Observable{
 		this.ciudad = ciudad;
 		this.direccion = direccion;
 		this.servicios = new ArrayList<String>();
-		this.fotos = new ArrayList<String>();
+		this.fotos = new ArrayList<Foto>();
 		this.formasDePago = new ArrayList<String>();
 		this.comentarios = new ArrayList<String>();
 		this.rangosDeFechas = new ArrayList<RangoDeFechas>();
@@ -137,7 +138,7 @@ public class Inmueble extends Observable{
 		return new ArrayList<String>(this.servicios);
 	}
 
-	private ArrayList<String> getFotos() {
+	private ArrayList<Foto> getFotos() {
 		return this.fotos;
 	}
 
@@ -163,7 +164,7 @@ public class Inmueble extends Observable{
 		this.getServicios().add(servicio);
 	}
 	
-	public void agregarFoto(String foto) throws Exception {
+	public void agregarFoto(Foto foto) throws Exception {
 		if (this.getFotos().size() < 5) {
 			this.getFotos().add(foto);
 		}
@@ -278,4 +279,12 @@ public class Inmueble extends Observable{
         }
         return elRangoEstaEntreLaFecha;
     }
+	
+	public void bajarPrecioCotidiano(float montoNuevo) {
+		this.precio.bajarAlPrecioCotidiano(montoNuevo);
+	}
+	
+	public void bajarPrecioEspecial(float montoNuevo) {
+		this.precio.bajarPrecioEspecial(montoNuevo);
+	}
 }
