@@ -2,10 +2,8 @@ package ar.edu.unq.po2.sistemaDeAlquileres.Usuario;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
@@ -41,25 +39,16 @@ public class Usuario {
 		this.reservas = new ArrayList<Reserva>();  
 	}
 
-	public String getNombreCompleto() {
-		return this.nombreCompleto;
-	}
 
 	private void setNombreCompleto(String nombreCompleto) {
 		this.nombreCompleto = nombreCompleto;
 	}
 
-	public String getDireccionDeEmail() {
-		return this.direccionDeEmail;
-	}
 
 	private void setDireccionDeEmail(String direccionDeEmail) {
 		this.direccionDeEmail = direccionDeEmail;
 	}
 
-	public String getTelefono() {
-		return this.telefono;
-	}
 
 	private void setTelefono(String telefono) {
 		this.telefono = telefono;
@@ -71,10 +60,6 @@ public class Usuario {
 	
 	private void setSaldo(Float saldo) {
 		this.saldo = saldo;
-	}
-	
-	public LocalDate getFechaDeCreacion() {
-		return this.fechaDeCreacion;
 	}
 	
 	public Ranking getRankingComoDuenho() {

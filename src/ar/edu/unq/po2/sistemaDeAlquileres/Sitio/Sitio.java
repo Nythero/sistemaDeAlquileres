@@ -11,7 +11,6 @@ import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroComposite;
 import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroFechaEntradaYSalida;
 import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroPrecioMinimoYMaximo;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
-import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 
 import java.util.Comparator;
@@ -81,14 +80,12 @@ public class Sitio {
 		for (int i = 0; i < this.getInmuebles().size(); i++) {
 			this.getInmuebles().get(i).getRanking().addCategoria(categoria);
 		}
-		//this.inmuebles.forEach(inmueble -> inmueble.getRanking().addCategoria(categoria));
 	}
 	
 	public void addCategoriaADuenho(String categoria) throws Exception {
 		for (int i = 0; i < this.getUsuarios().size(); i++) {
 			this.getUsuarios().get(i).getRankingComoDuenho().addCategoria(categoria);
 		}
-//		this.usuarios.forEach(usuario -> usuario.getRankingComoDuenho().addCategoria(categoria))
 	}
 	
 	public void agregarServicioValido(String servicio) {
@@ -102,17 +99,6 @@ public class Sitio {
 	public ArrayList<Inmueble> buscarInmuebles(String ciudad, LocalDate fechaEntrada, LocalDate fechaSalida, Integer huespedes,
 												float precioMinimo, float precioMaximo) throws Exception {
 		ArrayList<Inmueble> inmuebles = new ArrayList<Inmueble>();
-		/*filtroComposite
-		for (Inmueble inmueble : this.filtrarInmueblesQuePertenezcanALasFechas(fechaEntrada, fechaSalida)) {
-			if (inmueble.getCiudad() == ciudad 
-				&& (null == inmueble.getCapacidad()  || inmueble.getCapacidad() >= huespedes)
-				&& (null == (Float) precioMaximo || inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) > precioMinimo )
-				&& (null == (Float) precioMaximo || inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) < precioMaximo)) {
-				
-				inmuebles.add(inmueble);
-			} 
-		} 
-		return(inmuebles);*/
 		FiltroComposite filtroComposite = new FiltroComposite();
 		filtroComposite.agregarFiltro(new FiltroCiudad(ciudad));
 		filtroComposite.agregarFiltro(new FiltroFechaEntradaYSalida(fechaEntrada,fechaSalida));
@@ -121,7 +107,6 @@ public class Sitio {
 		for (Inmueble inmueble : this.getInmuebles()) {  
 			if (filtroComposite.cumpleConElFiltro(inmueble)) {
 				inmuebles.add(inmueble);
-				System.out.print(inmuebles.size());
 			}
 		}
 		return(inmuebles);

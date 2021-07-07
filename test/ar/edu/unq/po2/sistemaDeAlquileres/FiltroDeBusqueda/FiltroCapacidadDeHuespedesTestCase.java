@@ -45,8 +45,8 @@ class FiltroCapacidadDeHuespedesTestCase {
 	
 	@Test
 	void testNoCumpleConElFiltroPorCapacidadIncorrecta() throws Exception {
-		filtro= new FiltroCapacidadDeHuespedes(3);
-		when(inmueble.getCapacidad()).thenReturn(8);
+		filtro= new FiltroCapacidadDeHuespedes(5);
+		when(inmueble.getCapacidad()).thenReturn(3);
 		boolean result = filtro.cumpleConElFiltro(inmueble);
 		
 		assertFalse(result);

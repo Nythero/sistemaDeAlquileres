@@ -1,6 +1,5 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;

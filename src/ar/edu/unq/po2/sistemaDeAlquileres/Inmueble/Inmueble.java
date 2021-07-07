@@ -82,9 +82,6 @@ public class Inmueble extends Observable{
 		this.tipoDeInmueble = tipo;
 	}
 
-	public Integer getSuperficie() {
-		return this.superficie;
-	}
 	
 	private void setSuperficie(Integer superficie) {
 		this.superficie = superficie;
@@ -98,17 +95,11 @@ public class Inmueble extends Observable{
 		this.capacidad = capacidad;
 	}
 
-	public LocalTime getHoraDeCheckIn() {
-		return this.horaDeCheckIn;
-	}
 	
 	private void setHoraDeCheckin(LocalTime hora) {
 		this.horaDeCheckIn = hora;
 	}
 
-	public LocalTime getHoraDeCheckOut() {
-		return this.horaDeCheckOut;
-	}
 	
 	private void setHoraDeCheckout(LocalTime hora) {
 		this.horaDeCheckOut = hora;
@@ -136,17 +127,11 @@ public class Inmueble extends Observable{
 		return this.ranking;
 	}
 
-	public String getPais() {
-		return this.pais;
-	}
 
 	public String getCiudad() {
 		return this.ciudad;
 	}
 
-	public String getDireccion() {
-		return this.direccion;
-	}
 
 	public ArrayList<String> getServicios() {
 		return new ArrayList<String>(this.servicios);

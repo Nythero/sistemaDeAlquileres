@@ -103,10 +103,6 @@ public class Reserva {
 	public LocalDate getFechaInicial() {
 		return this.getRangoDeFechas().getFechaInicial();
 	}
-	
-	public LocalDate getFechaFinal() {
-		return this.getRangoDeFechas().getFechaFinal();
-	}
 
 	public Usuario getDuenho() {
 		return this.getInmueble().getDuenho();

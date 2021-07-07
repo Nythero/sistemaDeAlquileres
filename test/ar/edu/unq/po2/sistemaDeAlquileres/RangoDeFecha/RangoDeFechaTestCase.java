@@ -230,7 +230,4 @@ class RangoDeFechaTestCase {
 		
 		assertFalse(result);
 	}
-
-	
-	// return this.estaIncluidaLaFecha(rango.getFechaInicial()) && this.estaIncluidaLaFecha(rango.getFechaFinal());
 }

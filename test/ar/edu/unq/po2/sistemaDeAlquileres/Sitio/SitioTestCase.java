@@ -185,12 +185,17 @@ class SitioTestCase {
 		
 		
 		ArrayList<Inmueble> inmuebles = sitio.buscarInmuebles("Quilmes",fecha3,fecha4,3,100f,300f);
-		System.out.print(inmuebles.size());
 		
 		verify(inmueble1,times(1)).getCiudad();
 		verify(inmueble2,times(1)).getCiudad();
-		//assertTrue(inmuebles.contains(inmueble1));
-		//assertFalse(inmuebles.contains(inmueble2));	
+		verify(inmueble1,times(1)).hayAlgunRangoDeFechasQuePoseaLasFecha(fecha3,fecha4);
+		verify(inmueble2,times(1)).hayAlgunRangoDeFechasQuePoseaLasFecha(fecha3,fecha4);
+		verify(inmueble1,times(1)).getCapacidad();
+		verify(inmueble2,times(1)).getCapacidad();
+		verify(inmueble1,times(2)).precioMaximoDelRangoDeFechasEntre(fecha3,fecha4);
+		verify(inmueble2,times(2)).precioMaximoDelRangoDeFechasEntre(fecha3,fecha4);
+		assertTrue(inmuebles.contains(inmueble1));
+		assertFalse(inmuebles.contains(inmueble2));	
 	}
 //	
 	@Test

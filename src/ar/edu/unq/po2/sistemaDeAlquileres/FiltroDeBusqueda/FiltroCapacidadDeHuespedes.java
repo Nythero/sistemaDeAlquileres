@@ -26,6 +26,6 @@ public class FiltroCapacidadDeHuespedes implements IFiltroDeBusqueda{
 	@Override
 	public boolean cumpleConElFiltro(Inmueble inmueble) {
 		return (this.getCapacidad() == null || 
-				(inmueble.getCapacidad() == this.getCapacidad()));
+				(inmueble.getCapacidad() >= this.getCapacidad()));
 	}
 }
