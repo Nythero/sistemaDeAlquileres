@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.IFiltroDeBusqueda;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
@@ -45,52 +47,60 @@ public class UsuarioTestCase {
 
 		when(reserva1.getInmueble()).thenReturn(inmueble1);
 		when(reserva2.getInmueble()).thenReturn(inmueble2);
+		when(sitio.esUsuario(usuario1)).thenReturn(true);
 	}
 	
 	@Test
-	void testRealizarReserva() throws Exception {
+	void testRealizarReservaValida() throws Exception {
 		when(reserva1.getInmueble()).thenReturn(inmueble1);
-		
-		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva1,sitio);
 		
 		verify(reserva1).getInmueble();
 		verify(inmueble1).agregarReserva(reserva1);
 	}
 	
 	@Test
+	void testRealizarReservaInvalida() throws Exception {
+		when(reserva1.getInmueble()).thenReturn(inmueble1);
+		when(sitio.esUsuario(usuario1)).thenReturn(false);
+		assertThrows(Exception.class,()->usuario1.realizarReserva(reserva1,sitio));
+	}
+	
+	@Test
 	void testSetComentarioAReserva() throws Exception {
-		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva1,sitio);
 		usuario1.comentarInmueble(reserva1,"Comentario");
 		verify(reserva1).comentarInmueble("Comentario");
 	}
 	
 	@Test
 	void testSetPuntajeADuenho() throws Exception {
-		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva1,sitio);
 		usuario1.puntuarDuenho(reserva1,"amabilidad", 5);
 		verify(reserva1).puntuarDuenho("amabilidad",5);
 	}
 	
 	@Test
 	void testSetPuntajeAInquilino() throws Exception {
-		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva1,sitio);
 		usuario1.puntuarInquilino(reserva1,"honestidad", 5);
 		verify(reserva1).puntuarInquilino("honestidad",5);
 	}
 	
 	@Test
 	void testSetPuntajeCategoriaAInmueble() throws Exception {
-		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva1,sitio);
 		usuario1.puntuarInmueble(reserva1,"seguridad", 5);
 		verify(reserva1).puntuarInmueble("seguridad",5);
 	}
 	
 	@Test
 	void testBuscarInmuebles() throws Exception {
+		IFiltroDeBusqueda filtro = mock(IFiltroDeBusqueda.class);
 		LocalDate fechaEntrada = LocalDate.of(2020, 5,10);
 		LocalDate fechaSalida = LocalDate.of(2020, 5,20);
 		usuario1.buscarInmuebles(sitio,"Quilmes", fechaEntrada,fechaSalida, 4, 400f,600f);
-		verify(sitio).buscarInmuebles("Quilmes", fechaEntrada,fechaSalida, 4, 400f,600f);
+		verify(sitio).buscarInmuebles(any(IFiltroDeBusqueda.class));
 	}
 	
 	@Test
@@ -150,14 +160,14 @@ public class UsuarioTestCase {
 	
 	@Test
 	void testAgregarReserva() throws Exception{
-		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva1,sitio);
 		assertEquals(1,usuario1.cantidadReservas());
 	}
 	
 	@Test
 	void testGetReservasFuturas() throws Exception{
-		usuario1.realizarReserva(reserva1);
-		usuario1.realizarReserva(reserva2);
+		usuario1.realizarReserva(reserva1,sitio);
+		usuario1.realizarReserva(reserva2,sitio);
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 		reservas.add(reserva1);
 		reservas.add(reserva2);
@@ -169,8 +179,8 @@ public class UsuarioTestCase {
 	
 	@Test
 	void testGetReservasEnCiudadEnParticular() throws Exception{
-		usuario1.realizarReserva(reserva1);
-		usuario1.realizarReserva(reserva2);
+		usuario1.realizarReserva(reserva1,sitio);
+		usuario1.realizarReserva(reserva2,sitio);
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 		reservas.add(reserva1);
 		
@@ -182,8 +192,8 @@ public class UsuarioTestCase {
 	
 	@Test
 	void testGetCiudadesEnLasQueTieneReserva() throws Exception{
-		usuario1.realizarReserva(reserva1);
-		usuario1.realizarReserva(reserva2);
+		usuario1.realizarReserva(reserva1,sitio);
+		usuario1.realizarReserva(reserva2,sitio);
 		Set<String> ciudades = new HashSet<String>();
 		ciudades.add("La Plata");
 		ciudades.add("Quilmes");		
@@ -195,8 +205,8 @@ public class UsuarioTestCase {
 	
 	@Test
 	void testGetCiudadesEnLasQueTieneReservaSinCiudadesRepetidas() throws Exception{
-		usuario1.realizarReserva(reserva1);
-		usuario1.realizarReserva(reserva2);
+		usuario1.realizarReserva(reserva1,sitio);
+		usuario1.realizarReserva(reserva2,sitio);
 		Set<String> ciudades = new HashSet<String>();
 		ciudades.add("Quilmes");		
 		when(inmueble1.getCiudad()).thenReturn("Quilmes");
@@ -250,7 +260,7 @@ public class UsuarioTestCase {
 	
 	@Test
 	void testCancelarReservaSucces() throws CambioDeEstadoError, Exception {
-		usuario1.realizarReserva(reserva1);
+		usuario1.realizarReserva(reserva1,sitio);
 		usuario1.cancelarReserva(reserva1);
 		
 		verify(reserva1).cancelar();

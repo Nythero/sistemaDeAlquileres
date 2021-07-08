@@ -188,6 +188,7 @@ public class Inmueble extends Observable{
 	public void agregarReserva(Reserva reserva) throws Exception{
 		this.verificarReserva(reserva);
 		this.reservas.add(reserva);
+		this.getDuenho().recibirPago(reserva.getMontoTotal());
 	}
 	
 	public void agregarCategoria(String categoria) throws Exception {
@@ -203,7 +204,7 @@ public class Inmueble extends Observable{
 	}
 	
 	public boolean hayAlgunRangoDeFechasQuePoseaLasFecha(LocalDate fechaEntrada, LocalDate fechaSalida) {
-        boolean elRangoEstaEntreLaFecha = true;//!(this.getRangos().isEmpty()) ;
+        boolean elRangoEstaEntreLaFecha = false;
         for(RangoDeFechas rango : this.getRangos()) {
             elRangoEstaEntreLaFecha |= rango.lasFechasEstanEnElRango(fechaEntrada,fechaSalida);
         }
@@ -212,7 +213,7 @@ public class Inmueble extends Observable{
 
 	//devuelve el precio maximo del rango de fechas dadas
 	public float precioMaximoDelRangoDeFechasEntre(LocalDate fechaEntrada, LocalDate fechaSalida) {
-		float precioMaximoDelRango = 0;
+		float precioMaximoDelRango = 0f;
 		RangoDeFechas rangoP = new RangoDeFechas(fechaEntrada, fechaSalida);
 		for (RangoDeFechas rango : this.getRangos()) {
 			if (rango.estaIncluidoElRango(rangoP)) {

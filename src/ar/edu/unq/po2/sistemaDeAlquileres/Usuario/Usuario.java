@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroCapacidadDeHuespedes;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroCiudad;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroComposite;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroFechaEntradaYSalida;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroPrecioMinimoYMaximo;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
@@ -105,7 +110,12 @@ public class Usuario {
 	public ArrayList<Inmueble> buscarInmuebles(Sitio sitio,String ciudad,LocalDate fechaEntrada,
 												LocalDate fechaSalida,Integer huespedes,float precioMinimo,
 												float precioMaximo) throws Exception {
-		return (sitio.buscarInmuebles(ciudad, fechaEntrada,fechaSalida, huespedes,precioMinimo,precioMaximo));
+		FiltroComposite filtroComposite = new FiltroComposite();
+		filtroComposite.agregarFiltro(new FiltroCiudad(ciudad));
+		filtroComposite.agregarFiltro(new FiltroFechaEntradaYSalida(fechaEntrada,fechaSalida));
+		filtroComposite.agregarFiltro(new FiltroCapacidadDeHuespedes(huespedes));
+		filtroComposite.agregarFiltro(new FiltroPrecioMinimoYMaximo(precioMinimo,precioMaximo,fechaEntrada,fechaSalida));
+		return sitio.buscarInmuebles(filtroComposite);
 	}
 	
 	public void registrarseEnSitio(Sitio sitio) throws Exception {
@@ -148,9 +158,15 @@ public class Usuario {
 		}	
 	}
 	
-	public void realizarReserva(Reserva reserva) throws Exception {
-		reserva.getInmueble().agregarReserva(reserva);
-		this.getReservas().add(reserva);
+	public void realizarReserva(Reserva reserva,Sitio sitio) throws Exception {
+		if(sitio.esUsuario(this)) {
+			reserva.getInmueble().agregarReserva(reserva);
+			this.getReservas().add(reserva);
+		}
+		else {
+			throw new Exception("El usuario no esta registrado en el sitio");
+		}
+		
 	}
 	
 	public void cancelarReserva(Reserva reserva) throws CambioDeEstadoError, Exception {

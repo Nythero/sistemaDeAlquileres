@@ -10,6 +10,7 @@ import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroCiudad;
 import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroComposite;
 import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroFechaEntradaYSalida;
 import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroPrecioMinimoYMaximo;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.IFiltroDeBusqueda;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 
@@ -96,7 +97,7 @@ public class Sitio {
 		this.getTipoDeInmueblesValidos().add(tipoDeInmueble);
 	} 
 
-	public ArrayList<Inmueble> buscarInmuebles(String ciudad, LocalDate fechaEntrada, LocalDate fechaSalida, Integer huespedes,
+	/*public ArrayList<Inmueble> buscarInmuebles(String ciudad, LocalDate fechaEntrada, LocalDate fechaSalida, Integer huespedes,
 												float precioMinimo, float precioMaximo) throws Exception {
 		ArrayList<Inmueble> inmuebles = new ArrayList<Inmueble>();
 		FiltroComposite filtroComposite = new FiltroComposite();
@@ -110,6 +111,16 @@ public class Sitio {
 			}
 		}
 		return(inmuebles);
+	}*/
+	
+	public ArrayList<Inmueble> buscarInmuebles(IFiltroDeBusqueda filtroComposite) throws Exception {
+			ArrayList<Inmueble> inmuebles = new ArrayList<Inmueble>();
+			for (Inmueble inmueble : this.getInmuebles()) {  
+				if (filtroComposite.cumpleConElFiltro(inmueble)) {
+					inmuebles.add(inmueble);
+				}
+			}
+			return(inmuebles);
 	}
 	
 	//devuelve los inmuebles que al menos uno de sus rangos este entre las fechas dadas 
