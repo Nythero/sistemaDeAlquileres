@@ -52,6 +52,10 @@ public class Usuario {
 	private void setDireccionDeEmail(String direccionDeEmail) {
 		this.direccionDeEmail = direccionDeEmail;
 	}
+	
+	public String getDireccionDeEmail() {
+		return this.direccionDeEmail;
+	}
 
 
 	private void setTelefono(String telefono) {
@@ -235,10 +239,5 @@ public class Usuario {
 	
 	public int cantidadReservas() {
 		return this.getReservas().size();
-	}
-
-
-	public String getEmail() {
-		return this.direccionDeEmail;
 	}
 }
