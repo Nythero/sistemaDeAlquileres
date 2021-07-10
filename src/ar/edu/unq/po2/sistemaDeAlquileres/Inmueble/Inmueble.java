@@ -223,10 +223,10 @@ public class Inmueble extends Observable{
 		return precioMaximoDelRango;
 	}
 	
-	public boolean estaAlquiladoActualmente() {
+	public boolean estaAlquiladoActualmente(LocalDate diaActual) {
 		boolean estaAlquilado = false;
 		for(Reserva reserva : this.getReservas()) {
-			estaAlquilado |= reserva.estaEnEstado("EnCurso");
+			estaAlquilado |= reserva.getRangoDeFechas().estaIncluidaLaFecha(diaActual);
 		}
 		return estaAlquilado;
 	}

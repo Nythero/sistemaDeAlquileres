@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.internal.matchers.Any;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.IFiltroDeBusqueda;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
@@ -213,8 +215,8 @@ class SitioTestCase {
 		//when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		sitio.agregarInmueble(inmueble1);
 		sitio.agregarInmueble(inmueble2);
-		when(inmueble1.estaAlquiladoActualmente()).thenReturn(false);
-		when(inmueble2.estaAlquiladoActualmente()).thenReturn(false);
+		when(inmueble1.estaAlquiladoActualmente(any(LocalDate.class))).thenReturn(false);
+		when(inmueble2.estaAlquiladoActualmente(any(LocalDate.class))).thenReturn(false);
 		
 		assertEquals(2,sitio.getCantidadDeInmueblesLibres());
 	} 
@@ -228,8 +230,8 @@ class SitioTestCase {
 		//when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		sitio.agregarInmueble(inmueble1);
 		sitio.agregarInmueble(inmueble2);
-		when(inmueble1.estaAlquiladoActualmente()).thenReturn(true);
-		when(inmueble2.estaAlquiladoActualmente()).thenReturn(false);
+		when(inmueble1.estaAlquiladoActualmente(any(LocalDate.class))).thenReturn(true);
+		when(inmueble2.estaAlquiladoActualmente(any(LocalDate.class))).thenReturn(false);
 		
 		assertEquals(1,sitio.getCantidadDeInmueblesAlquilados());
 	} 
@@ -243,8 +245,8 @@ class SitioTestCase {
 		//when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		sitio.agregarInmueble(inmueble1);
 		sitio.agregarInmueble(inmueble2);
-		when(inmueble1.estaAlquiladoActualmente()).thenReturn(true);
-		when(inmueble2.estaAlquiladoActualmente()).thenReturn(true);
+		when(inmueble1.estaAlquiladoActualmente(any(LocalDate.class))).thenReturn(true);
+		when(inmueble2.estaAlquiladoActualmente(any(LocalDate.class))).thenReturn(true);
 		
 		assertEquals(1,sitio.getTasaOcupacional());
 	}
