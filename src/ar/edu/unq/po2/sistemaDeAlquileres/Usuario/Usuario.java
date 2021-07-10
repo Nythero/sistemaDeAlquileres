@@ -236,4 +236,9 @@ public class Usuario {
 	public int cantidadReservas() {
 		return this.getReservas().size();
 	}
+
+
+	public String getEmail() {
+		return this.direccionDeEmail;
+	}
 }
