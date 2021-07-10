@@ -8,7 +8,16 @@ public class FinesDeSemanaLargo extends Temporada {
 	
 	public FinesDeSemanaLargo(float precioCotidiano, float precioEnFinDeSemanaLargo) throws Exception {
 		super(precioCotidiano);
-		this.precioEnFinDeSemanaLargo= precioEnFinDeSemanaLargo;
+		this.setPrecioEnFinDeSemanaLargo(precioEnFinDeSemanaLargo);
+	}
+	
+	public void setPrecioEnFinDeSemanaLargo(float precio) throws Exception {
+		if (precio <0) {
+			throw new Exception("El precio no puede ser negativo");
+		}
+		else {
+			this.precioEnFinDeSemanaLargo= precio;
+		}
 	}
 	
 	@Override

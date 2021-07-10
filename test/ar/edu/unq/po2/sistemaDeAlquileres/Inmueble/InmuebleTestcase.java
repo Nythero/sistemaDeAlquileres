@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -11,7 +12,9 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.Foto.Foto;
 import ar.edu.unq.po2.sistemaDeAlquileres.IObsevers.IObserver;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
@@ -28,6 +31,7 @@ class InmuebleTestCase {
 	private Usuario usuario;
 	private RangoDeFechas rango;
 	private PoliticaDeCancelacion politica;
+	@Mock private Foto foto;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -44,6 +48,7 @@ class InmuebleTestCase {
 		when(rango.estaIncluidoElRango(rango)).thenReturn(true);
 		
 		inmueble.agregarFormaDePago("Efectivo");
+		foto= mock(Foto.class);
 	}
 	
 	private void validarReserva(Reserva reserva) {
@@ -56,7 +61,7 @@ class InmuebleTestCase {
 	@Test
 	void Inmueble_AgregarReserva_Success() {
 		Reserva reserva = mock(Reserva.class);
-		
+		when(reserva.getMontoTotal()).thenReturn(200f);
 		this.validarReserva(reserva);
 		
 		assertDoesNotThrow(() -> inmueble.agregarReserva(reserva));
@@ -65,6 +70,7 @@ class InmuebleTestCase {
 		verify(reserva).getRangoDeFechas();
 		verify(reserva).getFormaDePago();
 		verify(reserva).estaEnEstado("PendienteDeAprobacion");
+		verify(usuario).recibirPago(200f);
 	}
 	
 	@Test
@@ -151,12 +157,12 @@ class InmuebleTestCase {
 	
 	@Test
 	void Inmueble_AgregarFoto_Success() {
-		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
-		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
-		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
-		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
-		assertDoesNotThrow(() -> inmueble.agregarFoto(""));
-		assertThrows(Exception.class, () -> inmueble.agregarFoto(""));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(foto));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(foto));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(foto));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(foto));
+		assertDoesNotThrow(() -> inmueble.agregarFoto(foto));
+		assertThrows(Exception.class, () -> inmueble.agregarFoto(foto));
 	}
 	
 	@Test
@@ -196,6 +202,7 @@ class InmuebleTestCase {
 		
 		assertTrue(inmueble.hayAlgunRangoDeFechasQuePoseaElRango(rango));
 	}
+	
 	@Test void Inmueble_EstaAlquiladoActualmente_Success() throws Exception{
 		Reserva reserva1 = mock(Reserva.class);
 		Reserva reserva2 = mock(Reserva.class);
@@ -208,4 +215,46 @@ class InmuebleTestCase {
 		
 		assertTrue(inmueble.estaAlquiladoActualmente());
 	}
+	
+	@Test
+	void testBajarPrecioCotidiano() {
+		inmueble.bajarPrecioCotidiano(200f);
+		
+		verify(precio).bajarAlPrecioCotidiano(200f);
+	}
+	
+	@Test
+	void testBajarPrecioEspecial() {
+		inmueble.bajarPrecioEspecial(200f);
+		
+		verify(precio).bajarPrecioEspecial(200f);
+	}
+	
+	@Test void testHayAlgunRangoDeFechasQuePoseaLasFecha() throws Exception{
+		LocalDate fecha = mock(LocalDate.class);
+		inmueble.agregarRangoDeFechas(rango);
+		inmueble.agregarRangoDeFechas(rango);
+		when(rango.lasFechasEstanEnElRango(fecha, fecha)).thenReturn(false).thenReturn(true);
+		boolean result = inmueble.hayAlgunRangoDeFechasQuePoseaLasFecha(fecha,fecha);
+		
+		assertTrue(result);
+	}
+	
+	@Test void testNoHayAlgunRangoDeFechasQuePoseaLasFecha() throws Exception{
+		LocalDate fecha = mock(LocalDate.class);
+		inmueble.agregarRangoDeFechas(rango);
+		inmueble.agregarRangoDeFechas(rango);
+		when(rango.estaIncluidoElRango(any(RangoDeFechas.class))).thenReturn(true).thenReturn(false);
+		when(rango.precioMaximoEntreElRangoDeFechas(precio, fecha, fecha)).thenReturn(200f);
+		float result = inmueble.precioMaximoDelRangoDeFechasEntre(fecha,fecha);
+		
+		assertEquals(200f,result);
+	}
+	
+	
+	@Test void testPrecioMaximoAlEstarVacio() throws Exception{
+		LocalDate fecha = mock(LocalDate.class);
+		float result = inmueble.precioMaximoDelRangoDeFechasEntre(fecha,fecha);
+		assertEquals(0f,result);
+	}	
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.Foto.Foto;
 import ar.edu.unq.po2.sistemaDeAlquileres.Observable.Observable;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
@@ -33,7 +34,7 @@ public class Inmueble extends Observable{
 	private final String ciudad;
 	private final String direccion;
 	private final ArrayList<String> servicios;
-	private final ArrayList<String> fotos;
+	private final ArrayList<Foto> fotos;
 	private final ArrayList<String> formasDePago;
 	private final ArrayList<String> comentarios;
 	private final ArrayList<RangoDeFechas> rangosDeFechas;
@@ -57,7 +58,7 @@ public class Inmueble extends Observable{
 		this.ciudad = ciudad;
 		this.direccion = direccion;
 		this.servicios = new ArrayList<String>();
-		this.fotos = new ArrayList<String>();
+		this.fotos = new ArrayList<Foto>();
 		this.formasDePago = new ArrayList<String>();
 		this.comentarios = new ArrayList<String>();
 		this.rangosDeFechas = new ArrayList<RangoDeFechas>();
@@ -82,9 +83,6 @@ public class Inmueble extends Observable{
 		this.tipoDeInmueble = tipo;
 	}
 
-	public Integer getSuperficie() {
-		return this.superficie;
-	}
 	
 	private void setSuperficie(Integer superficie) {
 		this.superficie = superficie;
@@ -98,17 +96,11 @@ public class Inmueble extends Observable{
 		this.capacidad = capacidad;
 	}
 
-	public LocalTime getHoraDeCheckIn() {
-		return this.horaDeCheckIn;
-	}
 	
 	private void setHoraDeCheckin(LocalTime hora) {
 		this.horaDeCheckIn = hora;
 	}
 
-	public LocalTime getHoraDeCheckOut() {
-		return this.horaDeCheckOut;
-	}
 	
 	private void setHoraDeCheckout(LocalTime hora) {
 		this.horaDeCheckOut = hora;
@@ -136,23 +128,17 @@ public class Inmueble extends Observable{
 		return this.ranking;
 	}
 
-	public String getPais() {
-		return this.pais;
-	}
 
 	public String getCiudad() {
 		return this.ciudad;
 	}
 
-	public String getDireccion() {
-		return this.direccion;
-	}
 
 	public ArrayList<String> getServicios() {
 		return new ArrayList<String>(this.servicios);
 	}
 
-	private ArrayList<String> getFotos() {
+	private ArrayList<Foto> getFotos() {
 		return this.fotos;
 	}
 
@@ -178,7 +164,7 @@ public class Inmueble extends Observable{
 		this.getServicios().add(servicio);
 	}
 	
-	public void agregarFoto(String foto) throws Exception {
+	public void agregarFoto(Foto foto) throws Exception {
 		if (this.getFotos().size() < 5) {
 			this.getFotos().add(foto);
 		}
@@ -202,6 +188,7 @@ public class Inmueble extends Observable{
 	public void agregarReserva(Reserva reserva) throws Exception{
 		this.verificarReserva(reserva);
 		this.reservas.add(reserva);
+		this.getDuenho().recibirPago(reserva.getMontoTotal());
 	}
 	
 	public void agregarCategoria(String categoria) throws Exception {
@@ -217,7 +204,7 @@ public class Inmueble extends Observable{
 	}
 	
 	public boolean hayAlgunRangoDeFechasQuePoseaLasFecha(LocalDate fechaEntrada, LocalDate fechaSalida) {
-        boolean elRangoEstaEntreLaFecha = true;//!(this.getRangos().isEmpty()) ;
+        boolean elRangoEstaEntreLaFecha = false;
         for(RangoDeFechas rango : this.getRangos()) {
             elRangoEstaEntreLaFecha |= rango.lasFechasEstanEnElRango(fechaEntrada,fechaSalida);
         }
@@ -226,7 +213,7 @@ public class Inmueble extends Observable{
 
 	//devuelve el precio maximo del rango de fechas dadas
 	public float precioMaximoDelRangoDeFechasEntre(LocalDate fechaEntrada, LocalDate fechaSalida) {
-		float precioMaximoDelRango = 0;
+		float precioMaximoDelRango = 0f;
 		RangoDeFechas rangoP = new RangoDeFechas(fechaEntrada, fechaSalida);
 		for (RangoDeFechas rango : this.getRangos()) {
 			if (rango.estaIncluidoElRango(rangoP)) {
@@ -293,4 +280,12 @@ public class Inmueble extends Observable{
         }
         return elRangoEstaEntreLaFecha;
     }
+	
+	public void bajarPrecioCotidiano(float montoNuevo) {
+		this.precio.bajarAlPrecioCotidiano(montoNuevo);
+	}
+	
+	public void bajarPrecioEspecial(float montoNuevo) {
+		this.precio.bajarPrecioEspecial(montoNuevo);
+	}
 }

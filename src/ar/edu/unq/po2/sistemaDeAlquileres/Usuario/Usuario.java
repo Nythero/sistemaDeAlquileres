@@ -2,11 +2,14 @@ package ar.edu.unq.po2.sistemaDeAlquileres.Usuario;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroCapacidadDeHuespedes;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroCiudad;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroComposite;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroFechaEntradaYSalida;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroPrecioMinimoYMaximo;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
@@ -28,12 +31,11 @@ public class Usuario {
 	
 	
 	public Usuario (String nombreCompleto, String direccionDeEmail,
-					String telefono,
-					Ranking rankingComoDuenho, Ranking rankingComoInquilino) {
+					String telefono) {
 		this.setNombreCompleto(nombreCompleto);
 		this.setDireccionDeEmail(direccionDeEmail);
 		this.setTelefono(telefono);
-		this.saldo = 0;
+		this.saldo = 0f;
 		this.fechaDeCreacion = LocalDate.now();
 		this.rankingComoDuenho = new Ranking();
 		this.rankingComoInquilino = new Ranking();
@@ -41,25 +43,16 @@ public class Usuario {
 		this.reservas = new ArrayList<Reserva>();  
 	}
 
-	public String getNombreCompleto() {
-		return this.nombreCompleto;
-	}
 
 	private void setNombreCompleto(String nombreCompleto) {
 		this.nombreCompleto = nombreCompleto;
 	}
 
-	public String getDireccionDeEmail() {
-		return this.direccionDeEmail;
-	}
 
 	private void setDireccionDeEmail(String direccionDeEmail) {
 		this.direccionDeEmail = direccionDeEmail;
 	}
 
-	public String getTelefono() {
-		return this.telefono;
-	}
 
 	private void setTelefono(String telefono) {
 		this.telefono = telefono;
@@ -71,10 +64,6 @@ public class Usuario {
 	
 	private void setSaldo(Float saldo) {
 		this.saldo = saldo;
-	}
-	
-	public LocalDate getFechaDeCreacion() {
-		return this.fechaDeCreacion;
 	}
 	
 	public Ranking getRankingComoDuenho() {
@@ -120,8 +109,13 @@ public class Usuario {
 	
 	public ArrayList<Inmueble> buscarInmuebles(Sitio sitio,String ciudad,LocalDate fechaEntrada,
 												LocalDate fechaSalida,Integer huespedes,float precioMinimo,
-												float precioMaximo) {
-		return (sitio.buscarInmuebles(ciudad, fechaEntrada,fechaSalida, huespedes,precioMinimo,precioMaximo));
+												float precioMaximo) throws Exception {
+		FiltroComposite filtroComposite = new FiltroComposite();
+		filtroComposite.agregarFiltro(new FiltroCiudad(ciudad));
+		filtroComposite.agregarFiltro(new FiltroFechaEntradaYSalida(fechaEntrada,fechaSalida));
+		filtroComposite.agregarFiltro(new FiltroCapacidadDeHuespedes(huespedes));
+		filtroComposite.agregarFiltro(new FiltroPrecioMinimoYMaximo(precioMinimo,precioMaximo,fechaEntrada,fechaSalida));
+		return sitio.buscarInmuebles(filtroComposite);
 	}
 	
 	public void registrarseEnSitio(Sitio sitio) throws Exception {
@@ -164,9 +158,15 @@ public class Usuario {
 		}	
 	}
 	
-	public void realizarReserva(Reserva reserva) throws Exception {
-		reserva.getInmueble().agregarReserva(reserva);
-		this.getReservas().add(reserva);
+	public void realizarReserva(Reserva reserva,Sitio sitio) throws Exception {
+		if(sitio.esUsuario(this)) {
+			reserva.getInmueble().agregarReserva(reserva);
+			this.getReservas().add(reserva);
+		}
+		else {
+			throw new Exception("El usuario no esta registrado en el sitio");
+		}
+		
 	}
 	
 	public void cancelarReserva(Reserva reserva) throws CambioDeEstadoError, Exception {

@@ -76,16 +76,6 @@ public class RangoDeFechas {
                 (this.getFechaFinal().isEqual(fechaSalida) ||this.getFechaFinal().isAfter(fechaSalida)));
     }
 	
-	public boolean contains(ArrayList<RangoDeFechas> rangos) {
-		boolean result= false;
-		int i=0;
-		while(!rangos.isEmpty() && i < rangos.size()) {
-			result|= this.lasFechasEstanEnElRango(rangos.get(i).getFechaInicial(), rangos.get(i).getFechaFinal());
-			i++;
-		}
-		return result;
-	}
-	
 	public float getMontoTotal(Temporada temporada) {
 		LocalDate fechaInicialAVerificar = this.getFechaInicial();
         float result= 0;
@@ -130,9 +120,9 @@ public class RangoDeFechas {
                this.getFechaInicial().isEqual(dia) || this.getFechaFinal().isEqual(dia); 
     }
 	
-	 public boolean estaIncluidoElRango(RangoDeFechas rango) {
+	public boolean estaIncluidoElRango(RangoDeFechas rango) {
 	        return this.estaIncluidaLaFecha(rango.getFechaInicial()) && this.estaIncluidaLaFecha(rango.getFechaFinal());
-	    }
+	}
 	
 
 }

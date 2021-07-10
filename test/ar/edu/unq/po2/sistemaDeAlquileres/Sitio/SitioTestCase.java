@@ -2,6 +2,7 @@ package ar.edu.unq.po2.sistemaDeAlquileres.Sitio;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -13,7 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Administrador.Administrador;
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.IFiltroDeBusqueda;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Ranking.Ranking;
@@ -23,7 +24,6 @@ import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 
 class SitioTestCase {
 
-	private Administrador administrador;
 	private Sitio sitio;
 	private Inmueble inmueble1;
 	private Inmueble inmueble2;
@@ -39,10 +39,13 @@ class SitioTestCase {
 	private Reserva reserva5;
 	@Mock private RangoDeFechas rango;
 	private Reserva reserva6;
+	@Mock private IFiltroDeBusqueda filtroComposite;
+	@Mock private IFiltroDeBusqueda filtroHoja;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		administrador = new Administrador();
+		filtroComposite = mock(IFiltroDeBusqueda.class);
+		filtroHoja = mock(IFiltroDeBusqueda.class);
 		sitio = new Sitio();
 		inmueble1 = mock(Inmueble.class);
 		inmueble2 = mock(Inmueble.class);
@@ -168,24 +171,17 @@ class SitioTestCase {
 		//when(inmueble1.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
 		when(inmueble2.getTipoDeInmueble()).thenReturn("casa");
 		//when(inmueble2.poseeTodosLosServiciosValidosDelSitio(sitio)).thenReturn(true);
-		sitio.agregarInmueble(inmueble1); 
-		sitio.agregarInmueble(inmueble2);
 		LocalDate fecha3 = LocalDate.of(2020, 5,10);
 		LocalDate fecha4 = LocalDate.of(2020, 5,20);
-		when(inmueble1.getCiudad()).thenReturn("Quilmes");
-		when(inmueble2.getCiudad()).thenReturn("Quilmes");
-		when(inmueble1.getCapacidad()).thenReturn(5);
-		when(inmueble2.getCapacidad()).thenReturn(4);
-		when(inmueble1.precioMaximoDelRangoDeFechasEntre(fecha3,fecha4)).thenReturn(200f);
-		when(inmueble2.precioMaximoDelRangoDeFechasEntre(fecha3,fecha4)).thenReturn(500f);
-		when(inmueble1.hayAlgunRangoDeFechasQuePoseaLasFecha(fecha3,fecha4)).thenReturn(true);
-		when(inmueble2.hayAlgunRangoDeFechasQuePoseaLasFecha(fecha3,fecha4)).thenReturn(false);
+		sitio.agregarInmueble(inmueble1); 
+		sitio.agregarInmueble(inmueble2);
 		
-		ArrayList<Inmueble> inmuebles = sitio.buscarInmuebles("Quilmes",fecha3,fecha4,3,100f,300f);
-		
-		assertTrue(inmuebles.contains(inmueble1));
-		assertFalse(inmuebles.contains(inmueble2));
+		when(filtroComposite.cumpleConElFiltro(inmueble1)).thenReturn(true);
+		when(filtroComposite.cumpleConElFiltro(inmueble2)).thenReturn(false);
+		ArrayList<Inmueble> inmuebles = sitio.buscarInmuebles(filtroComposite);
 
+		assertTrue(inmuebles.contains(inmueble1));
+		assertFalse(inmuebles.contains(inmueble2));	
 	}
 //	
 	@Test

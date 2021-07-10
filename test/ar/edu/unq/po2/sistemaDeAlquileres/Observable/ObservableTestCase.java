@@ -104,4 +104,11 @@ class ObservableTestCase {
 		verify(observer1,times(1)).update(inmueble,400f);
 		verify(observer2,times(1)).update(inmueble, 400f);
 	}
+	
+	@Test
+	void testErrorAlPedirCantidadDeSuscripcionesDeUnaCategoriaNoValida() {
+		assertThrows(AssertionFailedError.class,()-> observable.getCantidadDeSuscritosAUnaSuscripcion("Baja de precio"));
+	}
+	
+	
 }
