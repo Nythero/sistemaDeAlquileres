@@ -2,7 +2,7 @@ package ar.edu.unq.po2.sistemaDeAlquileres.IObsevers;
 
 public class PopUpWindow {
 	/**
-	 * Publica la publicacion con la informacion dada
+	 * Dado un mensaje, un color y un tamaño de la letra realiza la publicacion de la informacion
 	 * @param message
 	 * @param color
 	 * @param fontSize

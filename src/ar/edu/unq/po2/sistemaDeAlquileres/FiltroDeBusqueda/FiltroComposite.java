@@ -11,6 +11,10 @@ public class FiltroComposite implements IFiltroDeBusqueda {
 		this.filtros = new ArrayList<IFiltroDeBusqueda>();
 	}
 	
+	/**
+	 * Retorna los filtros
+	 * @return
+	 */
 	public ArrayList<IFiltroDeBusqueda> getFiltros(){
 		return this.filtros;
 	}

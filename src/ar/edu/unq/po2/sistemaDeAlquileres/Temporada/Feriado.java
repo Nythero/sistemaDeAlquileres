@@ -98,7 +98,7 @@ public class Feriado {
 	}
 	
 	/**
-	 * Añade el feriado al mes dado.
+	 * Dado un dia y un mes añade el feriado al mes dado.
 	 * @param mes
 	 * @param dia
 	 */
@@ -116,8 +116,8 @@ public class Feriado {
 	}
 
 	/**
-	 * Añade al ArrayList el dia dado si no se encuentra en dicha lista
-	 * Caso contrario devuelve el ArrayList original
+	 * Dado feriados y un dia añade al ArrayList el dia si no se encuentra en los feriados
+	 * Caso contrario devuelve el feriados original
 	 * @param feriados
 	 * @param dia
 	 * @return
@@ -130,7 +130,7 @@ public class Feriado {
 	}
 
 	/**
-	 * Remueve el feriado dado. Si no se encuentra devuelve error
+	 * Dado un mes y un dia remueve el feriado dado. Si no se encuentra devuelve error
 	 * @param mes
 	 * @param dia
 	 */

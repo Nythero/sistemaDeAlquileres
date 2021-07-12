@@ -59,7 +59,7 @@ class FiltroFechaEntradaYSalidaTestCase {
 		assertFalse(result);
 	}
 	
-/*
+
 	@Test
 	void testNoSePuedenAgregarFiltros() throws Exception {
 		filtro= new FiltroFechaEntradaYSalida(fechaEntrada,fechaSalida);
@@ -70,5 +70,5 @@ class FiltroFechaEntradaYSalidaTestCase {
 	void testNoSePuedenRemoverFiltros() throws Exception {
 		filtro= new FiltroFechaEntradaYSalida(fechaEntrada,fechaSalida);
 		assertThrows(Exception.class, () -> filtro.removerFiltro(filtro));
-	}*/
+	}
 }

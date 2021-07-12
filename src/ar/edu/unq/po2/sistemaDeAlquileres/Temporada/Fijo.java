@@ -8,10 +8,7 @@ public class Fijo extends Temporada {
 		super(precio);
 	}
 	@Override
-	/**
-	 * Retorna el precio para el dia dado. En este caso para cualquier dia retorna
-	 * el mismo valor
-	 */
+
 	public float getPrecio(LocalDate fecha) {
 		return this.getPrecioCotidiano();
 	}

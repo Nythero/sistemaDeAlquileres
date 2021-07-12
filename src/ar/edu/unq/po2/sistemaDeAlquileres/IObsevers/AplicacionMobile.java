@@ -9,9 +9,6 @@ public class AplicacionMobile implements IObserver{
 		this.popUpWindow= new PopUpWindow();
 	}
 
-	/**
-	 * Actualiza el la pagina cuando le llega la notificacion
-	 */
 	@Override
 	public void update(Inmueble inmueble, Object arg) {
 		this.popUpWindow.popUp("El/la <" + inmueble.getTipoDeInmueble() +

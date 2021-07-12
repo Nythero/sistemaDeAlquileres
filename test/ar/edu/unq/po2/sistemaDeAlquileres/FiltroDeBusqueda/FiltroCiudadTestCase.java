@@ -49,7 +49,7 @@ class FiltroCiudadTestCase {
 		assertFalse(result);
 	}
 
-	/*
+	
 	@Test
 	void testNoSePuedenAgregarFiltros() throws Exception {
 		filtro= new FiltroCiudad("Quilmes");
@@ -60,5 +60,5 @@ class FiltroCiudadTestCase {
 	void testNoSePuedenRemoverFiltros() throws Exception {
 		filtro= new FiltroCiudad("Quilmes");
 		assertThrows(Exception.class, () -> filtro.removerFiltro(filtro));
-	}*/
+	}
 }

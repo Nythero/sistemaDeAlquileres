@@ -52,6 +52,10 @@ public class Usuario {
 	private void setDireccionDeEmail(String direccionDeEmail) {
 		this.direccionDeEmail = direccionDeEmail;
 	}
+	
+	public String getDireccionDeEmail() {
+		return this.direccionDeEmail;
+	}
 
 
 	private void setTelefono(String telefono) {

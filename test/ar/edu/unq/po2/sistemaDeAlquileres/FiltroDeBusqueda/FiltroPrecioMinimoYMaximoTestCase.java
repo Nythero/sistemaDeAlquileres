@@ -62,7 +62,7 @@ class FiltroPrecioMinimoYMaximoTestCase {
 		assertFalse(result);
 	}
 	
-	/*
+	
 	@Test
 	void testNoSePuedenAgregarFiltros() throws Exception {
 		filtro= new FiltroPrecioMinimoYMaximo(200f,500f,fechaEntrada,fechaSalida);
@@ -73,5 +73,5 @@ class FiltroPrecioMinimoYMaximoTestCase {
 	void testNoSePuedenRemoverFiltros() throws Exception {
 		filtro= new FiltroPrecioMinimoYMaximo(200f,500f,fechaEntrada,fechaSalida);
 		assertThrows(Exception.class, () -> filtro.removerFiltro(filtro));
-	}*/
+	}
 }

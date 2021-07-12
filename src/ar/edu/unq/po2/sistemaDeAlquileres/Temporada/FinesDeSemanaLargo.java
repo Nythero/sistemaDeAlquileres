@@ -11,6 +11,12 @@ public class FinesDeSemanaLargo extends Temporada {
 		this.setPrecioEnFinDeSemanaLargo(precioEnFinDeSemanaLargo);
 	}
 	
+	/**
+	 * Dado un precio setea el precio en la Temporada.
+	 * En caso de ser negativo devuelve error
+	 * @param precio
+	 * @throws Exception
+	 */
 	public void setPrecioEnFinDeSemanaLargo(float precio) throws Exception {
 		if (precio <0) {
 			throw new Exception("El precio no puede ser negativo");
@@ -21,10 +27,6 @@ public class FinesDeSemanaLargo extends Temporada {
 	}
 	
 	@Override
-	/**
-	 * Si el dia dado forma parte de finDeSemanaLargo entonces retorna precioEnFinDeSemanaLargo
-	 * Caso contrario precioEnDiaDeSemana 
-	 */
 	public float getPrecio(LocalDate fecha) {
 		if (esFinDeSemanaLargo(fecha)) {
 			return this.precioEnFinDeSemanaLargo;
@@ -35,8 +37,8 @@ public class FinesDeSemanaLargo extends Temporada {
 	}
 
 	/**
-	 * Verifica si el dia actual es parte de un fin de semana largo
-	 * @param diaActual
+	 * Verifica si fecha es parte de un fin de semana largo
+	 * @param fecha
 	 * @return
 	 */
 	private boolean esFinDeSemanaLargo(LocalDate fecha) {
@@ -46,11 +48,6 @@ public class FinesDeSemanaLargo extends Temporada {
 	}
 
 	@Override
-	/**
-	 * Baja los precios.
-	 * De no ser posible, retorna error
-	 */
-	
 	public void bajarPrecioEspecial(float precioNuevo) {
 		if(precioNuevo > this.precioEnFinDeSemanaLargo || precioNuevo <0) {
 			throw new AssertionFailedError("El precio supera al actual o es negativo");

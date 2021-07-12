@@ -153,7 +153,7 @@ public class Sitio {
 	public Integer getCantidadDeInmueblesLibres() {
 		Integer cantidadDeInmueblesLibres = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
-			if (!inmueble.estaAlquiladoActualmente()) {
+			if (!inmueble.estaAlquiladoActualmente(LocalDate.now())) {
 				cantidadDeInmueblesLibres += 1;
 			} 
 		}
@@ -163,7 +163,7 @@ public class Sitio {
 	public Integer getCantidadDeInmueblesAlquilados() {
 		Integer cantidadDeInmueblesAlquilados = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
-			if (inmueble.estaAlquiladoActualmente()) {
+			if (inmueble.estaAlquiladoActualmente(LocalDate.now())) {
 				cantidadDeInmueblesAlquilados += 1;
 			} 
 		}

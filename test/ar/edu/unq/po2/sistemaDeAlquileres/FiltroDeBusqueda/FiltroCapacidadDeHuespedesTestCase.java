@@ -51,7 +51,7 @@ class FiltroCapacidadDeHuespedesTestCase {
 		
 		assertFalse(result);
 	}
-	/*
+	
 	@Test
 	void testNoSePuedenAgregarFiltros() throws Exception {
 		filtro= new FiltroCapacidadDeHuespedes(3);
@@ -62,6 +62,6 @@ class FiltroCapacidadDeHuespedesTestCase {
 	void testNoSePuedenRemoverFiltros() throws Exception {
 		filtro= new FiltroCapacidadDeHuespedes(3);
 		assertThrows(Exception.class, () -> filtro.removerFiltro(filtro));
-	}*/
+	}
 }
 

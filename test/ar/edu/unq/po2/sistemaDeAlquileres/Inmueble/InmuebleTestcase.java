@@ -203,17 +203,34 @@ class InmuebleTestCase {
 		assertTrue(inmueble.hayAlgunRangoDeFechasQuePoseaElRango(rango));
 	}
 	
-	@Test void Inmueble_EstaAlquiladoActualmente_Success() throws Exception{
+	@Test void Inmueble_EstaAlquiladoActualmente_True() throws Exception{
 		Reserva reserva1 = mock(Reserva.class);
 		Reserva reserva2 = mock(Reserva.class);
+		LocalDate diaActual = mock(LocalDate.class);
 		this.validarReserva(reserva1);
 		this.validarReserva(reserva2);
-		when(reserva1.estaEnEstado("EnCurso")).thenReturn(false);
-		when(reserva2.estaEnEstado("EnCurso")).thenReturn(true);
+		when(reserva1.getRangoDeFechas()).thenReturn(rango);
+		when(reserva2.getRangoDeFechas()).thenReturn(rango);
+		when(rango.estaIncluidaLaFecha(diaActual)).thenReturn(false).thenReturn(true);
 		inmueble.agregarReserva(reserva1);
 		inmueble.agregarReserva(reserva2);
 		
-		assertTrue(inmueble.estaAlquiladoActualmente());
+		assertTrue(inmueble.estaAlquiladoActualmente(diaActual));
+	}
+	
+	@Test void Inmueble_EstaAlquiladoActualmente_False() throws Exception{
+		Reserva reserva1 = mock(Reserva.class);
+		Reserva reserva2 = mock(Reserva.class);
+		LocalDate diaActual = mock(LocalDate.class);
+		this.validarReserva(reserva1);
+		this.validarReserva(reserva2);
+		when(reserva1.getRangoDeFechas()).thenReturn(rango);
+		when(reserva2.getRangoDeFechas()).thenReturn(rango);
+		when(rango.estaIncluidaLaFecha(diaActual)).thenReturn(false).thenReturn(false);
+		inmueble.agregarReserva(reserva1);
+		inmueble.agregarReserva(reserva2);
+		
+		assertFalse(inmueble.estaAlquiladoActualmente(diaActual));
 	}
 	
 	@Test

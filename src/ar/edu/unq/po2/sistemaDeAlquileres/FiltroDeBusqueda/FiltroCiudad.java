@@ -9,10 +9,20 @@ public class FiltroCiudad implements IFiltroDeBusqueda{
 		this.setCiudad(ciudad);
 	}
 	
+	/**
+	 * Retorna la ciudad del filtro
+	 * @return
+	 */
 	public String getCiudad() {
 		return ciudad;
 	}
-
+	
+	/**
+	 * Dada una ciudad la setea
+	 * En caso de ser Null devuelve error
+	 * @param ciudad
+	 * @throws Exception
+	 */
 	public void setCiudad(String ciudad) throws Exception {
 		if (ciudad == null) {
 			throw new Exception("La ciudad no debe ser null");
@@ -21,13 +31,13 @@ public class FiltroCiudad implements IFiltroDeBusqueda{
 	}
 
 	@Override
-	public void removerFiltro(IFiltroDeBusqueda filtro) {
-		//throw new Exception("Operacion no valida");
+	public void removerFiltro(IFiltroDeBusqueda filtro) throws Exception {
+		throw new Exception("Operacion no valida");
 	}
 
 	@Override
-	public void agregarFiltro(IFiltroDeBusqueda filtro) {
-		//throw new Exception("Operacion no valida");
+	public void agregarFiltro(IFiltroDeBusqueda filtro) throws Exception {
+		throw new Exception("Operacion no valida");
 	}
 
 	@Override

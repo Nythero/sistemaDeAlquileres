@@ -11,7 +11,11 @@ public class Foto {
 		this.setAncho(ancho);
 		this.setAlto(alto);
 	}
-
+	/**
+	 * Dado un ancho setea la foto. En caso de no ser un valor positivo devuelve error
+	 * @param ancho
+	 * @throws Exception
+	 */
 	public void setAncho(Integer ancho) throws Exception {
 		if(ancho <=0) {
 			throw new Exception("El numero dado no puede ser negativo");
@@ -20,7 +24,12 @@ public class Foto {
 			this.ancho = ancho;
 		}
 	}
-
+	
+	/**
+	 * Dado un alto setea la foto. En caso de no ser un valor positivo devuelve error
+	 * @param alto
+	 * @throws Exception
+	 */
 	public void setAlto(Integer alto) throws Exception {
 		if(alto <=0) {
 			throw new Exception("El numero dado no puede ser negativo");

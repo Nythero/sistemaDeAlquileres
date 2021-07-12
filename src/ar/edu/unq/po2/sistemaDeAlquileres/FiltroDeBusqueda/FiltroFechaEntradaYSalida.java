@@ -13,10 +13,20 @@ public class FiltroFechaEntradaYSalida implements IFiltroDeBusqueda{
 		this.setFechaSalida(fechaSalida);
 	}
 	
+	/**
+	 * Retorna la fecha de Entrada
+	 * @return
+	 */
 	public LocalDate getFechaEntrada() {
 		return this.fechaEntrada;
 	}
 
+	/**
+	 * Dada una fechaEntrada setea el filtro.
+	 * En caso de ser Null devuelve error
+	 * @param fechaEntrada
+	 * @throws Exception
+	 */
 	public void setFechaEntrada(LocalDate fechaEntrada) throws Exception {
 		if (fechaEntrada == null) {
 			throw new Exception("La fecha no debe ser null");
@@ -24,10 +34,20 @@ public class FiltroFechaEntradaYSalida implements IFiltroDeBusqueda{
 		this.fechaEntrada = fechaEntrada;
 	}
 	
+	/**
+	 * Retorna la fecha de salida
+	 * @return
+	 */
 	public LocalDate getFechaSalida() {
 		return this.fechaSalida;
 	}
 	
+	/**
+	 * Dada una fechaSalida setea el filtro.
+	 * En caso de ser Null devuelve error
+	 * @param fechaSalida
+	 * @throws Exception
+	 */
 	public void setFechaSalida(LocalDate fechaSalida) throws Exception {
 		if (fechaSalida == null) {
 			throw new Exception("La fecha no debe ser null");
@@ -36,13 +56,13 @@ public class FiltroFechaEntradaYSalida implements IFiltroDeBusqueda{
 	}
 	
 	@Override
-	public void removerFiltro(IFiltroDeBusqueda filtro) {
-		//throw new Exception("Operacion no valida");
+	public void removerFiltro(IFiltroDeBusqueda filtro) throws Exception {
+		throw new Exception("Operacion no valida");
 	}
 
 	@Override
-	public void agregarFiltro(IFiltroDeBusqueda filtro) {
-		//throw new Exception("Operacion no valida");
+	public void agregarFiltro(IFiltroDeBusqueda filtro) throws Exception {
+		throw new Exception("Operacion no valida");
 	}
 
 	@Override

@@ -53,13 +53,13 @@ public class FiltroPrecioMinimoYMaximo implements IFiltroDeBusqueda {
 	}
 
 	@Override
-	public void removerFiltro(IFiltroDeBusqueda filtro) {
-		//throw new Exception("Operacion no valida");
+	public void removerFiltro(IFiltroDeBusqueda filtro) throws Exception {
+		throw new Exception("Operacion no valida");
 	}
 
 	@Override
-	public void agregarFiltro(IFiltroDeBusqueda filtro) {
-		//throw new Exception("Operacion no valida");
+	public void agregarFiltro(IFiltroDeBusqueda filtro) throws Exception {
+		throw new Exception("Operacion no valida");
 	}
 
 	@Override
