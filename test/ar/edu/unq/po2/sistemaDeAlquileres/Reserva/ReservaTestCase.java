@@ -47,15 +47,16 @@ class ReservaTestCase {
 	
 	@Test
 	void Reserva_Finalizar_Success() throws CambioDeEstadoError {
-		inmueble = mock(Inmueble.class);
-		rangoDeFechas = mock(RangoDeFechas.class);
-		estado = mock(EstadoReserva.class);
-		solicitante = mock(Usuario.class);
-		reserva = new Reserva(inmueble, rangoDeFechas, solicitante, formaDePago, estado);
-		
 		reserva.finalizar();
 		
 		verify(estado).finalizar(reserva);
+	}
+	
+	@Test
+	void Reserva_Concretar_Success() throws CambioDeEstadoError {
+		reserva.concretar();
+		
+		verify(estado).concretar(reserva);
 	}
 	
 	@Test
