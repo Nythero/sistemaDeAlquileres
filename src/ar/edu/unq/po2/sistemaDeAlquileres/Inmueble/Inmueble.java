@@ -292,8 +292,7 @@ public class Inmueble extends Observable{
 	}
 
 	private void verificarReservaParaCancelar(Reserva reserva) throws Exception {
-		if (reserva.getInmueble() != this ||
-			!this.getReservas().contains(reserva) ||
+		if (!this.getReservas().contains(reserva) ||
 			!reserva.estaEnEstado("Concretado")) {
 				throw new Exception("Reserva Invalida para cancelar");
 			}

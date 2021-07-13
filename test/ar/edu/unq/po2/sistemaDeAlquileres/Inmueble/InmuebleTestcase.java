@@ -214,7 +214,19 @@ class InmuebleTestCase {
 	
 	@Test
 	void Inmueble_CancelarReserva_ReservaInvalidaOtroInmueble() {
+		Reserva reserva = mock(Reserva.class);
+		when(reserva.getInmueble()).thenReturn(mock(Inmueble.class));
 		
+		assertThrows(Exception.class, () -> inmueble.cancelarReserva(reserva));
+	}
+	
+	@Test
+	void Inmueble_CancelarReserva_ReservaInvalidaEstadoInvalido() throws Exception {
+		Reserva reserva = mock(Reserva.class);
+		this.validarReserva(reserva);
+		inmueble.agregarReserva(reserva);
+		when(reserva.estaEnEstado("Concretado")).thenReturn(false);
+		assertThrows(Exception.class, () -> inmueble.cancelarReserva(reserva));
 	}
 	
 	@Test
