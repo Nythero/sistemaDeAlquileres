@@ -253,9 +253,7 @@ public class Inmueble extends Observable{
 	public boolean yaEstaReservado(RangoDeFechas rangoDeFechas) {
 		boolean yaEstaReservado = false;
 		for(Reserva reserva : reservas) {
-			if (reserva.estaEnEstado("Concretada")) {
-				yaEstaReservado = yaEstaReservado || rangoDeFechas.intersectanLosRangos(reserva.getRangoDeFechas());
-			}
+			yaEstaReservado |= (reserva.estaEnEstado("Concretada") && rangoDeFechas.intersectanLosRangos(reserva.getRangoDeFechas()));
 		}
 		return yaEstaReservado;
 	}
