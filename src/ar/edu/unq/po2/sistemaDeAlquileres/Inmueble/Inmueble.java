@@ -114,7 +114,7 @@ public class Inmueble extends Observable{
 		this.precio = precio;
 	}
 	
-	private PoliticaDeCancelacion getPoliticaDeCancelacion() {
+	public PoliticaDeCancelacion getPoliticaDeCancelacion() {
 		return this.politicaDeCancelacion;
 	}
 	
@@ -186,7 +186,7 @@ public class Inmueble extends Observable{
 	}
 	
 	public void agregarReserva(Reserva reserva) throws Exception{
-		this.verificarReserva(reserva);
+		this.verificarReservaParaAgregar(reserva);
 		this.reservas.add(reserva);
 		this.getDuenho().recibirPago(reserva.getMontoTotal());
 	}
@@ -231,12 +231,13 @@ public class Inmueble extends Observable{
 		return estaAlquilado;
 	}
 
-	private void verificarReserva(Reserva reserva) throws Exception {
+	private void verificarReservaParaAgregar(Reserva reserva) throws Exception {
 		if (reserva.getInmueble() != this ||
-				!this.estaIncluidoEnUnRango(reserva.getRangoDeFechas()) ||
-				!this.getFormasDePago().contains(reserva.getFormaDePago()) ||
-				!reserva.estaEnEstado("PendienteDeAprobacion")) {
-			throw new Exception("Reserva Invalida");
+			this.getReservas().contains(reserva) ||
+			!this.estaIncluidoEnUnRango(reserva.getRangoDeFechas()) ||
+			!this.getFormasDePago().contains(reserva.getFormaDePago()) ||
+			!reserva.estaEnEstado("PendienteDeAprobacion")) {
+			throw new Exception("Reserva Invalida para agregar");
 		}
 	}
 	
@@ -252,23 +253,10 @@ public class Inmueble extends Observable{
 
 	public boolean yaEstaReservado(RangoDeFechas rangoDeFechas) {
 		boolean yaEstaReservado = false;
-		for(Reserva reserva : reservas) {
-			yaEstaReservado |= (reserva.estaEnEstado("Concretada") && rangoDeFechas.intersectanLosRangos(reserva.getRangoDeFechas()));
+		for(Reserva reserva : this.getReservas()) {
+			yaEstaReservado |= (reserva.estaEnEstado("Concretado") && rangoDeFechas.intersectanLosRangos(reserva.getRangoDeFechas()));
 		}
 		return yaEstaReservado;
-	}
-
-	public void cancelarReserva(Reserva reserva) throws Exception {
-		this.getPoliticaDeCancelacion().cancelarReserva(LocalDate.now(), reserva);
-		this.notify("Cancelado", this, null);
-		for(Reserva reservaN : this.getReservas()) {
-			if(reservaN.getRangoDeFechas().intersectanLosRangos(reserva.getRangoDeFechas())){
-				try {
-					reservaN.aceptar();
-				}
-				finally {}
-			}
-		}
 	}
 
 	public boolean hayAlgunRangoDeFechasQuePoseaElRango(RangoDeFechas rangoP) {
@@ -286,4 +274,28 @@ public class Inmueble extends Observable{
 	public void bajarPrecioEspecial(float montoNuevo) {
 		this.precio.bajarPrecioEspecial(montoNuevo);
 	}
+
+	public void cancelarReserva(Reserva reserva) throws Exception {
+		this.verificarReservaParaCancelar(reserva);
+		this.getPoliticaDeCancelacion().cancelarReserva(LocalDate.now(), reserva);
+		this.notify("Cancelado", this, null);
+		actualizarReservasPorCancelacion();
+	}
+
+	private void actualizarReservasPorCancelacion() throws Exception {
+		for(Reserva reservaN : this.getReservas()) {
+			try {
+				reservaN.concretar();
+			}
+			catch(Exception e) {}
+		}
+	}
+
+	private void verificarReservaParaCancelar(Reserva reserva) throws Exception {
+		if (reserva.getInmueble() != this ||
+			!this.getReservas().contains(reserva) ||
+			!reserva.estaEnEstado("Concretado")) {
+				throw new Exception("Reserva Invalida para cancelar");
+			}
+		}
 }

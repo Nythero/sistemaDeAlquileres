@@ -15,6 +15,10 @@ public abstract class EstadoReserva {
 	public EstadoReserva finalizar(Reserva reserva) throws CambioDeEstadoError {
 		throw new CambioDeEstadoError(this.codigo(), "finalizar");
 	};
+	
+	public EstadoReserva concretar(Reserva reserva) throws CambioDeEstadoError {
+		throw new CambioDeEstadoError(this.codigo(), "concretar");
+	}
     
 	public void comentarInmueble(Reserva reserva, String comentario) throws EstadoEquivocadoError {
 		throw new EstadoEquivocadoError(this.codigo(),  "comentar el inmueble");

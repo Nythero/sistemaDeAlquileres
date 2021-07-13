@@ -79,6 +79,10 @@ public class Reserva {
     public void finalizar() throws CambioDeEstadoError {
         this.setEstado(this.getEstado().finalizar(this));
     }
+
+	public void concretar() throws CambioDeEstadoError {
+		this.setEstado(this.getEstado().concretar(this));
+	}
     
     public void comentarInmueble(String comentario) throws EstadoEquivocadoError {
         this.getEstado().comentarInmueble(this, comentario);
