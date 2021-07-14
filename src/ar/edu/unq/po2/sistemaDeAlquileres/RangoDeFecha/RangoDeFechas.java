@@ -1,7 +1,6 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;

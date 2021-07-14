@@ -50,7 +50,7 @@ public class Usuario {
 
 
 	private void setDireccionDeEmail(String direccionDeEmail) {
-		this.direccionDeEmail = direccionDeEmail;
+		this.direccionDeEmail = direccionDeEmail;	
 	}
 	
 	public String getDireccionDeEmail() {

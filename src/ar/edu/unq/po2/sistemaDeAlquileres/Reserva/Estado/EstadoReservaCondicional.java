@@ -1,18 +1,16 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Estado;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.Mail.MailSender;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 
-
-public class EstadoReservaCondicional extends EstadoReserva {
-
+public class EstadoReservaCondicional extends EstadoReservaAceptado {
 	@Override
-	public EstadoReserva cancelar(Reserva reserva) throws CambioDeEstadoError {
-		MailSender.mandarMailDeCancelacion(reserva);
-		return new EstadoReservaCancelado();
+	public EstadoReserva concretar(Reserva reserva) throws CambioDeEstadoError {
+		if(reserva.getInmueble().yaEstaReservado(reserva.getRangoDeFechas())) {
+			super.concretar(reserva);
+		}
+		return new EstadoReservaConcretado();
 	}
-
-	@Override
+	
 	String codigo() {
 		return "Condicional";
 	}

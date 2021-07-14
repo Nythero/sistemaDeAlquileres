@@ -1,14 +1,8 @@
 package ar.edu.unq.po2.sistemaDeAlquileres.Inmueble;
-
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.BooleanSupplier;
+
 
 import ar.edu.unq.po2.sistemaDeAlquileres.Foto.Foto;
 import ar.edu.unq.po2.sistemaDeAlquileres.Observable.Observable;
@@ -114,7 +108,7 @@ public class Inmueble extends Observable{
 		this.precio = precio;
 	}
 	
-	private PoliticaDeCancelacion getPoliticaDeCancelacion() {
+	public PoliticaDeCancelacion getPoliticaDeCancelacion() {
 		return this.politicaDeCancelacion;
 	}
 	
@@ -186,7 +180,7 @@ public class Inmueble extends Observable{
 	}
 	
 	public void agregarReserva(Reserva reserva) throws Exception{
-		this.verificarReserva(reserva);
+		this.verificarReservaParaAgregar(reserva);
 		this.reservas.add(reserva);
 		this.getDuenho().recibirPago(reserva.getMontoTotal());
 	}
@@ -211,7 +205,12 @@ public class Inmueble extends Observable{
         return elRangoEstaEntreLaFecha;
     }
 
-	//devuelve el precio maximo del rango de fechas dadas
+	/**
+	 * Dado una fechaEntrada y una fechaSalida devuelve el precio maximo
+	 * @param fechaEntrada
+	 * @param fechaSalida
+	 * @return
+	 */
 	public float precioMaximoDelRangoDeFechasEntre(LocalDate fechaEntrada, LocalDate fechaSalida) {
 		float precioMaximoDelRango = 0f;
 		RangoDeFechas rangoP = new RangoDeFechas(fechaEntrada, fechaSalida);
@@ -231,12 +230,13 @@ public class Inmueble extends Observable{
 		return estaAlquilado;
 	}
 
-	private void verificarReserva(Reserva reserva) throws Exception {
+	private void verificarReservaParaAgregar(Reserva reserva) throws Exception {
 		if (reserva.getInmueble() != this ||
-				!this.estaIncluidoEnUnRango(reserva.getRangoDeFechas()) ||
-				!this.getFormasDePago().contains(reserva.getFormaDePago()) ||
-				!reserva.estaEnEstado("PendienteDeAprobacion")) {
-			throw new Exception("Reserva Invalida");
+			this.getReservas().contains(reserva) ||
+			!this.estaIncluidoEnUnRango(reserva.getRangoDeFechas()) ||
+			!this.getFormasDePago().contains(reserva.getFormaDePago()) ||
+			!reserva.estaEnEstado("PendienteDeAprobacion")) {
+			throw new Exception("Reserva Invalida para agregar");
 		}
 	}
 	
@@ -252,25 +252,10 @@ public class Inmueble extends Observable{
 
 	public boolean yaEstaReservado(RangoDeFechas rangoDeFechas) {
 		boolean yaEstaReservado = false;
-		for(Reserva reserva : reservas) {
-			if (reserva.estaEnEstado("Concretada")) {
-				yaEstaReservado = yaEstaReservado || rangoDeFechas.intersectanLosRangos(reserva.getRangoDeFechas());
-			}
+		for(Reserva reserva : this.getReservas()) {
+			yaEstaReservado |= (reserva.estaEnEstado("Concretado") && rangoDeFechas.intersectanLosRangos(reserva.getRangoDeFechas()));
 		}
 		return yaEstaReservado;
-	}
-
-	public void cancelarReserva(Reserva reserva) throws Exception {
-		this.getPoliticaDeCancelacion().cancelarReserva(LocalDate.now(), reserva);
-		this.notify("Cancelado", this, null);
-		for(Reserva reservaN : this.getReservas()) {
-			if(reservaN.getRangoDeFechas().intersectanLosRangos(reserva.getRangoDeFechas())){
-				try {
-					reservaN.aceptar();
-				}
-				finally {}
-			}
-		}
 	}
 
 	public boolean hayAlgunRangoDeFechasQuePoseaElRango(RangoDeFechas rangoP) {
@@ -288,4 +273,27 @@ public class Inmueble extends Observable{
 	public void bajarPrecioEspecial(float montoNuevo) {
 		this.precio.bajarPrecioEspecial(montoNuevo);
 	}
+
+	public void cancelarReserva(Reserva reserva) throws Exception {
+		this.verificarReservaParaCancelar(reserva);
+		this.getPoliticaDeCancelacion().cancelarReserva(LocalDate.now(), reserva);
+		this.notify("Cancelado", this, null);
+		actualizarReservasPorCancelacion();
+	}
+
+	private void actualizarReservasPorCancelacion() throws Exception {
+		for(Reserva reservaN : this.getReservas()) {
+			try {
+				reservaN.concretar();
+			}
+			catch(Exception e) {}
+		}
+	}
+
+	private void verificarReservaParaCancelar(Reserva reserva) throws Exception {
+		if (!this.getReservas().contains(reserva) ||
+			!reserva.estaEnEstado("Concretado")) {
+				throw new Exception("Reserva Invalida para cancelar");
+			}
+		}
 }

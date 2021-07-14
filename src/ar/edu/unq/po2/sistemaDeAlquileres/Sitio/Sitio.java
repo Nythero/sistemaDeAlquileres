@@ -5,11 +5,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroCapacidadDeHuespedes;
-import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroCiudad;
-import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroComposite;
-import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroFechaEntradaYSalida;
-import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.FiltroPrecioMinimoYMaximo;
 import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.IFiltroDeBusqueda;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
@@ -97,21 +92,6 @@ public class Sitio {
 		this.getTipoDeInmueblesValidos().add(tipoDeInmueble);
 	} 
 
-	/*public ArrayList<Inmueble> buscarInmuebles(String ciudad, LocalDate fechaEntrada, LocalDate fechaSalida, Integer huespedes,
-												float precioMinimo, float precioMaximo) throws Exception {
-		ArrayList<Inmueble> inmuebles = new ArrayList<Inmueble>();
-		FiltroComposite filtroComposite = new FiltroComposite();
-		filtroComposite.agregarFiltro(new FiltroCiudad(ciudad));
-		filtroComposite.agregarFiltro(new FiltroFechaEntradaYSalida(fechaEntrada,fechaSalida));
-		filtroComposite.agregarFiltro(new FiltroCapacidadDeHuespedes(huespedes));
-		filtroComposite.agregarFiltro(new FiltroPrecioMinimoYMaximo(precioMinimo,precioMaximo,fechaEntrada,fechaSalida));
-		for (Inmueble inmueble : this.getInmuebles()) {  
-			if (filtroComposite.cumpleConElFiltro(inmueble)) {
-				inmuebles.add(inmueble);
-			}
-		}
-		return(inmuebles);
-	}*/
 	
 	public ArrayList<Inmueble> buscarInmuebles(IFiltroDeBusqueda filtroComposite) throws Exception {
 			ArrayList<Inmueble> inmuebles = new ArrayList<Inmueble>();
@@ -123,8 +103,13 @@ public class Sitio {
 			return(inmuebles);
 	}
 	
-	//devuelve los inmuebles que al menos uno de sus rangos este entre las fechas dadas 
-	   public ArrayList<Inmueble> filtrarInmueblesQuePertenezcanALasFechas(LocalDate fechaEntrada, LocalDate fechaSalida){                                                
+	/**
+	 * Dada una fechaEntrada y una fechaSalida devuelve los inmuebles que al menos uno de sus rangos este entre las fechas dadas
+	 * @param fechaEntrada
+	 * @param fechaSalida
+	 * @return
+	 */
+	public ArrayList<Inmueble> filtrarInmueblesQuePertenezcanALasFechas(LocalDate fechaEntrada, LocalDate fechaSalida){                                                
 	        ArrayList<Inmueble>inmueblesFiltrados = new ArrayList<Inmueble>();
 	        for (Inmueble inmueble : this.getInmuebles()) {
 	            if (inmueble.hayAlgunRangoDeFechasQuePoseaLasFecha(fechaEntrada,fechaSalida)) {
@@ -143,7 +128,10 @@ public class Sitio {
 		}
 		return usuariosTop;
 	} 
-	//ordena a los usuarios de mayor a menor, en base a la cantidad de reservas que hayan hecho
+	/**
+	 * Ordena a los usuarios de mayor a menor, en base a la cantidad de reservas que hayan hecho
+	 * @return
+	 */
 	private ArrayList<Usuario> usuariosOrdenadosPorReservasRealizadas() {
 		ArrayList<Usuario> usuarios = this.getUsuarios();
 		usuarios.sort(Comparator.comparingInt(usuario -> ((Usuario) usuario).cantidadReservas()).reversed());
