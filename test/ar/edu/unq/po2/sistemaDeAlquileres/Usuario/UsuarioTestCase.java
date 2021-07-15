@@ -166,15 +166,21 @@ public class UsuarioTestCase {
 	
 	@Test
 	void testGetReservasFuturas() throws Exception{
+		LocalDate fechaActual = mock(LocalDate.class);
+		LocalDate fecha = mock(LocalDate.class);
+		when(fechaActual.isBefore(fecha)).thenReturn(true);
+		when(reserva1.getFechaInicial()).thenReturn(fecha);
+		when(reserva2.getFechaInicial()).thenReturn(fecha);
+		when(reserva1.estaEnEstado("Condicional")).thenReturn(true);
+		when(reserva2.estaEnEstado("Condicional")).thenReturn(true);
+		
 		usuario1.realizarReserva(reserva1,sitio);
 		usuario1.realizarReserva(reserva2,sitio);
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 		reservas.add(reserva1);
 		reservas.add(reserva2);
-		when(reserva1.estaEnEstado("Condicional")).thenReturn(true);
-		when(reserva2.estaEnEstado("Condicional")).thenReturn(true);
 		
-		assertEquals(reservas,usuario1.getTodasLasReservasFuturas());
+		assertEquals(reservas,usuario1.getTodasLasReservasFuturas(fechaActual));
 	}
 	
 	@Test

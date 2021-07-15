@@ -65,34 +65,62 @@ public class Sitio {
 		return (this.getTipoDeInmueblesValidos().contains(inmueble.getTipoDeInmueble())
 				&& this.getTiposDeServicios().containsAll(inmueble.getServicios()));
 	}
-	
+
+	/**
+	 * Agrega la categoria de puntuacion a todos los inquilinos del sitio
+	 * @param categoria
+	 * @throws Exception
+	 */
 	public void addCategoriaAInquilino(String categoria) throws Exception {
 		for (int i = 0; i < this.getUsuarios().size(); i++) {
 			this.getUsuarios().get(i).getRankingComoInquilino().addCategoria(categoria);
 		}
 	}
 	
+	/**
+	 * Agrega la categoria de puntuacion a todos los inmuebles del sitio
+	 * @param categoria
+	 * @throws Exception
+	 */
 	public void addCategoriaAInmueble(String categoria) throws Exception {
 		for (int i = 0; i < this.getInmuebles().size(); i++) {
 			this.getInmuebles().get(i).getRanking().addCategoria(categoria);
 		}
 	}
 	
+	/**
+	 * Agrega la categoria de puntuacion a todos los duenhos del sitio
+	 * @param categoria
+	 * @throws Exception
+	 */
 	public void addCategoriaADuenho(String categoria) throws Exception {
 		for (int i = 0; i < this.getUsuarios().size(); i++) {
 			this.getUsuarios().get(i).getRankingComoDuenho().addCategoria(categoria);
 		}
 	}
 	
+	/**
+	 * Agrega el servicio dado como servicio valido
+	 * @param servicio
+	 */
 	public void agregarServicioValido(String servicio) {
 		this.getTiposDeServicios().add(servicio);	
 	} 
 	
+	/**
+	 * Agrega el tipo de inmueble dado como servicio valido
+	 * @param tipoDeInmueble
+	 */
 	public void agregarTipoDeInmuebleValido(String tipoDeInmueble) {
 		this.getTipoDeInmueblesValidos().add(tipoDeInmueble);
 	} 
 
-	
+	/**
+	 * Devuelve los inmuebles que cumplan con el filtro dado
+	 * @param filtroComposite
+	 * @return
+	 * @throws Exception
+	 */
 	public ArrayList<Inmueble> buscarInmuebles(IFiltroDeBusqueda filtroComposite) throws Exception {
 			ArrayList<Inmueble> inmuebles = new ArrayList<Inmueble>();
 			for (Inmueble inmueble : this.getInmuebles()) {  
@@ -119,6 +147,10 @@ public class Sitio {
 	        return inmueblesFiltrados;
 	    }
 	
+	/**
+	 * Devuelve los 10 usuarios con mayor cantidad de reservas realizadas
+	 * @return
+	 */
 	public ArrayList<Usuario> obtenerElTopTenDeInquilinos() {
 		ArrayList<Usuario> listaARecorrer = this.usuariosOrdenadosPorReservasRealizadas();
 		ArrayList<Usuario> usuariosTop = new ArrayList<Usuario>();
@@ -138,6 +170,10 @@ public class Sitio {
 		return usuarios;
 	}
 
+	/**
+	 * Devuelve la cantidad de inmuebles sin alquilar actualmente
+	 * @return
+	 */
 	public Integer getCantidadDeInmueblesLibres() {
 		Integer cantidadDeInmueblesLibres = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
@@ -147,7 +183,11 @@ public class Sitio {
 		}
 		return cantidadDeInmueblesLibres;
 	}
-	
+
+	/**
+	 * Devuelve la cantidad de inmuebles alquilados actualmente
+	 * @return
+	 */
 	public Integer getCantidadDeInmueblesAlquilados() {
 		Integer cantidadDeInmueblesAlquilados = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
