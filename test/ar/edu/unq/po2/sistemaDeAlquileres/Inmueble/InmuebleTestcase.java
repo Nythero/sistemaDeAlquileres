@@ -21,7 +21,7 @@ import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 import ar.edu.unq.po2.sistemaDeAlquileres.Temporada.Temporada;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
-import ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion.PoliticaDeCancelacion;
+import ar.edu.unq.po2.sistemaDeAlquileres.PoliticaDeCancelacion.PoliticaDeCancelacion;
 
 
 class InmuebleTestCase {

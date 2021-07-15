@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion;
+package ar.edu.unq.po2.sistemaDeAlquileres.PoliticaDeCancelacion;
 
 import java.time.LocalDate;
 
