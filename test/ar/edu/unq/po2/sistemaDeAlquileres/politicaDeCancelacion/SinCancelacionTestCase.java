@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.sistemaDeAlquileres.politicaDeCancelacion;
+package ar.edu.unq.po2.sistemaDeAlquileres.PoliticaDeCancelacion;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
