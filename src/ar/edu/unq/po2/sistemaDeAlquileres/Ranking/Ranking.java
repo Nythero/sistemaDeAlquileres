@@ -13,14 +13,28 @@ public class Ranking {
 		this.comentarios = new ArrayList<String>();
 	}
 	
+	/**
+	 * Retorna los registrosPorCategorias
+	 * @return
+	 */
 	private Map<String,ArrayList<Integer>> getRegistroPorCategorias() {
 		return this.registroPorCategorias;
 	}
 	
+	/**
+	 * Retorna los comentarios
+	 * @return
+	 */
 	private ArrayList<String> getComentarios() {
 		return this.comentarios;
 	}
 	
+	/**
+	 * Dada una categoria la añade.
+	 * En caso de existir la categoria retorna error
+	 * @param categoria
+	 * @throws Exception
+	 */
 	public void addCategoria(String categoria) throws Exception {
 		try {
 			this.verificarCategoria(categoria);
@@ -38,8 +52,7 @@ public class Ranking {
 	
 	/**
 	 * Dada una categoria y un puntaje la agrega a los registros
-	 * Si el puntaje no se encuentra entre 1 y 5 inluidos o no se encuentra la categoria
-	 * ambos casos devuelve error
+	 * Si el puntaje no se encuentra entre 1 y 5 inluidos devuelve error
 	 * @param categoria
 	 * @param puntaje
 	 * @throws Exception 
@@ -56,10 +69,20 @@ public class Ranking {
 		}
 	}
 	
+	/**
+	 * Dado un puntaje retorna si es valido, es decir, si se encuentra entre 1 y 5 incluidos
+	 * @param puntaje
+	 * @return
+	 */
 	private boolean esPuntajeValido (int puntaje) {
 		return puntaje >= 1 && puntaje <= 5;
 	}
 	
+	/**
+	 * Dada una categoria retorna si ya se encuentra la misma registrada
+	 * @param categoria
+	 * @throws Exception
+	 */
 	private void verificarCategoria(String categoria) throws Exception {
 		if(!this.getRegistroPorCategorias().containsKey(categoria)) {
 			throw new Exception("La categoria no existe");
@@ -86,8 +109,7 @@ public class Ranking {
 	}
 	
 	/**
-	 * Devuelve el puntaje total del promedio (incluyendo los puntajes por categorias y los generales)
-	 * Si ambas listas estan vacias retornan 0.
+	 * Devuelve el puntaje total del promedio
 	 * @return
 	 * @throws Exception 
 	 */
@@ -123,6 +145,10 @@ public class Ranking {
 		}
 	}
 	
+	/**
+	 * Dado un comentario lo añade
+	 * @param comentario
+	 */
 	public void agregarComentario(String comentario) {
 		this.getComentarios().add(comentario);
 	}

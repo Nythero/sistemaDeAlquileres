@@ -16,7 +16,7 @@ public class Observable {
     }
 	
 	/**
-	 * Dada una sucripcion devuelve a los suscriptores.
+	 * Dada una sucripcion devuelve la cantidad de suscriptores.
 	 * En caso de no existir la suscripcion devuelve error
 	 * @param suscripcion
 	 * @return
@@ -59,8 +59,8 @@ public class Observable {
 	}
 	
 	/**
-	 * Dada un tipo de suscripcion y un suscriptor lo remueve.
-	 * En caso de noestar suscrito o no existir la suscripcion devuelve error
+	 * Dado un tipo de suscripcion y un suscriptor lo remueve.
+	 * En caso de no estar suscrito o no existir la suscripcion devuelve error
 	 * @param tipoDeSuscripcion
 	 * @param observer
 	 */
@@ -84,7 +84,7 @@ public class Observable {
 	}
 	
 	/**
-	 * Retorna si el sujeto esta suscrito a la suscripcion
+	 * Retorna si el observer dado esta suscrito a la suscripcion
 	 * @param tipoDeSuscripcion
 	 * @param observer
 	 * @return
@@ -94,7 +94,7 @@ public class Observable {
 	}
 
 	/**
-	 * Envia las notificaciones a los que corresponda
+	 * Dado un tipoDeSuscripcion, un inmueble y un dato extra notifica a los que les corresponda
 	 * @param tipoDeSuscripcion
 	 * @param inmueble
 	 * @param arg

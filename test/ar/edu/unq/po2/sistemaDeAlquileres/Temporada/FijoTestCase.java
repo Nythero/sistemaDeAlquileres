@@ -19,7 +19,12 @@ class FijoTestCase {
 		fijo= new Fijo(500f);
 		fecha= mock(LocalDate.class);
 	}
-
+	
+	@Test
+	void testElPrecioCotidianoNoEsCorrecto() {
+		assertThrows(Exception.class, ()-> new Fijo(-200f));
+	}
+	
 	@Test
 	void testGetPrecioSiendoDiaDeSemana() {
 		float result= fijo.getPrecio(fecha);
@@ -42,6 +47,14 @@ class FijoTestCase {
 	}
 	
 	@Test
+	void testSePuedeBajarDeEspecial() {
+		fijo.bajarPrecioEspecial(200f);
+		float result= fijo.getPrecio(fecha);
+		
+		assertEquals(500f, result);
+	}
+	
+	@Test
 	void testNoSePuedeBajarDePrecioYaQueSuperaAlPrecioOriginal() {
 		Assertions.assertThrows(AssertionFailedError.class, () -> {
 			fijo.bajarAlPrecioCotidiano(600f);
@@ -50,6 +63,13 @@ class FijoTestCase {
 	
 	@Test
 	void testNoSePuedeBajarDePrecioYaQueEsMenorA0() {
+		Assertions.assertThrows(AssertionFailedError.class, () -> {
+			fijo.bajarAlPrecioCotidiano(-1f);
+		  });
+	}
+	
+	@Test
+	void testNoSePuedeBajarDePrecioEspecialYaQueEsMenorA0() {
 		Assertions.assertThrows(AssertionFailedError.class, () -> {
 			fijo.bajarAlPrecioCotidiano(-1f);
 		  });

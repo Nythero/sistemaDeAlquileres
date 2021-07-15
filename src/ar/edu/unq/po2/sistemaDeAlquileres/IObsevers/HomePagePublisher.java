@@ -3,7 +3,7 @@ package ar.edu.unq.po2.sistemaDeAlquileres.IObsevers;
 public class HomePagePublisher {
 	
 	/**
-	 * Publica en la pagina la informacion dada
+	 * Dada una informacion la publica en la pagina
 	 * @param message
 	 */
 	public void publish(String message) {

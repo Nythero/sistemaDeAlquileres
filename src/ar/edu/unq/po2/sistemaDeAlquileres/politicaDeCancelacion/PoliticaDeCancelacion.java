@@ -7,17 +7,12 @@ import ar.edu.unq.po2.sistemaDeAlquileres.Reserva.Reserva;
 //
 public abstract class PoliticaDeCancelacion {
 	/**
-	 * Dada una reserva la cancela
+	 * Dado un diaActual y una reserva la cancela.
+	 * En caso de no poder hacerse devuelve error
+	 * @param diaActual
 	 * @param reserva
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public abstract void cancelarReserva(LocalDate diaActual, Reserva reserva) throws Exception;
-	
-	/**
-	 * Dada una reserva devuelve la cantidad de dias entre la fecha actual
-	 * y la inicial de la reserva
-	 * @param reserva
-	 * @return
-	 */
 }
 

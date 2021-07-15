@@ -24,6 +24,15 @@ class TemporadaAltaTestCase {
 		fecha= mock(LocalDate.class);
 	}
 	
+	@Test
+	void testElPrecioCotidianoNoEsCorrecto() {
+		assertThrows(Exception.class, ()-> new TemporadaAlta(-200f,500f));
+	}
+	
+	@Test
+	void testElPrecioEspecialNoEsCorrecto() {
+		assertThrows(Exception.class, ()-> new TemporadaAlta(200f,-500f));
+	}
 	
 	@Test
 	void testGetPrecioSiendoMesDeTemporadaAlta() {

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import ar.edu.unq.po2.sistemaDeAlquileres.FiltroDeBusqueda.IFiltroDeBusqueda;
 import ar.edu.unq.po2.sistemaDeAlquileres.Inmueble.Inmueble;
-import ar.edu.unq.po2.sistemaDeAlquileres.RangoDeFecha.RangoDeFechas;
 import ar.edu.unq.po2.sistemaDeAlquileres.Usuario.Usuario;
 
 import java.util.Comparator;
@@ -76,7 +76,6 @@ public class Sitio {
 		for (int i = 0; i < this.getInmuebles().size(); i++) {
 			this.getInmuebles().get(i).getRanking().addCategoria(categoria);
 		}
-		
 	}
 	
 	public void addCategoriaADuenho(String categoria) throws Exception {
@@ -93,23 +92,24 @@ public class Sitio {
 		this.getTipoDeInmueblesValidos().add(tipoDeInmueble);
 	} 
 
-	public ArrayList<Inmueble> buscarInmuebles(String ciudad, LocalDate fechaEntrada, LocalDate fechaSalida, Integer huespedes,
-												float precioMinimo, float precioMaximo) {
-		ArrayList<Inmueble> inmuebles = new ArrayList<Inmueble>();
-		for (Inmueble inmueble : this.filtrarInmueblesQuePertenezcanALasFechas(fechaEntrada, fechaSalida)) {
-			if (inmueble.getCiudad() == ciudad 
-				&& (null == inmueble.getCapacidad()  || inmueble.getCapacidad() >= huespedes)
-				&& (null == (Float) precioMaximo || inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) > precioMinimo )
-				&& (null == (Float) precioMaximo || inmueble.precioMaximoDelRangoDeFechasEntre(fechaEntrada,fechaSalida) < precioMaximo)) {
-				
-				inmuebles.add(inmueble);
-			} 
-		} 
-		return(inmuebles);
+	
+	public ArrayList<Inmueble> buscarInmuebles(IFiltroDeBusqueda filtroComposite) throws Exception {
+			ArrayList<Inmueble> inmuebles = new ArrayList<Inmueble>();
+			for (Inmueble inmueble : this.getInmuebles()) {  
+				if (filtroComposite.cumpleConElFiltro(inmueble)) {
+					inmuebles.add(inmueble);
+				}
+			}
+			return(inmuebles);
 	}
 	
-	//devuelve los inmuebles que al menos uno de sus rangos este entre las fechas dadas 
-	   public ArrayList<Inmueble> filtrarInmueblesQuePertenezcanALasFechas(LocalDate fechaEntrada, LocalDate fechaSalida){                                                
+	/**
+	 * Dada una fechaEntrada y una fechaSalida devuelve los inmuebles que al menos uno de sus rangos este entre las fechas dadas
+	 * @param fechaEntrada
+	 * @param fechaSalida
+	 * @return
+	 */
+	public ArrayList<Inmueble> filtrarInmueblesQuePertenezcanALasFechas(LocalDate fechaEntrada, LocalDate fechaSalida){                                                
 	        ArrayList<Inmueble>inmueblesFiltrados = new ArrayList<Inmueble>();
 	        for (Inmueble inmueble : this.getInmuebles()) {
 	            if (inmueble.hayAlgunRangoDeFechasQuePoseaLasFecha(fechaEntrada,fechaSalida)) {
@@ -128,7 +128,10 @@ public class Sitio {
 		}
 		return usuariosTop;
 	} 
-	//ordena a los usuarios de mayor a menor, en base a la cantidad de reservas que hayan hecho
+	/**
+	 * Ordena a los usuarios de mayor a menor, en base a la cantidad de reservas que hayan hecho
+	 * @return
+	 */
 	private ArrayList<Usuario> usuariosOrdenadosPorReservasRealizadas() {
 		ArrayList<Usuario> usuarios = this.getUsuarios();
 		usuarios.sort(Comparator.comparingInt(usuario -> ((Usuario) usuario).cantidadReservas()).reversed());
@@ -138,7 +141,7 @@ public class Sitio {
 	public Integer getCantidadDeInmueblesLibres() {
 		Integer cantidadDeInmueblesLibres = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
-			if (!inmueble.estaAlquiladoActualmente()) {
+			if (!inmueble.estaAlquiladoActualmente(LocalDate.now())) {
 				cantidadDeInmueblesLibres += 1;
 			} 
 		}
@@ -148,7 +151,7 @@ public class Sitio {
 	public Integer getCantidadDeInmueblesAlquilados() {
 		Integer cantidadDeInmueblesAlquilados = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
-			if (inmueble.estaAlquiladoActualmente()) {
+			if (inmueble.estaAlquiladoActualmente(LocalDate.now())) {
 				cantidadDeInmueblesAlquilados += 1;
 			} 
 		}

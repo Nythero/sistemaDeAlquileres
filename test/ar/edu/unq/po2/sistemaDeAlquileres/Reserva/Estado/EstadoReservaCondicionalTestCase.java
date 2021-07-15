@@ -59,6 +59,23 @@ class EstadoReservaCondicionalTestCase {
 	}
 	
 	@Test
+	void EstadoReservaCondicional_Concretar_Success() throws Exception {
+		when(reserva.getInmueble()).thenReturn(inmueble);
+		when(inmueble.yaEstaReservado(reserva.getRangoDeFechas())).thenReturn(false);
+		EstadoReserva estadoDevuelto = estado.concretar(reserva);
+
+		assertTrue(estadoDevuelto.getClass().equals(EstadoReservaConcretado.class));
+	}
+
+	@Test
+	void EstadoReservaCondicional_Concretar_Exception() throws Exception {
+		when(reserva.getInmueble()).thenReturn(inmueble);
+		when(inmueble.yaEstaReservado(reserva.getRangoDeFechas())).thenReturn(true);
+
+		assertThrows(CambioDeEstadoError.class, () -> estado.concretar(reserva));
+	}
+	
+	@Test
 	void EstadoReservaCondicional_ComentarInmueble_EstadoEquivocadoError() throws EstadoEquivocadoError {
 		assertThrows(EstadoEquivocadoError.class, () -> estado.comentarInmueble(null, null));
 	}
