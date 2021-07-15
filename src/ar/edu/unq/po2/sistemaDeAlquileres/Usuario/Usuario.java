@@ -111,6 +111,18 @@ public class Usuario {
 		}	
 	}
 	
+	/**
+	 * Devuelve inmuebles del sitio dado que cumplan con los parametros dados
+	 * @param sitio
+	 * @param ciudad: Indica la ciudad del inmueble
+	 * @param fechaEntrada: Indica la fecha de inicio del alquiler requerido
+	 * @param fechaSalida:Indica la fecha de finalizacion del alquiler requerido
+	 * @param huespedes: Indica la cantidad de huespedes que requiere el inmueble
+	 * @param precioMinimo: Indica el precio minimo a pagar por dia
+	 * @param precioMaximo: Indica el precio maximo a pagar por dia
+	 * @return: Lista de inmuebles que cumplen los parametros dados
+	 * @throws Exception
+	 */
 	public ArrayList<Inmueble> buscarInmuebles(Sitio sitio,String ciudad,LocalDate fechaEntrada,
 												LocalDate fechaSalida,Integer huespedes,float precioMinimo,
 												float precioMaximo) throws Exception {
@@ -126,6 +138,13 @@ public class Usuario {
 		sitio.registrarUsuario(this);
 	}
 
+	/**
+	 * Devuelve el inmueble de la posicion dada de la lista dada
+	 * @param inmuebles: Lista de inmuebles
+	 * @param posicionInmueble: Posicion del inmueble del que se requieren los datos
+	 * @return: Un Inmueble
+	 * @throws Exception
+	 */
 	public Inmueble visualizarDatosDelInmueble(ArrayList<Inmueble> inmuebles, Integer posicionInmueble) throws Exception {
 		if (posicionInmueble > inmuebles.size()) {
 			throw new Exception("No hay tantos inmuebles");
@@ -135,6 +154,11 @@ public class Usuario {
 		}
 	}
 	
+	/**
+	 * Agrega el inmueble dado a la lista de inmuebles
+	 * @param inmueble
+	 * @throws Exception
+	 */
 	private void agregarInmueble(Inmueble inmueble) throws Exception {
 		if (!this.getInmuebles().contains(inmueble)) {
 			this.getInmuebles().add(inmueble);
@@ -144,6 +168,12 @@ public class Usuario {
 		}
 	}
 	
+	/**
+	 * Agrega el inmueble al sitio y luego al usuario
+	 * @param inmueble
+	 * @param sitio
+	 * @throws Exception
+	 */
 	public void publicarInmueble(Inmueble inmueble, Sitio sitio) throws Exception {
 		sitio.agregarInmueble(inmueble);
 		this.agregarInmueble(inmueble);
@@ -162,6 +192,12 @@ public class Usuario {
 		}	
 	}
 	
+	/**
+	 * Agrega la reserva al sitio y al usuario
+	 * @param reserva
+	 * @param sitio
+	 * @throws Exception
+	 */
 	public void realizarReserva(Reserva reserva,Sitio sitio) throws Exception {
 		if(sitio.esUsuario(this)) {
 			reserva.getInmueble().agregarReserva(reserva);
@@ -170,7 +206,6 @@ public class Usuario {
 		else {
 			throw new Exception("El usuario no esta registrado en el sitio");
 		}
-		
 	}
 	
 	public void cancelarReserva(Reserva reserva) throws CambioDeEstadoError, Exception {
@@ -182,16 +217,27 @@ public class Usuario {
 		}
 	}
 	
-	public ArrayList<Reserva> getTodasLasReservasFuturas(){
+	/**
+	 * Devuelve todas las reservas con fecha posterior a la fecha dada
+	 * @param fechaActual
+	 * @return
+	 */
+	public ArrayList<Reserva> getTodasLasReservasFuturas(LocalDate fechaActual){
 		ArrayList<Reserva> reservasFuturas = new ArrayList<Reserva>();
 		for (Reserva reserva : this.getReservas()) {
-			if (reserva.estaEnEstado("Condicional") || reserva.estaEnEstado("Concretado")){
+			if ((reserva.estaEnEstado("Condicional") || reserva.estaEnEstado("Concretado")) &&
+				 fechaActual.isBefore(reserva.getFechaInicial())){
 				reservasFuturas.add(reserva);
 			}
 		}
 		return reservasFuturas;
 	}
-	
+
+	/**
+	 * Devuelve todas las reservas en la ciudad dada
+	 * @param ciudad
+	 * @return
+	 */
 	public ArrayList<Reserva> getReservasEnCiudadParticular(String ciudad) {
 		ArrayList<Reserva> reservasEnCiudadDada = new ArrayList<Reserva>();
 		for (Reserva reserva : this.getReservas()) {
@@ -202,6 +248,10 @@ public class Usuario {
 		return reservasEnCiudadDada;
 	}
 	
+	/**
+	 * Devuelve todas las ciudades en las que tiene reservas
+	 * @return
+	 */
 	public Set<String> getCiudadesEnLasQueTieneReservas(){
 		Set<String> ciudadesConReserva = new HashSet<String>();	
 		for (Reserva reserva : this.getReservas()) {
@@ -210,7 +260,11 @@ public class Usuario {
 		return ciudadesConReserva;
 	}
 	
-	public Integer cantidadDeVecesQueAlquilo() { //devuelve la cantidad de veces que fueron alquilados todos los inmuebles
+	/**
+	 * Devuelve la cantidad de veces que fueron alquilados todos los inmuebles
+	 * @return
+	 */
+	public Integer cantidadDeVecesQueAlquilo() { 
 		Integer cantidadDeVecesAlquilado = 0;
 		for (Inmueble inmueble : this.getInmuebles()) {
 			cantidadDeVecesAlquilado += inmueble.getCantidadDeVecesAlquilado();
@@ -218,6 +272,12 @@ public class Usuario {
 		return cantidadDeVecesAlquilado;
 	}
 	
+	/**
+	 * Devuelve la cantidad de veces que el dueño alquilo ese inmueble
+	 * @param inmueble
+	 * @return
+	 * @throws Exception
+	 */
 	public Integer cuantasVecesAlquiloElInmueble(Inmueble inmueble) throws Exception {
 		if (this.getInmuebles().contains(inmueble)) {
 			return inmueble.getCantidadDeVecesAlquilado();
@@ -227,6 +287,10 @@ public class Usuario {
 		}
 	}
 	
+	/**
+	 * Devuelve todos sus inmuebles que fueron alquilados al menos una vez
+	 * @return
+	 */
 	public ArrayList<Inmueble> getInmueblesQueHanSidoAlquilados(){
 		ArrayList<Inmueble> inmueblesAlquilados = new ArrayList<Inmueble>();
 		for (Inmueble inmueble : this.getInmuebles()) {
